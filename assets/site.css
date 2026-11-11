@@ -96,7 +96,7 @@ p { margin: 0; }
 @media (min-width: 900px) { .slide { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); align-items: center; gap: 48px; } .slide.s-fim { grid-template-columns: 1fr; } }
 .s-media { display: grid; gap: 8px; --n: 1; }
 .s-media .m { overflow: hidden; background: var(--bg2); }
-.s-media img, .s-media video { width: 100%; height: 100%; object-fit: cover; background: var(--bg2); }
+.s-media img, .s-media video { width: 100%; height: 100%; object-fit: contain; background: var(--bg2); }
 .s-media[data-shape="h"] .m { aspect-ratio: 4 / 3; }
 .s-media[data-shape="sq"] .m { aspect-ratio: 1; }
 .s-media[data-shape="v"] .m { aspect-ratio: 9 / 16; }
@@ -159,7 +159,7 @@ p { margin: 0; }
 .peca[data-shape="sq"] figure { aspect-ratio: 1; }
 .peca[data-shape="v"] figure { aspect-ratio: 9 / 16; }
 .peca[data-shape="wide"] figure { aspect-ratio: 16 / 9; }
-.peca img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+.peca img { width: 100%; height: 100%; object-fit: contain; transition: transform .3s ease; }
 .peca:hover img { transform: scale(1.02); }
 .peca .play { position: absolute; right: 10px; bottom: 10px; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; background: var(--bg); color: var(--fg); padding: 4px 7px; }
 .capa-texto { display: flex; align-items: flex-end; height: 100%; padding: 16px; border-left: 4px solid var(--cor); font-size: 18px; line-height: 1.25; color: var(--fg); }
