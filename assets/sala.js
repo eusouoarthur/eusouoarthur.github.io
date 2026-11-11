@@ -22,6 +22,8 @@
     itens = pecas;
   }
 
+  function papelOk(p) { return !!p.papel && p.papel.indexOf('a confirmar') < 0; }
+
   function capa(p) {
     var img = (p.imgs && p.imgs[0]) || p.poster || (p.videos && p.videos[0].poster);
     var ehVideo = !!(p.video || p.videos);
@@ -35,7 +37,7 @@
   grid.innerHTML = itens.map(function (p, i) {
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
     return '<button class="peca" type="button" data-i="' + i + '" data-shape="' + (p.shape || 'h') + '">' + capa(p) +
-      '<h3>' + esc(p.titulo) + '</h3><span class="meta">' + esc(meta) + '</span>' + (p.papel ? '<span class="papel">' + esc(p.papel) + '</span>' : '') + '</button>';
+      '<h3>' + esc(p.titulo) + '</h3><span class="meta">' + esc(meta) + '</span>' + (papelOk(p) ? '<span class="papel">' + esc(p.papel) + '</span>' : '') + '</button>';
   }).join('');
   if (!itens.length) grid.innerHTML = '<p class="vazio">Ainda não tem nada aqui.</p>';
 
@@ -55,7 +57,7 @@
     var info = '<p class="mono">' + esc(meta) + '</p><h2>' + esc(p.titulo) + '</h2>';
     if (m && m.linhafina) info += '<p class="linhafina">' + esc(m.linhafina) + '</p>';
     if (p.resumo) info += '<p class="resumo">' + esc(p.resumo) + '</p>';
-    if (p.papel) info += '<p class="papel"><b>O que eu fiz:</b> ' + esc(p.papel) + '</p>';
+    if (papelOk(p)) info += '<p class="papel"><b>O que eu fiz:</b> ' + esc(p.papel) + '</p>';
     if (p.detalhe) info += '<div class="detalhe">' + esc(p.detalhe) + '</div>';
     var links = [];
     if (m && m.url) links.push('<a class="btn btn-leve" href="' + esc(m.url) + '" target="_blank" rel="noopener">Ler no ' + esc(m.veiculo) + '</a>');
