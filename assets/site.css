@@ -68,7 +68,7 @@ h1, h2, h3 { font-weight: 500; line-height: 1.1; margin: 0; }
 p { margin: 0; }
 [hidden] { display: none !important; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-.mono { font-family: var(--mono); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--fg2); }
+.mono { font-family: var(--mono); font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--fg2); }
 .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad); }
 :focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
 
@@ -138,7 +138,7 @@ p { margin: 0; }
 
 /* Home */
 .hero { padding: clamp(56px, 12vh, 140px) 0 clamp(40px, 8vh, 80px); }
-.cuido { font-size: clamp(38px, 8.2vw, 104px); font-weight: 500; letter-spacing: -.015em; line-height: 1.05; display: flex; flex-wrap: wrap; gap: 0 .28em; align-items: baseline; }
+.cuido { font-size: var(--cuido-tam); font-weight: 500; letter-spacing: -.015em; line-height: 1.05; display: flex; flex-direction: column; align-items: flex-start; }
 .tambor { display: inline-block; position: relative; }
 .tambor-win { display: block; height: 1.1em; overflow: hidden; perspective: 900px; perspective-origin: 50% 50%; padding: 0 .04em; }
 .tambor-rolo { list-style: none; margin: 0; padding: 0; position: relative; height: 1.1em; transform-style: preserve-3d; transform: translateZ(calc(-1 * var(--rz))) rotateX(calc(-1 * var(--rot, 0deg))); will-change: transform; --ang: 40deg; --rz: 1.5em; }
