@@ -186,31 +186,77 @@
   }
 
   // O tambor: "Cuido" fixo, os temas rodando como um rolo, parando em "de tudo."
+  // Depois da animação, a lista de temas vira menu: clicar num tema troca a palavra e filtra a parede.
   function tambor() {
     var hero = document.querySelector('.hero');
+    var cuido = hero.querySelector('.cuido');
+    var tamborEl = hero.querySelector('.tambor');
     var rolo = hero.querySelector('.tambor-rolo');
     var win = hero.querySelector('.tambor-win');
+    var lista = hero.querySelector('.lista');
+    var falado = hero.querySelector('.cuido-falado');
     var ordem = A.ordemAtual();
     var temas = ordem.map(function (i) { return S.temas[i]; });
-    hero.querySelector('.lista').textContent = temas.map(function (t) { return t.curto; }).join(' · ');
     // O rolo passa pelos temas de trás para a frente: o primeiro da lista é o último que se lê antes de "tudo".
     var seq = temas.slice().reverse().map(function (t) { return t.frase; }).concat(['de tudo.']);
     var N = seq.length, ang = 360 / N;
     rolo.innerHTML = seq.map(function (t, i) { return '<li style="--i:' + i + '"' + (i === N - 1 ? ' class="fim"' : '') + '>' + esc(t) + '</li>'; }).join('');
     rolo.style.setProperty('--ang', ang + 'deg');
-    function medir() {
-      var w = 0;
-      rolo.querySelectorAll('li').forEach(function (li) { w = Math.max(w, li.offsetWidth); });
-      win.style.width = Math.ceil(w) + 'px';
-      var h = win.clientHeight || 100;
-      rolo.style.setProperty('--rz', ((h / 2) / Math.tan((ang / 2) * Math.PI / 180)).toFixed(1) + 'px');
-    }
-    medir();
-    window.addEventListener('resize', medir);
+    // Medidas em "em", para o rolo acompanhar o tamanho da letra.
+    var fs0 = parseFloat(getComputedStyle(cuido).fontSize) || 16;
+    var larg = [], maior = 0;
+    rolo.querySelectorAll('li').forEach(function (li) { var w = li.offsetWidth / fs0; larg.push(w); maior = Math.max(maior, w); });
+    win.style.width = (maior + 0.1).toFixed(3) + 'em';
+    rolo.style.setProperty('--rz', (0.55 / Math.tan((ang / 2) * Math.PI / 180)).toFixed(3) + 'em');
+
     var fim = (N - 1) * ang;
+    var rot = fim;      // rotação atual do rolo, em graus
+    var pos = N - 1;    // posição do rolo que está à mostra (N - 1 = "de tudo.")
+    var sel = null;     // id do tema escolhido; null = tudo
+
+    // Se a palavra à mostra for mais larga que a tela, a letra diminui só o necessário.
+    function ajustar() {
+      var fs = parseFloat(getComputedStyle(cuido).fontSize) || 16;
+      var k = Math.min(1, hero.clientWidth / ((larg[pos] + 0.1) * fs));
+      tamborEl.style.fontSize = k.toFixed(3) + 'em';
+    }
+    function girarPara(i) {
+      var d = ((i * ang - rot) % 360 + 540) % 360 - 180;
+      rot += d;
+      pos = i;
+      rolo.style.setProperty('--rot', rot + 'deg');
+      ajustar();
+    }
+    ajustar();
+    window.addEventListener('resize', ajustar);
+
+    // Menu: os temas que têm peças viram botões. O botão "tudo" só aparece quando há um tema escolhido.
+    lista.innerHTML = temas.map(function (t) {
+      if (!pecasDoTema(t).length) return '<span class="tema-item">' + esc(t.curto) + '</span>';
+      return '<button class="tema-item" type="button" data-tema="' + esc(t.id) + '" aria-pressed="false">' + esc(t.curto) + '</button>';
+    }).join(' · ') + '<span class="tudo-wrap" hidden> · <button class="tema-item" type="button" data-tema="">tudo</button></span>';
+    function escolher(id) {
+      if (hero.classList.contains('animando')) return;
+      sel = (id && id !== sel) ? id : null;
+      var k = -1;
+      temas.forEach(function (t, i) { if (t.id === sel) k = i; });
+      girarPara(k < 0 ? N - 1 : N - 2 - k);
+      if (falado) falado.textContent = k < 0 ? 'de tudo.' : temas[k].frase + '.';
+      lista.querySelectorAll('button[data-tema]').forEach(function (b) {
+        if (b.dataset.tema) b.setAttribute('aria-pressed', b.dataset.tema === sel ? 'true' : 'false');
+      });
+      lista.querySelector('.tudo-wrap').hidden = !sel;
+      renderParede(k < 0 ? null : temas[k], true);
+    }
+    lista.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-tema]');
+      if (b) escolher(b.dataset.tema);
+    });
+    renderParede(null, false);
+
     var visto = false;
     try { visto = !!sessionStorage.getItem('tamborVisto'); } catch (e) {}
-    if (reduz || visto) { rolo.style.setProperty('--rot', fim + 'deg'); return; }
+    if (reduz || visto) { rolo.style.setProperty('--rot', fim + 'deg'); rolo.classList.add('suave'); return; }
     hero.classList.add('animando');
     var total = 360 + fim, dur = 4600, t0 = performance.now() + 500;
     function passo(now) {
@@ -220,7 +266,7 @@
       var e = 1 - Math.pow(1 - t, 4);
       rolo.style.setProperty('--rot', (total * e) + 'deg');
       if (t < 1) requestAnimationFrame(passo);
-      else setTimeout(function () { hero.classList.remove('animando'); try { sessionStorage.setItem('tamborVisto', '1'); } catch (e) {} }, 300);
+      else setTimeout(function () { rot = total; rolo.classList.add('suave'); hero.classList.remove('animando'); try { sessionStorage.setItem('tamborVisto', '1'); } catch (e) {} }, 300);
     }
     requestAnimationFrame(passo);
   }

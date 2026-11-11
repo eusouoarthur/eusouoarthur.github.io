@@ -268,6 +268,14 @@ dialog.dlg::backdrop { background: rgba(5, 10, 18, .78); }
   .pp-fora { margin-top: var(--fora-eixo); }
 }
 
+/* Home: menu pela palavra ("Cuido ___") */
+.hero { overflow-x: clip; }
+.tambor { transition: font-size var(--mov) var(--mov-curva); }
+.tambor-rolo.suave { transition: transform var(--mov) var(--mov-curva); }
+.hero .lista button.tema-item { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em; min-height: 24px; }
+.hero .lista button.tema-item:hover, .hero .lista button.tema-item[aria-pressed="true"] { color: var(--fg); }
+.hero .lista button.tema-item[aria-pressed="true"] { text-decoration-thickness: 2px; text-decoration-color: var(--destaque); }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
