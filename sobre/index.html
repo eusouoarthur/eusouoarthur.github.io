@@ -53,7 +53,9 @@
   if (c.email) itens.push('<a href="mailto:' + esc(c.email) + '">' + esc(c.email) + '</a>');
   if (c.linkedin) itens.push('<a href="' + esc(c.linkedin) + '" target="_blank" rel="noopener">LinkedIn</a>');
   if (c.github) itens.push('<a href="' + esc(c.github) + '" target="_blank" rel="noopener">GitHub</a>');
-  document.getElementById('contato').innerHTML = itens.length ? itens.join('') : '<span class="nada">E-mail e redes em breve.</span>';
+  var el = document.getElementById('contato');
+  el.innerHTML = itens.join('');
+  el.closest('section').hidden = !itens.length;
 })();
 </script>
 </body>

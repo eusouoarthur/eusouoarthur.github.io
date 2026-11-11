@@ -129,7 +129,9 @@
     if (c.email) itens.push('<a href="mailto:' + esc(c.email) + '">' + esc(c.email) + '</a>');
     if (c.linkedin) itens.push('<a href="' + esc(c.linkedin) + '" target="_blank" rel="noopener">LinkedIn</a>');
     if (c.github) itens.push('<a href="' + esc(c.github) + '" target="_blank" rel="noopener">GitHub</a>');
-    el.innerHTML = itens.length ? itens.join('') : '<span class="nada">E-mail e redes em breve.</span>';
+    el.innerHTML = itens.join('');
+    var sec = el.closest('section');
+    if (sec) sec.hidden = !itens.length;
   }
 
   // O tambor: "Cuido" fixo, os temas rodando como um rolo, parando em "de tudo."
