@@ -8,16 +8,34 @@
   --fg2: #A6AFBD;
   --line: rgba(231, 226, 216, .16);
   --line-forte: rgba(231, 226, 216, .45);
-  --design: #E0B64A;
-  --jornalismo: #D8553E;
-  --social: #D77FA7;
-  --textos: #C9BFA8;
-  --video: #5C9BDB;
-  --fotos: #7DB97A;
-  --automacoes: #A98BE3;
-  --font: 'Jost', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --texto: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --mono: ui-monospace, 'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace;
+  /* BASE VISUAL PROVISÓRIA (preferência do Arthur em 10/11/2026, seção 18 do conceito). Trocar os valores aqui. */
+  /* [sugestão do modelo] os tons exatos, a pilha de fontes e qual cor vai em qual sala não foram escolhidos por ele. */
+  --vermelho: #E5553F;
+  --ocre: #E8B13A;
+  --azul: #5B95E8;
+  --design: var(--ocre);
+  --jornalismo: var(--vermelho);
+  --social: var(--azul);
+  --textos: var(--vermelho);
+  --video: var(--azul);
+  --fotos: var(--ocre);
+  --automacoes: var(--azul);
+  --destaque: var(--vermelho);
+  --grotesca: 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font: var(--grotesca);
+  --texto: var(--grotesca);
+  --mono: var(--grotesca);
+  --mov: 800ms;
+  --mov-curva: cubic-bezier(.2, .7, .2, 1);
+  --cuido-tam: clamp(56px, 13vw, 176px);
+  --parede-vao: 20px;
+  --fora-eixo: 56px;
+  --cor-fio: 3px;
+  /* VALORES ANTERIORES (para desfazer):
+     --design: #E0B64A; --jornalismo: #D8553E; --social: #D77FA7; --textos: #C9BFA8; --video: #5C9BDB; --fotos: #7DB97A; --automacoes: #A98BE3;
+     --font: 'Jost', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+     --texto: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+     --mono: ui-monospace, 'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace; */
   --maxw: 1120px;
   --pad: clamp(16px, 4vw, 40px);
   --r: 2px;
@@ -31,13 +49,11 @@
   --fg2: #5B6472;
   --line: rgba(21, 32, 43, .16);
   --line-forte: rgba(21, 32, 43, .5);
-  --design: #8A6B10;
-  --jornalismo: #A83A26;
-  --social: #A14A75;
-  --textos: #6F6555;
-  --video: #2E62A6;
-  --fotos: #3F7B3C;
-  --automacoes: #6B4FB0;
+  --vermelho: #B8341F;
+  --ocre: #8A6410;
+  --azul: #2D5FB0;
+  /* VALORES ANTERIORES (para desfazer):
+     --design: #8A6B10; --jornalismo: #A83A26; --social: #A14A75; --textos: #6F6555; --video: #2E62A6; --fotos: #3F7B3C; --automacoes: #6B4FB0; */
   color-scheme: light;
 }
 
