@@ -14,7 +14,7 @@
     pecas.forEach(function (p) {
       (p.imgs || []).forEach(function (img, i) {
         var c = {}; for (var k in p) c[k] = p[k];
-        c.id = p.id + '-' + i; c.imgs = [img]; c.titulo = p.titulo; c._foto = true;
+        c.id = p.id + '-' + i; c.imgs = [img]; c.titulo = p.titulo; c._foto = true; c._n = i + 1;
         itens.push(c);
       });
     });
@@ -36,7 +36,7 @@
   }
   grid.innerHTML = itens.map(function (p, i) {
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
-    return '<button class="peca" type="button" data-i="' + i + '" data-shape="' + (p.shape || 'h') + '">' + capa(p) +
+    return '<button class="peca" type="button" data-i="' + i + '" data-shape="' + (p.shape || 'h') + '"' + (p._foto ? ' aria-label="' + esc(p.titulo + ', foto ' + p._n) + '"' : '') + '>' + capa(p) +
       '<h3>' + esc(p.titulo) + '</h3><span class="meta">' + esc(meta) + '</span>' + (papelOk(p) ? '<span class="papel">' + esc(p.papel) + '</span>' : '') + '</button>';
   }).join('');
   if (!itens.length) grid.innerHTML = '<p class="vazio">Ainda não tem nada aqui.</p>';
@@ -47,14 +47,14 @@
     if (p.videos) {
       media = '<div><div class="dlg-media' + (vert ? ' vert' : '') + '"><video controls preload="metadata" playsinline poster="' + caminho(p.videos[0].poster) + '" src="' + caminho(p.videos[0].src) + '"></video></div>' +
         (p.videos.length > 1 ? '<div class="miniaturas">' + p.videos.map(function (v, k) { return '<button type="button" data-k="' + k + '"' + (k === 0 ? ' aria-current="true"' : '') + ' title="' + esc(v.titulo) + '"><img src="' + caminho(v.poster) + '" alt=""></button>'; }).join('') + '</div>' : '') +
-        (p.imgs && p.imgs.length ? '<div class="dlg-media">' + p.imgs.map(function (i) { return '<img src="' + caminho(i) + '" alt="" loading="lazy">'; }).join('') + '</div>' : '') + '</div>';
+        (p.imgs && p.imgs.length ? '<div class="dlg-media">' + p.imgs.map(function (i, k) { return '<img src="' + caminho(i) + '" alt="' + esc(p.titulo + ', imagem ' + (k + 1) + ' de ' + p.imgs.length) + '" loading="lazy">'; }).join('') + '</div>' : '') + '</div>';
     } else if (p.video) {
       media = '<div class="dlg-media' + (vert ? ' vert' : '') + '"><video controls preload="metadata" playsinline poster="' + caminho(p.poster) + '" src="' + caminho(p.video) + '"></video></div>';
     } else if (p.imgs && p.imgs.length) {
-      media = '<div class="dlg-media">' + p.imgs.map(function (i) { return '<img src="' + caminho(i) + '" alt="" loading="lazy">'; }).join('') + '</div>';
+      media = '<div class="dlg-media">' + p.imgs.map(function (i, k) { return '<img src="' + caminho(i) + '" alt="' + esc(p.titulo + ', imagem ' + (k + 1) + ' de ' + p.imgs.length) + '" loading="lazy">'; }).join('') + '</div>';
     }
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
-    var info = '<p class="mono">' + esc(meta) + '</p><h2>' + esc(p.titulo) + '</h2>';
+    var info = '<p class="mono">' + esc(meta) + '</p><h2 id="dlg-h">' + esc(p.titulo) + '</h2>';
     if (m && m.linhafina) info += '<p class="linhafina">' + esc(m.linhafina) + '</p>';
     if (p.resumo) info += '<p class="resumo">' + esc(p.resumo) + '</p>';
     if (papelOk(p)) info += '<p class="papel"><b>O que eu fiz:</b> ' + esc(p.papel) + '</p>';
@@ -77,6 +77,7 @@
     corpoEl.innerHTML = c.media + c.info;
     corpoEl.classList.toggle('sem-media', !c.media);
     dlg.querySelector('.dlg-tit').textContent = S.nome + ' · ' + (S.salas.filter(function (s) { return s.id === sala; })[0] || {}).nome;
+    dlg.setAttribute('aria-labelledby', 'dlg-h');
     dlg.showModal();
     dlg.scrollTop = 0;
     dlg.querySelectorAll('.miniaturas button').forEach(function (b) {
