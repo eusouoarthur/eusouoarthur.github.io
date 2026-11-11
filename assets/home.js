@@ -178,7 +178,7 @@
   function rotear() {
     var h = location.hash.replace('#', '');
     if (h === 'historia') iniciarPercurso();
-    else if (h === 'site' || visitou) mostrar('home');
+    else if (h === 'site' || h === 'conteudo' || visitou) mostrar('home');
     else iniciarAbertura();
   }
   window.addEventListener('hashchange', rotear);
