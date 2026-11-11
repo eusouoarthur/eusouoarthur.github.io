@@ -227,6 +227,10 @@ dialog.dlg::backdrop { background: rgba(5, 10, 18, .78); }
 .item h3 { font-size: 19px; }
 .item p { margin-top: 6px; font-size: 15px; line-height: 1.4; color: var(--fg2); }
 
+/* Percurso: prólogo */
+.s-prologo .s-texto p { max-width: 30ch; }
+.s-prologo .s-texto p + p { margin-top: .8em; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }

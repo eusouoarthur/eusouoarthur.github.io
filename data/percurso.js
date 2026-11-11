@@ -3,6 +3,13 @@
 // shape: "h" (4:3), "sq" (1:1), "v" (9:16), "wide" (16:9).
 window.PERCURSO = [
   {
+    prologo: true,
+    paragrafos: [
+      "Quem me conheceu numa redação acha que eu sou jornalista. Quem viu uma capa de disco minha acha que sou designer. Quem me viu de câmera na mão acha que eu faço vídeo.",
+      "Ninguém está errado. Só está vendo uma parte."
+    ]
+  },
+  {
     kicker: "2018 · Brasília",
     texto: "Comecei pela fotografia. Shows da cena independente de Brasília, pouca luz e muita cor.",
     shape: "h",

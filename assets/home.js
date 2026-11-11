@@ -52,6 +52,7 @@
     if (!percursoOk) { percursoOk = true; ligarPercurso(); }
   }
   function htmlSlide(s) {
+    if (s.prologo) return '<div class="s-texto">' + s.paragrafos.map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') + '</div>';
     if (s.fim) return '<div class="s-texto"><p>' + esc(s.texto) + '</p></div>';
     var n = s.media.length, shape = s.shape || 'h';
     var media = s.media.map(function (m) {
@@ -64,7 +65,8 @@
     var d = window.PERCURSO, s = d[idx], el = percurso.querySelector('.slide');
     function troca() {
       el.innerHTML = htmlSlide(s);
-      el.classList.toggle('s-fim', !!s.fim);
+      el.classList.toggle('s-fim', !!(s.fim || s.prologo));
+      el.classList.toggle('s-prologo', !!s.prologo);
       el.classList.remove('trocando');
       percurso.querySelector('.n').textContent = (idx + 1) + ' / ' + d.length;
       percurso.querySelector('.ant').disabled = idx === 0;
