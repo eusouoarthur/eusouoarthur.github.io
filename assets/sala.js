@@ -36,8 +36,8 @@
   }
   grid.innerHTML = itens.map(function (p, i) {
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
-    return '<button class="peca" type="button" data-i="' + i + '" data-shape="' + (p.shape || 'h') + '"' + (p._foto ? ' aria-label="' + esc(p.titulo + ', foto ' + p._n) + '"' : '') + '>' + capa(p) +
-      '<h3>' + esc(p.titulo) + '</h3><span class="meta">' + esc(meta) + '</span>' + (papelOk(p) ? '<span class="papel">' + esc(p.papel) + '</span>' : '') + '</button>';
+    return '<a class="peca" href="#' + encodeURIComponent(p.id) + '" data-i="' + i + '" data-shape="' + (p.shape || 'h') + '"' + (p._foto ? ' aria-label="' + esc(p.titulo + ', foto ' + p._n) + '"' : '') + '>' + capa(p) +
+      '<h3>' + esc(p.titulo) + '</h3><span class="meta">' + esc(meta) + '</span>' + (papelOk(p) ? '<span class="papel">' + esc(p.papel) + '</span>' : '') + '</a>';
   }).join('');
   if (!itens.length) grid.innerHTML = '<p class="vazio">Ainda não tem nada aqui.</p>';
 
@@ -98,12 +98,26 @@
   }
   grid.addEventListener('click', function (e) {
     var b = e.target.closest('.peca');
-    if (b) abrir(itens[+b.dataset.i]);
+    if (!b) return;
+    e.preventDefault();
+    var p = itens[+b.dataset.i];
+    abrir(p);
+    try { history.replaceState(null, '', '#' + encodeURIComponent(p.id)); } catch (err) {}
   });
+  function abrirDoEndereco() {
+    var h = decodeURIComponent(location.hash.replace('#', ''));
+    if (!h || dlg.open) return;
+    for (var i = 0; i < itens.length; i++) {
+      if (itens[i].id === h || itens[i].id === h + '-0') { abrir(itens[i]); return; }
+    }
+  }
+  abrirDoEndereco();
+  window.addEventListener('hashchange', abrirDoEndereco);
   dlg.querySelector('.fechar').addEventListener('click', function () { dlg.close(); });
   dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
   dlg.addEventListener('close', function () {
     dlg.querySelectorAll('video').forEach(function (v) { v.pause(); });
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (err) {}
     dlg.querySelector('.dlg-corpo').innerHTML = '';
   });
 })();

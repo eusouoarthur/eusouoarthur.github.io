@@ -156,6 +156,7 @@ p { margin: 0; }
 .pecas { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 28px 22px; padding-bottom: 64px; }
 .pecas[data-sala="fotos"] { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
 .pecas[data-sala="fotos"] .peca h3, .pecas[data-sala="fotos"] .peca .meta, .pecas[data-sala="fotos"] .peca .papel { display: none; }
+a.peca { text-decoration: none; color: inherit; }
 .peca { text-align: left; display: flex; flex-direction: column; gap: 9px; width: 100%; }
 .peca figure { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; background: var(--bg2); position: relative; }
 .peca[data-shape="sq"] figure { aspect-ratio: 1; }
