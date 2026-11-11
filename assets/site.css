@@ -221,6 +221,11 @@ dialog.dlg::backdrop { background: rgba(5, 10, 18, .78); }
 .nav a { min-height: 24px; }
 #conteudo:focus { outline: none; }
 
+/* Sobre: lista "O que eu faço" */
+.itens { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px 32px; }
+.item h3 { font-size: 19px; }
+.item p { margin-top: 6px; font-size: 15px; line-height: 1.4; color: var(--fg2); }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }

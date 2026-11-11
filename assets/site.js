@@ -87,7 +87,7 @@
     var links = S.salas.map(function (s) {
       return '<a href="' + ROOT + s.pasta + '/" style="--cor:var(--' + s.id + ')"' + (s.id === ativa ? ' aria-current="page"' : '') + '>' + esc(s.nome) + '</a>';
     }).join('');
-    links += '<a href="' + ROOT + 'sobre/"' + (ativa === 'sobre' ? ' aria-current="page"' : '') + '>Sobre</a>';
+    links += '<a href="' + ROOT + 'sobre/" style="--cor:var(--fg2)"' + (ativa === 'sobre' ? ' aria-current="page"' : '') + '>Sobre</a>';
     el.innerHTML = '<a class="pular" href="#conteudo">Pular para o conteúdo</a><a class="marca" href="' + HOME + '#site">' + esc(S.nome) + '</a><nav class="nav" aria-label="Salas">' + links + '</nav><button class="tema" type="button"></button>';
     el.querySelector('.tema').addEventListener('click', alternarTema);
     atualizarBotoesTema();

@@ -94,7 +94,7 @@
       if (e.key === 'ArrowLeft') ant.click();
     });
     var x0 = null;
-    percurso.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    percurso.addEventListener('touchstart', function (e) { x0 = e.target.closest('video') ? null : e.touches[0].clientX; }, { passive: true });
     percurso.addEventListener('touchend', function (e) {
       if (x0 == null) return;
       var dx = e.changedTouches[0].clientX - x0; x0 = null;
