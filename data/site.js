@@ -5,15 +5,18 @@ window.SITE = {
   url: "",
   // Temas do "Cuido …", na ordem básica decidida pelo Arthur. "frase" aparece no tambor; "curto" na lista.
   temas: [
-    { id: "redacao",      frase: "da redação",             curto: "redação" },
-    { id: "video",        frase: "do vídeo",               curto: "vídeo" },
-    { id: "redes",        frase: "das redes sociais",      curto: "redes sociais" },
-    { id: "design",       frase: "do design",              curto: "design" },
-    { id: "automacao",    frase: "dos fluxos de automação", curto: "fluxos de automação" },
-    { id: "apuracao",     frase: "da apuração",            curto: "apuração" },
-    { id: "planejamento", frase: "do planejamento",        curto: "planejamento" },
-    { id: "fotografia",   frase: "da fotografia",          curto: "fotografia" }
+    { id: "redacao",      frase: "da redação",             curto: "redação",             salas: ["jornalismo", "textos"] },
+    { id: "video",        frase: "do vídeo",               curto: "vídeo",               salas: ["video"] },
+    { id: "redes",        frase: "das redes sociais",      curto: "redes sociais",       salas: ["social"] },
+    { id: "design",       frase: "do design",              curto: "design",              salas: ["design"] },
+    { id: "automacao",    frase: "dos fluxos de automação", curto: "fluxos de automação", salas: ["automacoes"] },
+    { id: "apuracao",     frase: "da apuração",            curto: "apuração",            salas: ["jornalismo"] },
+    { id: "planejamento", frase: "do planejamento",        curto: "planejamento",        salas: [] },
+    { id: "fotografia",   frase: "da fotografia",          curto: "fotografia",          salas: ["fotos"] }
   ],
+  // PROVISÓRIO (não confirmado pelo Arthur) [sugestão do modelo]: "salas" liga cada tema às salas cujas peças aparecem na parede da home.
+  // Parede da home: "max" é o número máximo de peças mostradas de cada vez.
+  parede: { max: 9 },
   // As sete salas decididas pelo Arthur. "pasta" é o endereço; "desc" é a linha de abertura de cada sala.
   salas: [
     { id: "design",     pasta: "design",     nome: "Design Gráfico", desc: "Identidade visual, cartilhas, revistas e capas de disco." },

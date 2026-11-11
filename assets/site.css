@@ -247,6 +247,27 @@ dialog.dlg::backdrop { background: rgba(5, 10, 18, .78); }
 .s-prologo .s-texto p { max-width: 30ch; }
 .s-prologo .s-texto p + p { margin-top: .8em; }
 
+/* Home: parede de peças (base B "Suplemento", provisória) */
+.parede-secao { border-top: 0; padding-top: 0; }
+.parede { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--parede-vao); align-items: start; transition: opacity calc(var(--mov) / 2) ease, transform calc(var(--mov) / 2) ease; }
+.parede.trocando { opacity: 0; transform: translateY(12px); }
+.pp { display: flex; flex-direction: column; gap: 6px; min-width: 0; text-decoration: none; }
+.pp-destaque { grid-column: 1 / -1; }
+.pp figure { margin: 0; background: var(--bg2); border-top: var(--cor-fio) solid var(--cor); }
+.pp img { width: 100%; height: auto; max-height: 70vh; object-fit: contain; }
+.pp-semimg { aspect-ratio: 4 / 3; display: flex; align-items: flex-end; padding: 14px; font-size: 18px; line-height: 1.25; }
+.pp-t { font-size: 15px; font-weight: 500; line-height: 1.3; }
+.pp-m { font-size: 13px; color: var(--fg2); }
+.pp:hover .pp-t { text-decoration: underline; }
+.parede-mais { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 28px; font-size: 15px; color: var(--fg2); }
+.parede-mais:empty { display: none; }
+@media (min-width: 900px) {
+  .parede { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .pp { grid-column: span 2; }
+  .pp-destaque { grid-column: span 4; }
+  .pp-fora { margin-top: var(--fora-eixo); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }

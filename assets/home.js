@@ -111,6 +111,7 @@
     homeOk = true;
     renderSalas();
     renderContato();
+    renderParede(null, false);
     tambor();
   }
   function renderSalas() {
@@ -134,6 +135,54 @@
     el.innerHTML = itens.join('');
     var sec = el.closest('section');
     if (sec) sec.hidden = !itens.length;
+  }
+
+  // Parede de peças da home. "tema" nulo = mostra de tudo (uma peça de cada sala, em rodízio).
+  function capaDe(p) { return (p.imgs && p.imgs[0]) || p.poster || (p.videos && p.videos[0] && p.videos[0].poster) || ''; }
+  function salaPorId(id) { return S.salas.filter(function (s) { return s.id === id; })[0]; }
+  function pecasDoTema(t) {
+    var alvo = (t && t.salas) || [];
+    return (window.PECAS || []).filter(function (p) {
+      return p.salas.some(function (s) { return alvo.indexOf(s) >= 0; });
+    });
+  }
+  function pecasDeTudo(max) {
+    var porSala = S.salas.map(function (s) { return (window.PECAS || []).filter(function (p) { return p.salas[0] === s.id; }); });
+    var out = [], volta = 0, achou = true;
+    while (out.length < max && achou) {
+      achou = false;
+      porSala.forEach(function (l) { if (l[volta] && out.length < max) { out.push(l[volta]); achou = true; } });
+      volta++;
+    }
+    return out;
+  }
+  function renderParede(tema, animar) {
+    var el = document.getElementById('parede'), maisEl = document.getElementById('parede-mais');
+    if (!el) return;
+    var max = (S.parede && S.parede.max) || 9;
+    var lista = tema ? pecasDoTema(tema).slice(0, max) : pecasDeTudo(max);
+    var html = lista.map(function (p, i) {
+      var idSala = p.salas[0];
+      if (tema) {
+        var dentro = p.salas.filter(function (s) { return tema.salas.indexOf(s) >= 0; });
+        if (dentro.length) idSala = dentro[0];
+      }
+      var s = salaPorId(idSala) || S.salas[0];
+      var img = capaDe(p);
+      var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
+      var fig = img
+        ? '<figure><img src="' + caminho(i === 0 ? img : A.thumb(img)) + '" alt="" loading="lazy"></figure>'
+        : '<figure class="pp-semimg"><span>' + esc(p.onde || '') + '</span></figure>';
+      return '<a class="pp' + (i === 0 ? ' pp-destaque' : '') + (i === 3 ? ' pp-fora' : '') + '" href="' + A.ROOT + s.pasta + '/#' + encodeURIComponent(p.id) + '" style="--cor:var(--' + s.id + ')">' +
+        fig + '<span class="pp-t">' + esc(p.titulo) + '</span>' + (meta ? '<span class="pp-m">' + esc(meta) + '</span>' : '') + '</a>';
+    }).join('');
+    var mais = '';
+    if (tema) mais = tema.salas.map(salaPorId).filter(Boolean).map(function (s) { return '<a href="' + A.ROOT + s.pasta + '/">Ver todos: ' + esc(s.nome) + '</a>'; }).join('');
+    function troca() { el.innerHTML = html; if (maisEl) maisEl.innerHTML = mais; el.classList.remove('trocando'); }
+    if (!animar || reduz) { troca(); return; }
+    var mov = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mov')) || 800;
+    el.classList.add('trocando');
+    setTimeout(troca, mov / 2);
   }
 
   // O tambor: "Cuido" fixo, os temas rodando como um rolo, parando em "de tudo."
