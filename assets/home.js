@@ -161,7 +161,7 @@
     try { visto = !!sessionStorage.getItem('tamborVisto'); } catch (e) {}
     if (reduz || visto) { rolo.style.setProperty('--rot', fim + 'deg'); return; }
     hero.classList.add('animando');
-    var total = 720 + fim, dur = 4600, t0 = performance.now() + 500;
+    var total = 360 + fim, dur = 4600, t0 = performance.now() + 500;
     function passo(now) {
       var t = (now - t0) / dur;
       if (t < 0) t = 0;

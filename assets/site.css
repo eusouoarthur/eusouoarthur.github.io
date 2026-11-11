@@ -128,7 +128,7 @@ p { margin: 0; }
 .tambor-rolo li.fim { font-weight: 600; }
 .hero .lista { margin-top: 28px; font-size: clamp(16px, 1.6vw, 19px); color: var(--fg2); max-width: 62ch; transition: opacity .8s ease; }
 .hero .sub { margin-top: 14px; font-size: clamp(16px, 1.6vw, 19px); max-width: 48ch; transition: opacity .8s ease .2s; }
-.hero.animando .lista, .hero.animando .sub { opacity: 0; }
+.hero.animando .lista { opacity: 0; }
 
 .secao { padding: 40px 0 44px; border-top: 1px solid var(--line); }
 .secao-tit { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 22px; }
