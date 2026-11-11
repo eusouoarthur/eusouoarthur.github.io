@@ -7,6 +7,7 @@
   --fg: #E7E2D8;
   --fg2: #A6AFBD;
   --line: rgba(231, 226, 216, .16);
+  --line-forte: rgba(231, 226, 216, .45);
   --design: #E0B64A;
   --jornalismo: #D8553E;
   --social: #D77FA7;
@@ -29,6 +30,7 @@
   --fg: #15202B;
   --fg2: #5B6472;
   --line: rgba(21, 32, 43, .16);
+  --line-forte: rgba(21, 32, 43, .5);
   --design: #8A6B10;
   --jornalismo: #A83A26;
   --social: #A14A75;
@@ -58,7 +60,7 @@ p { margin: 0; }
 .btn:hover { background: var(--fg); color: var(--bg); }
 .btn-cheio { background: var(--fg); color: var(--bg); }
 .btn-cheio:hover { opacity: .9; }
-.btn-leve { border-color: var(--line); color: var(--fg2); }
+.btn-leve { border-color: var(--line-forte); color: var(--fg2); }
 .btn-leve:hover { color: var(--fg); background: transparent; border-color: var(--fg); }
 .btn:disabled { opacity: .35; pointer-events: none; }
 
@@ -73,7 +75,7 @@ p { margin: 0; }
 .nav a { text-decoration: none; color: var(--fg2); display: inline-flex; align-items: center; gap: 7px; padding: 4px 0; }
 .nav a::before { content: ""; width: 8px; height: 8px; background: var(--cor, var(--fg2)); flex: none; }
 .nav a:hover, .nav a[aria-current] { color: var(--fg); }
-.tema { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--fg2); border: 1px solid var(--line); padding: 7px 10px; border-radius: var(--r); }
+.tema { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--fg2); border: 1px solid var(--line-forte); padding: 7px 10px; border-radius: var(--r); }
 .tema:hover { color: var(--fg); border-color: var(--fg); }
 .rodape { padding: 28px 0 44px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--fg2); font-size: 14px; }
 
@@ -195,7 +197,7 @@ dialog.dlg::backdrop { background: rgba(5, 10, 18, .78); }
 .materia p + p, .materia blockquote, .materia h3 { margin-top: 1em; }
 .materia blockquote { border-left: 3px solid var(--cor); padding-left: 14px; color: var(--fg2); margin-left: 0; margin-right: 0; }
 .materia h3 { font-family: var(--font); font-size: 19px; }
-.materia a { color: var(--cor); }
+.materia a { color: var(--fg); text-decoration: underline; }
 
 /* Painel */
 .painel { max-width: 640px; padding: 48px var(--pad) 80px; margin: 0 auto; }

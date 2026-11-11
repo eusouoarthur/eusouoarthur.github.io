@@ -18,6 +18,8 @@
   function atualizarBotoesTema() {
     var escuro = html.getAttribute('data-theme') === 'dark';
     document.querySelectorAll('.tema').forEach(function (b) { b.textContent = escuro ? 'Modo claro' : 'Modo escuro'; });
+    var mt = document.querySelector('meta[name="theme-color"]');
+    if (mt) mt.setAttribute('content', escuro ? '#0D1B2A' : '#F3EFE6');
   }
 
   // Ordem dos temas codificada no link (?r=xxxx). Código de Lehmer em base 36, com um caractere aleatório na frente.
