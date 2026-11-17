@@ -282,6 +282,9 @@ dialog.dlg::backdrop { background: rgba(5, 10, 18, .78); }
   .pecas[data-sala="fotos"] { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
 }
 
+/* Percurso: slide com uma única imagem vertical não ocupa a tela inteira */
+.s-media[data-shape="v"][data-n="1"] { max-width: min(100%, 360px); justify-self: center; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }

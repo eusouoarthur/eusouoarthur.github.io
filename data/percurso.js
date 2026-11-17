@@ -147,9 +147,7 @@ window.PERCURSO = [
     texto: "No Metrópoles, na editoria de redes sociais: matérias e vídeos para o site e para o Instagram, do rock de Brasília ao noticiário da cidade.",
     shape: "v",
     media: [
-      { img: "media/video/metropoles-cool-sorcery.jpg", alt: "Quadro do reel sobre a banda Cool Sorcery" },
-      { img: "media/video/metropoles-agi-por-instinto.jpg", alt: "Quadro do vídeo da matéria Agi por instinto" },
-      { img: "media/video/metropoles-detran.jpg", alt: "Quadro do vídeo da matéria sobre o Detran" }
+      { img: "media/video/metropoles-cool-sorcery.jpg", alt: "Quadro do reel sobre a banda Cool Sorcery" }
     ]
   },
   {
