@@ -144,8 +144,7 @@
       imgs: imgs("fotos", ["cau-arquiteto-01", "cau-arquiteto-02", "cau-arquiteto-03", "cau-arquiteto-04", "cau-arquiteto-05"]) },
     /* RETIRADO da sala Fotos em 17/11/2026 a pedido do Arthur (as fotos continuam dentro das matérias):
     { id: "f-cerrado", salas: ["fotos"], titulo: "Escola do Cerrado", periodo: "2023", onde: "Correio Braziliense", papel: "Fotografia", shape: "h",
-      imgs: imgs("fotos", ["cerrado-01", "cerrado-02", "cerrado-03", "cerrado-04", "cerrado-05", "cerrado-06", "cerrado-07"]) }, */
-    /* RETIRADO da sala Fotos em 17/11/2026 a pedido do Arthur (as fotos continuam dentro das matérias):
+      imgs: imgs("fotos", ["cerrado-01", "cerrado-02", "cerrado-03", "cerrado-04", "cerrado-05", "cerrado-06", "cerrado-07"]) },
     { id: "f-menos", salas: ["fotos"], titulo: "Menos é Mais no Beco do Mané", periodo: "2023", onde: "Correio Braziliense", papel: "Fotografia", shape: "h",
       imgs: imgs("fotos", ["menos-e-mais-01"]) }, */
 
