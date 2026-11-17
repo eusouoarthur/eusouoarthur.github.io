@@ -156,11 +156,16 @@
     }
     return out;
   }
+  function pecasFixas() {
+    var ids = (S.parede && S.parede.ids) || [];
+    return ids.map(function (id) { return (window.PECAS || []).filter(function (p) { return p.id === id; })[0]; }).filter(Boolean);
+  }
   function renderParede(tema, animar) {
     var el = document.getElementById('parede'), maisEl = document.getElementById('parede-mais');
     if (!el) return;
     var max = (S.parede && S.parede.max) || 9;
-    var lista = tema ? pecasDoTema(tema).slice(0, max) : pecasDeTudo(max);
+    var fixas = pecasFixas();
+    var lista = tema ? pecasDoTema(tema).slice(0, max) : (fixas.length ? fixas : pecasDeTudo(max));
     var html = lista.map(function (p, i) {
       var idSala = p.salas[0];
       if (tema) {
