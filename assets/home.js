@@ -41,6 +41,14 @@
     abertura.addEventListener('click', function (e) { if (!e.target.closest('button')) { clearTimeout(t2); tudo(); } });
     abertura.querySelector('.sim').addEventListener('click', function () { marcarVisita(); location.hash = 'historia'; });
     abertura.querySelector('.nao').addEventListener('click', function () { marcarVisita(); location.hash = 'site'; });
+    // Teclado: as setas escolhem entre as duas opções; Enter confirma (é o próprio botão).
+    var botoes = [abertura.querySelector('.sim'), abertura.querySelector('.nao')];
+    document.addEventListener('keydown', function (e) {
+      if (abertura.hidden) return;
+      var i = botoes.indexOf(document.activeElement);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); botoes[(i + 1) % 2].focus(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); botoes[i < 0 ? 1 : (i + 1) % 2].focus(); }
+    });
   }
 
   // Percurso: slides com peças reais, em ordem cronológica.
