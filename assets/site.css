@@ -81,8 +81,9 @@ p { margin: 0; }
 .tela { position: fixed; inset: 0; background-color: var(--bg); background-image: var(--grao); display: flex; flex-direction: column; opacity: 1; transition: opacity .45s ease; z-index: 10; overflow: auto; }
 .tela.saindo { opacity: 0; pointer-events: none; }
 .abertura { padding: 14vh var(--pad) 10vh; max-width: 1000px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; }
-.fala { font-size: clamp(28px, 5.2vw, 56px); line-height: 1.15; font-weight: 400; max-width: 18ch; opacity: 0; transform: translateY(6px); transition: opacity .6s ease, transform .6s ease; }
-.fala.visivel { opacity: 1; transform: none; }
+.fala { font-size: clamp(28px, 5.2vw, 56px); line-height: 1.15; font-weight: 400; max-width: 18ch; }
+.fala .palavra { opacity: 0; transition: opacity calc(var(--mov) / 3) ease; }
+.fala .palavra.visivel { opacity: 1; }
 .fala + .fala { margin-top: .6em; }
 .opcoes { margin-top: auto; display: flex; flex-wrap: wrap; gap: 12px; padding-top: 40px; opacity: 0; transition: opacity .6s ease .1s; }
 .opcoes.visivel { opacity: 1; }

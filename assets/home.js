@@ -35,10 +35,39 @@
     if (aberturaOk) return;
     aberturaOk = true;
     var f1 = abertura.querySelector('.f1'), f2 = abertura.querySelector('.f2'), op = abertura.querySelector('.opcoes');
-    function tudo() { f1.classList.add('visivel'); f2.classList.add('visivel'); op.classList.add('visivel'); }
-    setTimeout(function () { f1.classList.add('visivel'); }, 300);
-    var t2 = setTimeout(tudo, reduz ? 400 : 2200);
-    abertura.addEventListener('click', function (e) { if (!e.target.closest('button')) { clearTimeout(t2); tudo(); } });
+    // A fala aparece palavra por palavra; pausa maior na vírgula e no ponto. Clique ou tecla pula.
+    var palavras = [];
+    [f1, f2].forEach(function (p) {
+      var txt = p.textContent.trim().split(/\s+/);
+      p.textContent = '';
+      txt.forEach(function (w, k) {
+        var sp = document.createElement('span');
+        sp.className = 'palavra'; sp.textContent = w;
+        p.appendChild(sp);
+        if (k < txt.length - 1) p.appendChild(document.createTextNode(' '));
+        palavras.push(sp);
+      });
+    });
+    var PALAVRA = 180, VIRGULA = 400, PONTO = 800, timers = [];
+    function tudo() {
+      timers.forEach(clearTimeout); timers = [];
+      palavras.forEach(function (w) { w.classList.add('visivel'); });
+      op.classList.add('visivel');
+      document.removeEventListener('keydown', pular);
+    }
+    function pular(e) { if (!/^(Arrow|Enter$|Tab$)/.test(e.key)) tudo(); }
+    if (reduz) setTimeout(tudo, 400);
+    else {
+      var t = 300;
+      palavras.forEach(function (w) {
+        (function (t0) { timers.push(setTimeout(function () { w.classList.add('visivel'); }, t0)); })(t);
+        var fim = w.textContent.slice(-1);
+        t += PALAVRA + (/[.?!]/.test(fim) ? PONTO : /[,;:]/.test(fim) ? VIRGULA : 0);
+      });
+      timers.push(setTimeout(function () { op.classList.add('visivel'); }, t));
+    }
+    abertura.addEventListener('click', function (e) { if (!e.target.closest('button')) tudo(); });
+    document.addEventListener('keydown', pular);
     abertura.querySelector('.sim').addEventListener('click', function () { marcarVisita(); location.hash = 'historia'; });
     abertura.querySelector('.nao').addEventListener('click', function () { marcarVisita(); location.hash = 'site'; });
     // Teclado: as setas escolhem entre as duas opções; Enter confirma (é o próprio botão).
