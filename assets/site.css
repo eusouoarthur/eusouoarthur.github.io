@@ -269,6 +269,9 @@ dialog.dlg::backdrop { background: rgba(5, 10, 18, .78); }
 /* Percurso: slide com uma única imagem vertical não ocupa a tela inteira */
 .s-media[data-shape="v"][data-n="1"] { max-width: min(100%, 360px); justify-self: center; }
 
+/* Prévia: trecho de vídeo mudo por cima da capa */
+.peca .previa-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: var(--bg2); pointer-events: none; }
+
 /* Transição da miniatura para a peça aberta */
 ::view-transition-group(peca) { animation-duration: .5s; animation-timing-function: var(--mov-curva); }
 ::view-transition-group(root) { animation-duration: .35s; }

@@ -5,6 +5,8 @@
   document.documentElement.style.setProperty('--cor', 'var(--' + sala + ')');
   var grid = document.getElementById('pecas');
   var dlg = document.getElementById('dlg');
+  var reduz = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var modoCelular = window.matchMedia('(hover: none), (max-width: 599px)');
   if (!grid) return;
 
   var pecas = (window.PECAS || []).filter(function (p) { return p.salas.indexOf(sala) >= 0; });
@@ -40,6 +42,76 @@
       '<h3>' + esc(p.titulo) + '</h3><span class="meta">' + esc(meta) + '</span>' + (papelOk(p) ? '<span class="papel">' + esc(p.papel) + '</span>' : '') + '</a>';
   }).join('');
   if (!itens.length) grid.innerHTML = '<p class="vazio">Ainda não tem nada aqui.</p>';
+
+  // Prévia. No computador: mover o mouse na horizontal folheia as imagens da peça; vídeo toca um trecho mudo em loop.
+  // No celular: a peça mais perto do centro da tela entra em prévia ao rolar; toque abre.
+  // Com "reduzir movimento", nada toca nem gira sozinho (folhear com o mouse continua, porque é o visitante que move).
+  var TRECHO = 6; // segundos do trecho de vídeo em loop
+  function imagensDe(p) { return p.imgs || []; }
+  function videoDe(p) { return p.video || (p.videos && p.videos[0].src) || ''; }
+  function mostrarImg(b, src) { var img = b.querySelector('figure img'); if (img && src) img.src = caminho(thumb(src)); }
+  function tocarVideo(b, p) {
+    var fig = b.querySelector('figure');
+    if (!fig || fig.querySelector('video')) return;
+    var v = document.createElement('video');
+    v.className = 'previa-video'; v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto';
+    v.setAttribute('muted', ''); v.setAttribute('aria-hidden', 'true');
+    v.src = caminho(videoDe(p));
+    v.addEventListener('timeupdate', function () { if (v.currentTime > TRECHO) v.currentTime = 0; });
+    fig.appendChild(v);
+    var tentativa = v.play();
+    if (tentativa && tentativa.catch) tentativa.catch(function () {});
+  }
+  function iniciarPrevia(b) {
+    var p = itens[+b.dataset.i], im = imagensDe(p);
+    b.classList.add('previa');
+    if (im.length > 1) {
+      var k = 0;
+      b._giro = setInterval(function () { k = (k + 1) % im.length; mostrarImg(b, im[k]); }, 900);
+    } else if (videoDe(p)) tocarVideo(b, p);
+  }
+  function pararPrevia(b) {
+    var p = itens[+b.dataset.i], v = b.querySelector('video.previa-video');
+    b.classList.remove('previa');
+    clearInterval(b._giro); b._giro = null; b._k = 0;
+    if (v) { v.pause(); v.remove(); }
+    if (imagensDe(p).length > 1) mostrarImg(b, imagensDe(p)[0]);
+  }
+  grid.querySelectorAll('.peca').forEach(function (b) {
+    var p = itens[+b.dataset.i], im = imagensDe(p);
+    b.addEventListener('pointerenter', function (e) {
+      if (e.pointerType !== 'mouse' || modoCelular.matches) return;
+      if (im.length < 2 && videoDe(p) && !reduz.matches) tocarVideo(b, p);
+    });
+    b.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse' || modoCelular.matches || im.length < 2) return;
+      var r = b.querySelector('figure').getBoundingClientRect();
+      var k = Math.max(0, Math.min(im.length - 1, Math.floor((e.clientX - r.left) / r.width * im.length)));
+      if (k !== b._k) { b._k = k; mostrarImg(b, im[k]); }
+    });
+    b.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') pararPrevia(b); });
+  });
+  if (!reduz.matches && 'IntersectionObserver' in window) {
+    var naFaixa = [], centro = null;
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en) {
+        var i = naFaixa.indexOf(en.target);
+        if (en.isIntersecting && i < 0) naFaixa.push(en.target);
+        if (!en.isIntersecting && i >= 0) naFaixa.splice(i, 1);
+      });
+      if (!modoCelular.matches) return;
+      var cx = innerWidth / 2, cy = innerHeight / 2, melhor = null, dm = Infinity;
+      naFaixa.forEach(function (b) {
+        var r = b.querySelector('figure').getBoundingClientRect(), d = Math.hypot(r.left + r.width / 2 - cx, r.top + r.height / 2 - cy);
+        if (d < dm) { dm = d; melhor = b; }
+      });
+      if (melhor === centro) return;
+      if (centro) pararPrevia(centro);
+      centro = melhor;
+      if (centro) iniciarPrevia(centro);
+    }, { rootMargin: '-40% 0px -40% 0px' });
+    grid.querySelectorAll('.peca').forEach(function (b) { io.observe(b); });
+  }
 
   function corpo(p) {
     var m = p.materia && window.MATERIAS ? window.MATERIAS[p.materia] : null;
@@ -151,7 +223,6 @@
   }
   // Transição: a miniatura cresce até virar a peça aberta e volta ao fechar (View Transitions).
   // Sem suporte do navegador, ou com "reduzir movimento", a troca é normal.
-  var reduz = window.matchMedia('(prefers-reduced-motion: reduce)');
   var figAberta = null;
   function nomear(el, sim) { if (el) el.style.viewTransitionName = sim ? 'peca' : ''; }
   function mediaAberta() { return dlg.querySelector('.dlg-media img, .dlg-media video') || dlg.querySelector('.etiqueta'); }
