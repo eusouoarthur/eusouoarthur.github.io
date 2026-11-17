@@ -41,7 +41,7 @@
       var txt = (m && m.linhafina) ? m.linhafina : (p.resumo || p.titulo);
       return '<figure><div class="capa-texto">' + esc(txt) + '</div></figure>';
     }
-    return '<figure><img src="' + caminho(thumb(img)) + '" alt="" loading="lazy">' + (ehVideo ? '<span class="play">vídeo</span>' : '') + '</figure>';
+    return '<figure><img src="' + caminho(thumb(img)) + '" alt="" loading="lazy">' + (ehVideo && sala !== 'social' ? '<span class="play">vídeo</span>' : '') + '</figure>';
   }
   grid.innerHTML = itens.map(function (p, i) {
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
@@ -246,10 +246,60 @@
     var fig = figAberta && document.body.contains(figAberta) ? figAberta : null;
     comTransicao(function () { dlg.close(); }, fig ? mediaAberta() : null, function () { return fig; });
   }
+  // Social Media: etiqueta com data e papel. No computador, um fio de 1 px na cor da sala se desenha da peça até ela;
+  // no celular, aparece embaixo da imagem tocada (o segundo toque abre a peça).
+  var etq = null, fio = null, etqDe = null;
+  if (sala === 'social') {
+    fio = document.createElement('div'); fio.className = 'fio'; fio.setAttribute('aria-hidden', 'true');
+    etq = document.createElement('div'); etq.className = 'etq'; etq.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(fio); document.body.appendChild(etq);
+  }
+  function mostrarEtiqueta(b, embaixo) {
+    var p = itens[+b.dataset.i], f = b.querySelector('figure').getBoundingClientRect();
+    var sx = window.scrollX, sy = window.scrollY, margem = 12, LIGA = 40;
+    etq.innerHTML = '<span class="etq-t">' + esc(p.titulo) + '</span><span class="etq-m">' + esc([p.periodo, p.onde].filter(Boolean).join(' · ')) + '</span>' + (papelOk(p) ? '<span class="etq-p">' + esc(p.papel) + '</span>' : '');
+    etqDe = b;
+    fio.classList.remove('on'); etq.classList.remove('on');
+    var largura = document.documentElement.clientWidth, espaco = largura - margem - f.right - LIGA;
+    var direita = !embaixo && espaco >= 160;
+    etq.style.maxWidth = direita ? Math.min(240, espaco) + 'px' : '';
+    var w = etq.offsetWidth, h = etq.offsetHeight, x, y;
+    if (embaixo) {
+      x = Math.max(margem, Math.min(f.left, innerWidth - w - margem));
+      y = f.bottom + 6;
+      fio.classList.add('oculto');
+    } else {
+      x = direita ? f.right + LIGA : f.left - LIGA - w;
+      y = f.top + f.height / 2 - h / 2;
+      fio.classList.remove('oculto');
+      fio.classList.toggle('pela-esquerda', !direita);
+      fio.style.left = (sx + (direita ? f.right : f.left - LIGA)) + 'px';
+      fio.style.top = Math.round(sy + f.top + f.height / 2) + 'px';
+      fio.style.width = LIGA + 'px';
+    }
+    etq.style.left = (sx + x) + 'px';
+    etq.style.top = (sy + y) + 'px';
+    void etq.offsetWidth;
+    fio.classList.add('on'); etq.classList.add('on');
+  }
+  function esconderEtiqueta() {
+    if (!etq) return;
+    etqDe = null; fio.classList.remove('on'); etq.classList.remove('on');
+  }
+  if (etq) {
+    grid.querySelectorAll('.peca').forEach(function (b) {
+      b.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' && !modoCelular.matches) mostrarEtiqueta(b, false); });
+      b.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !modoCelular.matches) esconderEtiqueta(); });
+    });
+    document.addEventListener('click', function (e) { if (modoCelular.matches && !e.target.closest('#pecas .peca')) esconderEtiqueta(); });
+  }
+
   grid.addEventListener('click', function (e) {
     var b = e.target.closest('.peca');
     if (!b) return;
     e.preventDefault();
+    if (etq && modoCelular.matches && etqDe !== b) { mostrarEtiqueta(b, true); return; }
+    esconderEtiqueta();
     var p = itens[+b.dataset.i];
     figAberta = b.querySelector('figure');
     comTransicao(function () { abrir(p); }, figAberta, mediaAberta);

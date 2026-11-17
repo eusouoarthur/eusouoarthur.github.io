@@ -160,6 +160,21 @@ p { margin: 0; }
 @media (min-width: 600px) { .pecas[data-sala="design"] { --h: 220px; gap: 32px 16px; } }
 @media (min-width: 1100px) { .pecas[data-sala="design"] { --h: 260px; } }
 .pecas[data-sala="fotos"] .peca h3, .pecas[data-sala="fotos"] .peca .meta, .pecas[data-sala="fotos"] .peca .papel { display: none; }
+/* Social Media: grade quadrada de 3 colunas, vão de 2 px, sem ícones nem texto à vista (a etiqueta mostra). */
+.pecas[data-sala="social"] { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; }
+.pecas[data-sala="social"] .peca { gap: 0; position: relative; }
+.pecas[data-sala="social"] .peca figure { aspect-ratio: 1; }
+.pecas[data-sala="social"] .peca h3, .pecas[data-sala="social"] .peca .meta, .pecas[data-sala="social"] .peca .papel { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.fio { position: absolute; z-index: 6; height: 1px; background: var(--cor); transform: scaleX(0); transform-origin: left center; transition: transform calc(var(--mov) / 2) ease; pointer-events: none; }
+.fio.pela-esquerda { transform-origin: right center; }
+.fio.on { transform: scaleX(1); }
+.fio.oculto { display: none; }
+.etq { position: absolute; z-index: 6; left: 0; top: 0; max-width: 240px; padding: 8px 10px; background: var(--bg); border: 1px solid var(--cor); display: flex; flex-direction: column; gap: 2px; font-size: 13px; line-height: 1.35; opacity: 0; visibility: hidden; transition: opacity calc(var(--mov) / 4) ease calc(var(--mov) / 3), visibility 0s linear calc(var(--mov) / 2); pointer-events: none; }
+.etq.on { opacity: 1; visibility: visible; transition: opacity calc(var(--mov) / 4) ease calc(var(--mov) / 3); }
+.etq-t { font-weight: 500; color: var(--fg); }
+.etq-m { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--fg2); }
+.etq-p { color: var(--fg2); }
+@media (prefers-reduced-motion: reduce) { .fio, .etq, .etq.on { transition: none; } }
 a.peca { text-decoration: none; color: inherit; }
 .peca { text-align: left; display: flex; flex-direction: column; gap: 9px; width: 100%; }
 .peca figure { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; background: var(--bg2); position: relative; }
