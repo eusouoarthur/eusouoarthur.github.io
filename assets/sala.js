@@ -53,17 +53,20 @@
     } else if (p.imgs && p.imgs.length) {
       media = '<div class="dlg-media">' + p.imgs.map(function (i, k) { return '<img src="' + caminho(i) + '" alt="' + esc(p.titulo + ', imagem ' + (k + 1) + ' de ' + p.imgs.length) + '" loading="lazy">'; }).join('') + '</div>';
     }
-    var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
-    var info = '<p class="mono">' + esc(meta) + '</p><h2 id="dlg-h">' + esc(p.titulo) + '</h2>';
+    // Etiqueta de museu: título, ano, onde e papel, em letra pequena.
+    var linha = [p.periodo, p.onde].filter(Boolean).join(' · ');
+    var info = '<div class="etiqueta"><h2 id="dlg-h">' + esc(p.titulo) + '</h2>' + (linha ? '<p class="et-linha">' + esc(linha) + '</p>' : '') + (papelOk(p) ? '<p class="et-papel papel">' + esc(p.papel) + '</p>' : '') + '</div>';
     if (m && m.linhafina) info += '<p class="linhafina">' + esc(m.linhafina) + '</p>';
     if (p.resumo) info += '<p class="resumo">' + esc(p.resumo) + '</p>';
-    if (papelOk(p)) info += '<p class="papel"><b>O que eu fiz:</b> ' + esc(p.papel) + '</p>';
-    if (p.detalhe) info += '<div class="detalhe">' + esc(p.detalhe) + '</div>';
+    // "Como foi feito" só existe quando a peça tem esse texto (legendas a escrever, seção 4.3).
+    var como = p.comoFoi || p.detalhe || '';
     var links = [];
     if (m && m.url) links.push('<a class="btn btn-leve" href="' + esc(m.url) + '" target="_blank" rel="noopener">Ler no ' + esc(m.veiculo) + '</a>');
     if (p.link) links.push('<a class="btn btn-leve" href="' + esc(p.link.url) + '" target="_blank" rel="noopener">' + esc(p.link.rotulo) + '</a>');
     if (m) links.push('<button class="btn btn-leve ler" type="button">Ler a matéria aqui</button>');
+    if (como) links.push('<button class="btn btn-leve como" type="button">Como foi feito</button>');
     if (links.length) info += '<div class="links">' + links.join('') + '</div>';
+    if (como) info += '<div class="como-texto" hidden>' + String(como).split(/\n\s*\n/).map(function (t) { return '<p>' + esc(t) + '</p>'; }).join('') + '</div>';
     if (m) {
       var rodape = 'Publicado em ' + esc(A.fmtData(m.data)) + ' no ' + esc(m.veiculo);
       if (m.credito && m.credito !== 'Arthur Ramos') rodape += ' · Texto: ' + esc(m.credito);
@@ -72,8 +75,52 @@
     return { media: media, info: '<div class="dlg-info">' + info + '</div>' };
   }
 
+  // Fundo da peça aberta: a cor dominante da capa, bem escurecida. Sem imagem, a cor da sala.
+  function corDe(expr) {
+    var d = document.createElement('div'); d.style.color = expr; document.body.appendChild(d);
+    var c = getComputedStyle(d).color.match(/[\d.]+/g).slice(0, 3).map(Number); d.remove(); return c;
+  }
+  function escurecer(rgb) {
+    var r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255, mx = Math.max(r, g, b), mn = Math.min(r, g, b), h = 0, s = 0, l = (mx + mn) / 2, d = mx - mn;
+    if (d) {
+      s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+      h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+      h *= 60;
+    }
+    return 'hsl(' + Math.round(h) + ', ' + Math.round(Math.min(s, 0.45) * 100) + '%, 11%)';
+  }
+  function tingir(p) {
+    dlg.style.removeProperty('--tinta');
+    var img = (p.imgs && p.imgs[0]) || p.poster || (p.videos && p.videos[0].poster);
+    if (!img) { dlg.style.setProperty('--tinta', escurecer(corDe('var(--' + sala + ')'))); return; }
+    var im = new Image();
+    im.onload = function () {
+      if (dlg.dataset.peca !== p.id) return;
+      var n = 24, cv = document.createElement('canvas'); cv.width = cv.height = n;
+      var cx = cv.getContext('2d', { willReadFrequently: true });
+      cx.drawImage(im, 0, 0, n, n);
+      var px = cx.getImageData(0, 0, n, n).data, faixas = {}, cinza = [0, 0, 0, 0];
+      // Histograma por matiz (12 faixas de 30°): ganha a faixa com mais cor; a tinta é a média dela.
+      for (var i = 0; i < px.length; i += 4) {
+        var r = px[i], g = px[i + 1], b = px[i + 2], mx = Math.max(r, g, b), mn = Math.min(r, g, b), sat = mx ? (mx - mn) / mx : 0;
+        cinza[0] += r; cinza[1] += g; cinza[2] += b; cinza[3]++;
+        if (sat < 0.2 || mx < 40) continue;
+        var d = mx - mn, h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+        var f = faixas[Math.floor(h * 2) % 12] || (faixas[Math.floor(h * 2) % 12] = [0, 0, 0, 0]);
+        f[0] += r * sat; f[1] += g * sat; f[2] += b * sat; f[3] += sat;
+      }
+      var melhor = cinza;
+      Object.keys(faixas).forEach(function (k) { if (faixas[k][3] > (melhor === cinza ? 0 : melhor[3])) melhor = faixas[k]; });
+      var soma = melhor, peso = melhor[3];
+      dlg.style.setProperty('--tinta', escurecer([soma[0] / peso, soma[1] / peso, soma[2] / peso]));
+    };
+    im.src = caminho(thumb(img));
+  }
+
   function abrir(p) {
     var c = corpo(p), corpoEl = dlg.querySelector('.dlg-corpo');
+    dlg.dataset.peca = p.id;
+    tingir(p);
     corpoEl.innerHTML = c.media + c.info;
     corpoEl.classList.toggle('sem-media', !c.media);
     dlg.querySelector('.dlg-tit').textContent = S.nome + ' · ' + (S.salas.filter(function (s) { return s.id === sala; })[0] || {}).nome;
@@ -87,6 +134,12 @@
         dlg.querySelectorAll('.miniaturas button').forEach(function (x) { x.removeAttribute('aria-current'); });
         b.setAttribute('aria-current', 'true');
       });
+    });
+    var bComo = dlg.querySelector('.como');
+    if (bComo) bComo.addEventListener('click', function () {
+      var t = dlg.querySelector('.como-texto');
+      t.hidden = !t.hidden;
+      bComo.setAttribute('aria-expanded', t.hidden ? 'false' : 'true');
     });
     var ler = dlg.querySelector('.ler');
     if (ler) ler.addEventListener('click', function () {
