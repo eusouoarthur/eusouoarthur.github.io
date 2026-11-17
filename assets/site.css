@@ -33,7 +33,7 @@
   --fora-eixo: 56px;
   --cor-fio: 3px;
   --maxw: 1120px;
-  --pad: clamp(16px, 4vw, 40px);
+  --pad: clamp(24px, 4vw, 40px);
   --r: 0;
   color-scheme: dark;
 }
@@ -45,7 +45,8 @@ body.travado { overflow: hidden; }
 img, video { display: block; max-width: 100%; }
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .15em; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
-h1, h2, h3 { font-weight: 500; line-height: 1.1; margin: 0; }
+h1, h2, h3 { font-weight: 500; line-height: 1.1; margin: 0; text-wrap: balance; }
+.meta, .pp-m, .kicker, .et-linha, .etiqueta p, .ind-nome small { font-variant-numeric: tabular-nums; }
 p { margin: 0; }
 [hidden] { display: none !important; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
@@ -119,7 +120,7 @@ p { margin: 0; }
 
 /* Home */
 .hero { padding: clamp(56px, 12vh, 140px) 0 clamp(40px, 8vh, 80px); }
-.cuido { font-size: var(--cuido-tam); font-weight: 500; letter-spacing: -.015em; line-height: 1.05; display: flex; flex-direction: column; align-items: flex-start; }
+.cuido { font-size: var(--cuido-tam); font-weight: 500; letter-spacing: -.03em; line-height: 1.05; display: flex; flex-direction: column; align-items: flex-start; }
 .tambor { display: inline-block; position: relative; }
 .tambor-win { display: block; height: 1.1em; overflow: hidden; perspective: 900px; perspective-origin: 50% 50%; padding: 0 .04em; }
 .tambor-rolo { list-style: none; margin: 0; padding: 0; position: relative; height: 1.1em; transform-style: preserve-3d; transform: translateZ(calc(-1 * var(--rz))) rotateX(calc(-1 * var(--rot, 0deg))); will-change: transform; --ang: 40deg; --rz: 1.5em; }
@@ -231,7 +232,7 @@ dialog.dlg::backdrop { background: rgba(5, 10, 18, .78); }
 .como-texto p + p { margin-top: .8em; }
 .linhafina { font-size: 18px; color: var(--fg2); line-height: 1.4; }
 .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-.materia { font-family: var(--texto); font-size: 17px; line-height: 1.6; max-width: 66ch; border-top: 1px solid var(--line); padding-top: 18px; }
+.materia { font-family: var(--texto); font-size: 17px; line-height: 1.6; max-width: 62ch; border-top: 1px solid var(--line); padding-top: 18px; }
 .materia p + p, .materia blockquote, .materia h3 { margin-top: 1em; }
 .materia blockquote { border-left: 3px solid var(--cor); padding-left: 14px; color: var(--fg2); margin-left: 0; margin-right: 0; }
 .materia h3 { font-family: var(--font); font-size: 19px; }
@@ -315,3 +316,4 @@ p.previa { font-size: 18px; margin: 12px 0 20px; line-height: 1.4; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+.materia .rodape-materia { margin-top: 1.5em; max-width: 62ch; }

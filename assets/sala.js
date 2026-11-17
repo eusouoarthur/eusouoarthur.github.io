@@ -149,7 +149,7 @@
     if (m) {
       var rodape = 'Publicado em ' + esc(A.fmtData(m.data)) + ' no ' + esc(m.veiculo);
       if (m.credito && m.credito !== 'Arthur Ramos') rodape += ' · Texto: ' + esc(m.credito);
-      info += '<div class="materia" hidden>' + m.html + '<p class="mono" style="margin-top:1.5em">' + rodape + '</p></div>';
+      info += '<div class="materia" hidden>' + m.html + '<p class="mono rodape-materia">' + rodape + '</p></div>';
     }
     return { media: media, info: '<div class="dlg-info">' + info + '</div>' };
   }
