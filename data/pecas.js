@@ -142,10 +142,12 @@
       imgs: imgs("fotos", ["show-01", "show-02", "show-03", "show-04", "show-05", "show-06", "show-07", "show-08", "show-09", "show-10", "show-11", "show-12"]) },
     { id: "cau-arquiteto", salas: ["fotos"], titulo: "Dia do Arquiteto", periodo: "2018–2020", onde: "CAU/BR", papel: "Fotografia", shape: "h",
       imgs: imgs("fotos", ["cau-arquiteto-01", "cau-arquiteto-02", "cau-arquiteto-03", "cau-arquiteto-04", "cau-arquiteto-05"]) },
+    /* RETIRADO da sala Fotos em 17/11/2026 a pedido do Arthur (as fotos continuam dentro das matérias):
     { id: "f-cerrado", salas: ["fotos"], titulo: "Escola do Cerrado", periodo: "2023", onde: "Correio Braziliense", papel: "Fotografia", shape: "h",
-      imgs: imgs("fotos", ["cerrado-01", "cerrado-02", "cerrado-03", "cerrado-04", "cerrado-05", "cerrado-06", "cerrado-07"]) },
+      imgs: imgs("fotos", ["cerrado-01", "cerrado-02", "cerrado-03", "cerrado-04", "cerrado-05", "cerrado-06", "cerrado-07"]) }, */
+    /* RETIRADO da sala Fotos em 17/11/2026 a pedido do Arthur (as fotos continuam dentro das matérias):
     { id: "f-menos", salas: ["fotos"], titulo: "Menos é Mais no Beco do Mané", periodo: "2023", onde: "Correio Braziliense", papel: "Fotografia", shape: "h",
-      imgs: imgs("fotos", ["menos-e-mais-01"]) },
+      imgs: imgs("fotos", ["menos-e-mais-01"]) }, */
 
     // ——— Automações ———
     { id: "auto-extrator", salas: ["automacoes"], titulo: "Extrator de texto de matérias", periodo: "", onde: "Rotina de redação", papel: "Script", shape: "wide",
