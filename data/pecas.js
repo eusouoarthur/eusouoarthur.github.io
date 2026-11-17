@@ -89,8 +89,8 @@
     /* RETIRADO em 17/11/2026 a pedido do Arthur (o vídeo não é dele):
     { id: "m-agi", salas: ["jornalismo", "video"], titulo: "“Agi por instinto”, diz jovem esfaqueado ao defender mulher de assédio", periodo: "2026", onde: "Metrópoles", papel: "Texto e vídeo (a confirmar)", shape: "v",
       video: V + "metropoles-agi-por-instinto.mp4", poster: V + "metropoles-agi-por-instinto.jpg", materia: "metropoles-agi-por-instinto" }, */
-    { id: "m-detran", salas: ["jornalismo", "video"], titulo: "Vídeo: “esquentadinho” fica furioso com atraso de 5 minutos no Detran", periodo: "2025", onde: "Metrópoles", papel: "Texto e vídeo (a confirmar)", shape: "v",
-      video: V + "metropoles-detran.mp4", poster: V + "metropoles-detran.jpg", materia: "metropoles-detran" },
+    { id: "m-detran", salas: ["jornalismo"], titulo: "Vídeo: “esquentadinho” fica furioso com atraso de 5 minutos no Detran", periodo: "2025", onde: "Metrópoles", papel: "Texto e vídeo (a confirmar)", shape: "h",
+      materia: "metropoles-detran" },
     { id: "m-roblox", salas: ["jornalismo"], titulo: "Roblox: após mudanças, crianças protestam em game e atacam Felca", periodo: "2026", onde: "Metrópoles", papel: "Texto (a confirmar)", shape: "h",
       materia: "metropoles-roblox-felca" },
 
