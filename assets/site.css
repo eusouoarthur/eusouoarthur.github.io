@@ -269,6 +269,10 @@ dialog.dlg::backdrop { background: rgba(5, 10, 18, .78); }
 /* Percurso: slide com uma única imagem vertical não ocupa a tela inteira */
 .s-media[data-shape="v"][data-n="1"] { max-width: min(100%, 360px); justify-self: center; }
 
+/* Transição da miniatura para a peça aberta */
+::view-transition-group(peca) { animation-duration: .5s; animation-timing-function: var(--mov-curva); }
+::view-transition-group(root) { animation-duration: .35s; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
