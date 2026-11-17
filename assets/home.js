@@ -128,11 +128,9 @@
       p.salas.forEach(function (s) { cont[s] = (cont[s] || 0) + (s === 'fotos' ? (p.imgs || []).length : 1); });
     });
     el.innerHTML = S.salas.map(function (s) {
-      var q = cont[s.id] || 0, rot;
-      if (s.id === 'fotos') rot = q + ' fotos';
-      else if (q === 0) rot = 'começando';
-      else rot = q + (q === 1 ? ' peça' : ' peças');
-      return '<a class="sala" href="' + A.ROOT + s.pasta + '/" style="--cor:var(--' + s.id + ')"><span class="chip"></span><h3>' + esc(s.nome) + '</h3><p>' + esc(s.desc) + '</p><span class="qtd">' + rot + '</span></a>';
+      var peca = (window.PECAS || []).filter(function (p) { return p.salas.indexOf(s.id) >= 0 && capaDe(p); })[0];
+      var fig = peca ? '<span class="ind-fig" data-peca="' + esc(peca.id) + '" aria-hidden="true"><img src="' + caminho(A.thumb(capaDe(peca))) + '" alt="" loading="lazy"></span>' : '';
+      return '<a class="ind" href="' + A.ROOT + s.pasta + '/" style="--cor:var(--' + s.id + ')"><span class="ind-nome">' + esc(s.nome) + '</span>' + fig + '</a>';
     }).join('');
   }
   function renderContato() {
