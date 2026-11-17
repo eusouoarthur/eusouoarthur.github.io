@@ -168,34 +168,85 @@
     var ids = (S.parede && S.parede.ids) || [];
     return ids.map(function (id) { return (window.PECAS || []).filter(function (p) { return p.id === id; })[0]; }).filter(Boolean);
   }
+  // Cada peça da parede é um elemento com data-id; na troca de tema os que ficam são reaproveitados (e deslizam).
+  function salaNaParede(p, tema) {
+    var idSala = p.salas[0];
+    if (tema) {
+      var dentro = p.salas.filter(function (s) { return tema.salas.indexOf(s) >= 0; });
+      if (dentro.length) idSala = dentro[0];
+    }
+    return salaPorId(idSala) || S.salas[0];
+  }
+  function criarPeca(p, destaque) {
+    var img = capaDe(p);
+    var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
+    var fig = img
+      ? '<figure><img src="' + caminho(destaque ? img : A.thumb(img)) + '" alt="" loading="lazy"></figure>'
+      : '<figure class="pp-semimg"><span>' + esc(p.onde || '') + '</span></figure>';
+    var d = document.createElement('div');
+    d.innerHTML = '<a class="pp" data-id="' + esc(p.id) + '">' + fig + '<span class="pp-t">' + esc(p.titulo) + '</span>' + (meta ? '<span class="pp-m">' + esc(meta) + '</span>' : '') + '</a>';
+    return d.firstChild;
+  }
+  var trocaAtual = 0;
   function renderParede(tema, animar) {
     var el = document.getElementById('parede'), maisEl = document.getElementById('parede-mais');
     if (!el) return;
     var max = (S.parede && S.parede.max) || 9;
     var fixas = pecasFixas();
     var lista = tema ? pecasDoTema(tema).slice(0, max) : (fixas.length ? fixas : pecasDeTudo(max));
-    var html = lista.map(function (p, i) {
-      var idSala = p.salas[0];
-      if (tema) {
-        var dentro = p.salas.filter(function (s) { return tema.salas.indexOf(s) >= 0; });
-        if (dentro.length) idSala = dentro[0];
-      }
-      var s = salaPorId(idSala) || S.salas[0];
-      var img = capaDe(p);
-      var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
-      var fig = img
-        ? '<figure><img src="' + caminho(i === 0 ? img : A.thumb(img)) + '" alt="" loading="lazy"></figure>'
-        : '<figure class="pp-semimg"><span>' + esc(p.onde || '') + '</span></figure>';
-      return '<a class="pp' + (i === 0 ? ' pp-destaque' : '') + (i === 3 ? ' pp-fora' : '') + '" href="' + A.ROOT + s.pasta + '/#' + encodeURIComponent(p.id) + '" style="--cor:var(--' + s.id + ')">' +
-        fig + '<span class="pp-t">' + esc(p.titulo) + '</span>' + (meta ? '<span class="pp-m">' + esc(meta) + '</span>' : '') + '</a>';
-    }).join('');
     var mais = '';
     if (tema) mais = tema.salas.map(salaPorId).filter(Boolean).map(function (s) { return '<a href="' + A.ROOT + s.pasta + '/">Ver todos: ' + esc(s.nome) + '</a>'; }).join('');
-    function troca() { el.innerHTML = html; if (maisEl) maisEl.innerHTML = mais; el.classList.remove('trocando'); }
-    if (!animar || reduz) { troca(); return; }
+    var vez = ++trocaAtual;
+    var atuais = [].slice.call(el.querySelectorAll('.pp'));
+    var porId = {};
+    atuais.forEach(function (n) { porId[n.dataset.id] = n; });
+    var ids = lista.map(function (p) { return p.id; });
+    var saem = atuais.filter(function (n) { return ids.indexOf(n.dataset.id) < 0; });
+
+    // Põe a lista nova na parede, reaproveitando os elementos que ficam.
+    function montar() {
+      var nos = lista.map(function (p, i) {
+        var n = porId[p.id] || criarPeca(p, i === 0), s = salaNaParede(p, tema);
+        var im = n.querySelector('img'), capa = capaDe(p);
+        if (im && capa) {
+          var src = caminho(i === 0 ? capa : A.thumb(capa));
+          if (im.getAttribute('src') !== src) im.setAttribute('src', src);
+        }
+        n.className = 'pp' + (i === 0 ? ' pp-destaque' : '') + (i === 3 ? ' pp-fora' : '');
+        n.setAttribute('href', A.ROOT + s.pasta + '/#' + encodeURIComponent(p.id));
+        n.style.setProperty('--cor', 'var(--' + s.id + ')');
+        return n;
+      });
+      el.replaceChildren.apply(el, nos);
+      if (maisEl) maisEl.innerHTML = mais;
+      return nos;
+    }
+    if (!animar || reduz || !el.animate) { montar(); return; }
+
+    // Troca de tema: as que saem esmaecem primeiro, as que ficam deslizam, as que entram aparecem por último.
+    // Tudo em cascata de 40 ms.
     var mov = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mov')) || 800;
-    el.classList.add('trocando');
-    setTimeout(troca, mov / 2);
+    var CASCATA = 40, SAI = mov * 0.3, DESLIZA = mov * 0.6, ENTRA = mov * 0.45, curva = 'cubic-bezier(.2, .7, .2, 1)';
+    var saidas = saem.map(function (n, i) {
+      return n.animate([{ opacity: 1 }, { opacity: 0 }], { duration: SAI, delay: i * CASCATA, easing: 'ease', fill: 'forwards' }).finished;
+    });
+    Promise.all(saidas).then(function () {
+      if (vez !== trocaAtual) return;
+      var antes = new Map();
+      atuais.forEach(function (n) { if (saem.indexOf(n) < 0) antes.set(n, n.getBoundingClientRect()); });
+      var nos = montar();
+      var ficam = nos.filter(function (n) { return antes.has(n); });
+      var entram = nos.filter(function (n) { return !antes.has(n); });
+      ficam.forEach(function (n, i) {
+        var a = antes.get(n), b = n.getBoundingClientRect();
+        var de = 'translate(' + (a.left - b.left) + 'px, ' + (a.top - b.top) + 'px) scale(' + (a.width / b.width) + ', ' + (a.height / b.height) + ')';
+        n.animate([{ transform: de, transformOrigin: '0 0' }, { transform: 'none', transformOrigin: '0 0' }], { duration: DESLIZA, delay: i * CASCATA, easing: curva });
+      });
+      var depois = ficam.length ? DESLIZA * 0.6 : 0;
+      entram.forEach(function (n, i) {
+        n.animate([{ opacity: 0 }, { opacity: 1 }], { duration: ENTRA, delay: depois + i * CASCATA, easing: 'ease', fill: 'backwards' });
+      });
+    });
   }
 
   // O tambor: "Cuido" fixo, os temas rodando como um rolo, parando em "de tudo."
