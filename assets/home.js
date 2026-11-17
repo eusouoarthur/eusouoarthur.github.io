@@ -224,9 +224,25 @@
     var larg = [];      // largura de cada palavra no tamanho cheio, em "em"
 
     // Mede cada palavra no tamanho cheio. Roda de novo quando a fonte carrega e quando a tela muda.
+    // A palavra que não cabe primeiro condensa (eixo de largura da Archivo, até 62%); só depois a letra diminui.
+    var LARGURA_MIN = 62;
     function medir() {
       var ft = parseFloat(getComputedStyle(tamborEl).fontSize) || 16;
-      lis.forEach(function (li, i) { larg[i] = li.offsetWidth / ft; });
+      var fs = parseFloat(getComputedStyle(cuido).fontSize) || 16;
+      var cabe = (hero.clientWidth / fs - 0.1) * ft;
+      lis.forEach(function (li, i) {
+        li.style.fontStretch = '';
+        var w = li.offsetWidth;
+        if (w > cabe) {
+          li.style.fontStretch = LARGURA_MIN + '%';
+          var wMin = li.offsetWidth, s = LARGURA_MIN;
+          if (wMin < cabe) s = Math.floor(LARGURA_MIN + (100 - LARGURA_MIN) * (cabe - wMin) / (w - wMin));
+          li.style.fontStretch = s + '%';
+          w = li.offsetWidth;
+          while (w > cabe && s > LARGURA_MIN) { s = Math.max(LARGURA_MIN, s - 2); li.style.fontStretch = s + '%'; w = li.offsetWidth; }
+        }
+        larg[i] = w / ft;
+      });
       ajustar();
     }
     // A palavra à mostra tem que caber na largura: se não couber, a letra diminui só o necessário.
