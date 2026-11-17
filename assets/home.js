@@ -158,7 +158,7 @@
     });
     el.innerHTML = S.salas.map(function (s) {
       var peca = (window.PECAS || []).filter(function (p) { return p.salas.indexOf(s.id) >= 0 && capaDe(p); })[0];
-      var fig = peca ? '<span class="ind-fig" data-peca="' + esc(peca.id) + '" aria-hidden="true"><img src="' + caminho(A.thumb(capaDe(peca))) + '" alt="" loading="lazy"></span>' : '';
+      var fig = peca ? '<span class="ind-fig" data-peca="' + esc(peca.id) + '" aria-hidden="true">' + A.pic(capaDe(peca), '160px') + '</span>' : '';
       return '<a class="ind" href="' + A.ROOT + s.pasta + '/" style="--cor:var(--' + s.id + ')"><span class="ind-nome">' + esc(s.nome) + '</span>' + fig + '</a>';
     }).join('');
   }
@@ -208,10 +208,12 @@
     var img = capaDe(p);
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
     var fig = img
-      ? '<figure><img src="' + caminho(destaque ? img : A.thumb(img)) + '" alt="" loading="lazy"></figure>'
+      ? '<figure>' + A.pic(img, destaque ? '(min-width: 1100px) 1040px, 100vw' : '(min-width: 600px) 50vw, 50vw', destaque) + '</figure>'
       : '<figure class="pp-semimg"><span>' + esc(p.onde || '') + '</span></figure>';
     var d = document.createElement('div');
     d.innerHTML = '<a class="pp" data-id="' + esc(p.id) + '">' + fig + '<span class="pp-t">' + esc(p.titulo) + '</span>' + (meta ? '<span class="pp-m">' + esc(meta) + '</span>' : '') + '</a>';
+    var im = d.firstChild.querySelector('img');
+    if (im && img) im.dataset.capa = img + !!destaque;
     return d.firstChild;
   }
   var trocaAtual = 0;
@@ -234,10 +236,10 @@
     function montar() {
       var nos = lista.map(function (p, i) {
         var n = porId[p.id] || criarPeca(p, i === 0), s = salaNaParede(p, tema);
-        var im = n.querySelector('img'), capa = capaDe(p);
-        if (im && capa) {
-          var src = caminho(i === 0 ? capa : A.thumb(capa));
-          if (im.getAttribute('src') !== src) im.setAttribute('src', src);
+        var pc = n.querySelector('figure picture'), capa = capaDe(p);
+        if (pc && capa && pc.querySelector('img').dataset.capa !== capa + (i === 0)) {
+          pc.outerHTML = A.pic(capa, i === 0 ? '(min-width: 1100px) 1040px, 100vw' : '50vw', i === 0);
+          n.querySelector('img').dataset.capa = capa + (i === 0);
         }
         n.className = 'pp' + (i === 0 ? ' pp-destaque' : '') + (i === 3 ? ' pp-fora' : '');
         n.setAttribute('href', A.ROOT + s.pasta + '/#' + encodeURIComponent(p.id));

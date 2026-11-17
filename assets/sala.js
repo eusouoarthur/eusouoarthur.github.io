@@ -26,6 +26,7 @@
 
   function papelOk(p) { return !!p.papel && p.papel.indexOf('a confirmar') < 0; }
 
+  var TAMANHOS = { design: '(min-width: 1100px) 520px, 100vw', social: '(min-width: 1100px) 360px, 34vw', video: '(min-width: 600px) 33vw, 100vw', jornalismo: '(min-width: 600px) 33vw, 100vw', fotos: '(min-width: 600px) 33vw, 100vw' };
   function imgDaCapa(p) { return (p.imgs && p.imgs[0]) || p.poster || (p.videos && p.videos[0].poster) || ''; }
   // Proporção (largura / altura) da capa, pelas dimensões em data/imagens.js; sem elas, pelo formato da peça.
   var PROP_FORMA = { v: 9 / 16, sq: 1, wide: 16 / 9, h: 4 / 3 };
@@ -41,7 +42,7 @@
       var txt = (m && m.linhafina) ? m.linhafina : (p.resumo || p.titulo);
       return '<figure><div class="capa-texto">' + esc(txt) + '</div></figure>';
     }
-    return '<figure><img src="' + caminho(thumb(img)) + '" alt="" loading="lazy">' + (ehVideo && sala !== 'social' ? '<span class="play">vídeo</span>' : '') + '</figure>';
+    return '<figure>' + A.pic(img, TAMANHOS[sala] || '(min-width: 1100px) 260px, 50vw') + (ehVideo && sala !== 'social' ? '<span class="play">vídeo</span>' : '') + '</figure>';
   }
   grid.innerHTML = itens.map(function (p, i) {
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
@@ -56,7 +57,7 @@
   var TRECHO = 6; // segundos do trecho de vídeo em loop
   function imagensDe(p) { return p.imgs || []; }
   function videoDe(p) { return p.video || (p.videos && p.videos[0].src) || ''; }
-  function mostrarImg(b, src) { var img = b.querySelector('figure img'); if (img && src) img.src = caminho(thumb(src)); }
+  function mostrarImg(b, src) { var pc = b.querySelector('figure picture'), img = b.querySelector('figure img'); if (pc && src) pc.outerHTML = A.pic(src, TAMANHOS[sala] || '50vw'); else if (img && src) img.src = caminho(thumb(src)); }
   function tocarVideo(b, p) {
     var fig = b.querySelector('figure');
     if (!fig || fig.querySelector('video')) return;

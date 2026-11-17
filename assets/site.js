@@ -97,7 +97,17 @@
     el.innerHTML = '<span>' + esc(S.nome) + ' · Brasília</span><span><a href="' + HOME + '#historia">Ver a história</a></span>';
   }
 
-  window.AR = { ROOT: ROOT, HOME: HOME, S: S, esc: esc, caminho: caminho, thumb: thumb, fmtData: fmtData, codificar: codificar, decodificar: decodificar, ordemAtual: ordemAtual, alternarTema: alternarTema, renderTopo: renderTopo, renderRodape: renderRodape };
+  // <picture> com AVIF e WebP (tamanhos de data/imagens.js), carregamento sob demanda e width/height.
+  // Sem entrada em IMAGENS, cai para a imagem simples.
+  function pic(img, sizes, original) {
+    var d = window.IMAGENS && window.IMAGENS[img];
+    var fallback = caminho(original ? img : thumb(img));
+    if (!d) return '<img src="' + fallback + '" alt="" loading="lazy">';
+    function srcset(ext) { return d[2].map(function (L) { return caminho(img.replace(/\.(jpg|png)$/, '.' + L + '.' + ext)) + ' ' + L + 'w'; }).join(', '); }
+    return '<picture><source type="image/avif" srcset="' + srcset('avif') + '" sizes="' + sizes + '"><source type="image/webp" srcset="' + srcset('webp') + '" sizes="' + sizes + '">' +
+      '<img src="' + fallback + '" alt="" loading="lazy" width="' + d[0] + '" height="' + d[1] + '"></picture>';
+  }
+  window.AR = { pic: pic, ROOT: ROOT, HOME: HOME, S: S, esc: esc, caminho: caminho, thumb: thumb, fmtData: fmtData, codificar: codificar, decodificar: decodificar, ordemAtual: ordemAtual, alternarTema: alternarTema, renderTopo: renderTopo, renderRodape: renderRodape };
 
   document.addEventListener('DOMContentLoaded', function () {
     renderTopo(document.body.getAttribute('data-sala'));
