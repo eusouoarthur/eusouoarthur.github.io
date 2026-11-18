@@ -88,16 +88,10 @@
   grid.querySelectorAll('.peca').forEach(function (b) {
     var p = itens[+b.dataset.i], im = imagensDe(p);
     b.addEventListener('pointerenter', function (e) {
-      if (e.pointerType !== 'mouse' || modoCelular.matches) return;
-      if (im.length < 2 && videoDe(p) && !reduz.matches) tocarVideo(b, p);
+      if (e.pointerType !== 'mouse' || modoCelular.matches || sala === 'social') return;
+      A.janelaMostrar(b, { titulo: p.titulo, meta: [p.periodo, p.onde].filter(Boolean).join(' · '), papel: papelOk(p) ? p.papel : '', img: im[0] || imgDaCapa(p), video: reduz.matches ? '' : videoDe(p) });
     });
-    b.addEventListener('pointermove', function (e) {
-      if (e.pointerType !== 'mouse' || modoCelular.matches || im.length < 2) return;
-      var r = b.querySelector('figure').getBoundingClientRect();
-      var k = Math.max(0, Math.min(im.length - 1, Math.floor((e.clientX - r.left) / r.width * im.length)));
-      if (k !== b._k) { b._k = k; mostrarImg(b, im[k]); }
-    });
-    b.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') pararPrevia(b); });
+    b.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') A.janelaEsconder(); });
   });
   if (!reduz.matches && 'IntersectionObserver' in window) {
     var naFaixa = [], centro = null;

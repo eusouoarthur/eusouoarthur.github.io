@@ -212,6 +212,12 @@
       : '<figure class="pp-semimg"><span>' + esc(p.onde || '') + '</span></figure>';
     var d = document.createElement('div');
     d.innerHTML = '<a class="pp" data-id="' + esc(p.id) + '">' + fig + '<span class="pp-t">' + esc(p.titulo) + '</span>' + (meta ? '<span class="pp-m">' + esc(meta) + '</span>' : '') + '</a>';
+    var a = d.firstChild;
+    a.addEventListener('pointerenter', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      A.janelaMostrar(a, { titulo: p.titulo, meta: meta, papel: (p.papel && p.papel.indexOf('a confirmar') < 0) ? p.papel : '', img: img, video: '' });
+    });
+    a.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') A.janelaEsconder(); });
     var im = d.firstChild.querySelector('img');
     if (im && img) im.dataset.capa = img + !!destaque;
     return d.firstChild;

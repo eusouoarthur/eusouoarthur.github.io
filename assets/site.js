@@ -107,7 +107,108 @@
     return '<picture><source type="image/avif" srcset="' + srcset('avif') + '" sizes="' + sizes + '"><source type="image/webp" srcset="' + srcset('webp') + '" sizes="' + sizes + '">' +
       '<img src="' + fallback + '" alt="" loading="lazy" width="' + d[0] + '" height="' + d[1] + '"></picture>';
   }
-  window.AR = { pic: pic, ROOT: ROOT, HOME: HOME, S: S, esc: esc, caminho: caminho, thumb: thumb, fmtData: fmtData, codificar: codificar, decodificar: decodificar, ordemAtual: ordemAtual, alternarTema: alternarTema, renderTopo: renderTopo, renderRodape: renderRodape };
+  // Janela de prévia: ao passar o mouse numa peça (só computador), abre ao lado uma janela com a mídia maior e a ficha.
+  // Não cobre a peça, fica dentro da tela, some ao sair. Celular não tem.
+  var janelaEl = null, janelaTimer = 0, semMouse = window.matchMedia('(hover: none), (max-width: 599px)');
+  function janelaMostrar(alvo, d) {
+    if (semMouse.matches) return;
+    clearTimeout(janelaTimer);
+    janelaTimer = setTimeout(function () {
+      if (!janelaEl) { janelaEl = document.createElement('div'); janelaEl.className = 'janela'; janelaEl.setAttribute('aria-hidden', 'true'); document.body.appendChild(janelaEl); }
+      var midia = d.video
+        ? '<video src="' + caminho(d.video) + '" muted loop playsinline autoplay preload="auto"></video>'
+        : (d.img ? pic(d.img, '380px') : '');
+      janelaEl.innerHTML = '<div class="janela-m">' + midia + '</div><div class="janela-f"><span class="janela-t">' + esc(d.titulo || '') + '</span>' +
+        (d.meta ? '<span class="janela-meta">' + esc(d.meta) + '</span>' : '') + (d.papel ? '<span class="janela-p">' + esc(d.papel) + '</span>' : '') + '</div>';
+      var v = janelaEl.querySelector('video');
+      if (v) { v.muted = true; var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); }
+      janelaEl.style.setProperty('--cor', getComputedStyle(alvo).getPropertyValue('--cor') || 'var(--fg2)');
+      var r = alvo.getBoundingClientRect(), W = 380, M = 16;
+      var maxH = innerHeight - 2 * M;
+      janelaEl.style.maxHeight = maxH + 'px';
+      janelaEl.classList.add('on');
+      var h = janelaEl.offsetHeight, x, y;
+      var pieceArea = r.width * r.height;
+      var viewportArea = innerWidth * innerHeight;
+      var pieceLarge = pieceArea / viewportArea > 0.35;
+      var viewportShort = innerHeight < 850;
+      if (pieceLarge) {
+        var reducedMaxH = viewportShort ? 180 : 300;
+        janelaEl.style.maxHeight = reducedMaxH + 'px';
+        maxH = reducedMaxH;
+      }
+      var hMax = Math.max(h, pieceLarge ? (viewportShort ? 180 : 300) : 450);
+      function sobrepoe(x, y, hh) {
+        var H = hh || hMax;
+        return !(x + W <= r.left || x >= r.right || y + H <= r.top || y >= r.bottom);
+      }
+      var candidatos = [];
+      // 1. Lado direito da peça (mesmo topo) - seguro: não sobrepõe horizontalmente
+      if (r.right + M + W <= innerWidth - M) candidatos.push({ x: r.right + M, y: r.top, safe: true });
+      // 2. Lado esquerdo da peça (mesmo topo) - seguro
+      if (r.left - M - W >= M) candidatos.push({ x: r.left - M - W, y: r.top, safe: true });
+      // 3. Abaixo da peça, alinhado à direita - seguro se couber
+      if (r.bottom + M + hMax <= innerHeight - M && r.right + M + W <= innerWidth - M) candidatos.push({ x: r.right + M, y: r.bottom + M, safe: true });
+      // 4. Abaixo da peça, alinhado à esquerda - seguro se couber
+      if (r.bottom + M + hMax <= innerHeight - M && r.left - M - W >= M) candidatos.push({ x: r.left - M - W, y: r.bottom + M, safe: true });
+      // 5. Lado direito da tela, topo da peça
+      if (r.right + M + W <= innerWidth - M) candidatos.push({ x: innerWidth - W - M, y: r.top });
+      // 6. Lado esquerdo da tela, topo da peça
+      if (r.left - M - W >= M) candidatos.push({ x: M, y: r.top });
+      // 7. Lado direito da tela, base da peça
+      if (r.bottom + M + hMax <= innerHeight - M) candidatos.push({ x: innerWidth - W - M, y: r.bottom + M });
+      // 8. Lado esquerdo da tela, base da peça
+      if (r.bottom + M + hMax <= innerHeight - M) candidatos.push({ x: M, y: r.bottom + M });
+      // 9. Topo da tela, alinhado à esquerda da peça
+      if (r.top - M - hMax >= M) candidatos.push({ x: Math.max(M, Math.min(innerWidth - W - M, r.left)), y: M });
+      // 10. Base da tela, alinhado à esquerda da peça
+      if (r.bottom + M + hMax <= innerHeight - M) candidatos.push({ x: Math.max(M, Math.min(innerWidth - W - M, r.left)), y: innerHeight - hMax - M });
+      // 11. Canto superior esquerdo da tela
+      candidatos.push({ x: M, y: M });
+      // 12. Canto superior direito da tela
+      candidatos.push({ x: innerWidth - W - M, y: M });
+      // 13. Canto inferior esquerdo da tela
+      if (innerHeight - hMax - M >= M) candidatos.push({ x: M, y: innerHeight - hMax - M });
+      // 14. Canto inferior direito da tela
+      if (innerHeight - hMax - M >= M) candidatos.push({ x: innerWidth - W - M, y: innerHeight - hMax - M });
+      // 15. Lado oposto horizontal (longe da peça)
+      if (r.left < innerWidth / 2) candidatos.push({ x: innerWidth - W - M, y: Math.max(M, Math.min(innerHeight - hMax - M, r.top)) });
+      else candidatos.push({ x: M, y: Math.max(M, Math.min(innerHeight - hMax - M, r.top)) });
+      // 16. Lado oposto vertical (longe da peça)
+      if (r.top < innerHeight / 2) candidatos.push({ x: Math.max(M, Math.min(innerWidth - W - M, r.left)), y: innerHeight - hMax - M });
+      else candidatos.push({ x: Math.max(M, Math.min(innerWidth - W - M, r.left)), y: M });
+      // Escolhe o primeiro que não sobrepõe (usando hMax para garantir segurança após crescimento)
+      var escolhido = candidatos.find(function (c) { return !sobrepoe(c.x, c.y); });
+      if (!escolhido) {
+        // Fallback garantido: canto mais distante do centro da peça
+        var pcx = r.left + r.width / 2, pcy = r.top + r.height / 2;
+        var cantos = [
+          { x: M, y: M },
+          { x: innerWidth - W - M, y: M },
+          { x: M, y: innerHeight - hMax - M },
+          { x: innerWidth - W - M, y: innerHeight - hMax - M }
+        ];
+        escolhido = cantos.reduce(function (melhor, c) {
+          var dMelhor = Math.hypot(melhor.x + W/2 - pcx, melhor.y + hMax/2 - pcy);
+          var dC = Math.hypot(c.x + W/2 - pcx, c.y + hMax/2 - pcy);
+          return dC > dMelhor ? c : melhor;
+        });
+      }
+      x = escolhido.x;
+      y = escolhido.y;
+      y = Math.max(M, Math.min(innerHeight - h - M, y));
+      janelaEl.style.left = x + 'px';
+      janelaEl.style.top = y + 'px';
+    }, 250);
+  }
+  function janelaEsconder() {
+    clearTimeout(janelaTimer);
+    if (!janelaEl) return;
+    janelaEl.classList.remove('on');
+    var v = janelaEl.querySelector('video'); if (v) v.pause();
+  }
+  window.addEventListener('scroll', janelaEsconder, { passive: true });
+  window.AR = { janelaMostrar: janelaMostrar, janelaEsconder: janelaEsconder, pic: pic, ROOT: ROOT, HOME: HOME, S: S, esc: esc, caminho: caminho, thumb: thumb, fmtData: fmtData, codificar: codificar, decodificar: decodificar, ordemAtual: ordemAtual, alternarTema: alternarTema, renderTopo: renderTopo, renderRodape: renderRodape };
 
   document.addEventListener('DOMContentLoaded', function () {
     renderTopo(document.body.getAttribute('data-sala'));
