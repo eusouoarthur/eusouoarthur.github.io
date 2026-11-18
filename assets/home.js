@@ -203,9 +203,9 @@
     var a = d.firstChild;
     a.addEventListener('pointerenter', function (e) {
       if (e.pointerType !== 'mouse') return;
-      A.janelaMostrar(a, { titulo: p.titulo, meta: meta, papel: (p.papel && p.papel.indexOf('a confirmar') < 0) ? p.papel : '', img: img, video: '' });
+      A.janelaMostrar(a, { titulo: p.titulo, meta: meta, papel: (p.papel && p.papel.indexOf('a confirmar') < 0) ? p.papel : '', img: img, imgs: p.imgs || [], video: p.video || (p.videos && p.videos[0] && p.videos[0].src) || '' });
     });
-    a.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') A.janelaEsconder(); });
+    a.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.vivo'))) A.janelaEsconder(); });
     var im = d.firstChild.querySelector('img');
     if (im && img) im.dataset.capa = img + !!destaque;
     return d.firstChild;

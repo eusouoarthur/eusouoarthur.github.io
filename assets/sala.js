@@ -89,9 +89,9 @@
     var p = itens[+b.dataset.i], im = imagensDe(p);
     b.addEventListener('pointerenter', function (e) {
       if (e.pointerType !== 'mouse' || modoCelular.matches || sala === 'social') return;
-      A.janelaMostrar(b, { titulo: p.titulo, meta: [p.periodo, p.onde].filter(Boolean).join(' · '), papel: papelOk(p) ? p.papel : '', img: im[0] || imgDaCapa(p), video: reduz.matches ? '' : videoDe(p) });
+      A.janelaMostrar(b, { titulo: p.titulo, meta: [p.periodo, p.onde].filter(Boolean).join(' · '), papel: papelOk(p) ? p.papel : '', img: im[0] || imgDaCapa(p), imgs: im, video: reduz.matches ? '' : videoDe(p) });
     });
-    b.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') A.janelaEsconder(); });
+    b.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.vivo'))) A.janelaEsconder(); });
   });
   if (!reduz.matches && 'IntersectionObserver' in window) {
     var naFaixa = [], centro = null;
