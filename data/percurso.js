@@ -1,4 +1,4 @@
-// Slides do percurso (caminho do "Sim."). Ordem cronológica, decidida pelo Arthur.
+// Slides do percurso (caminho do "Sim."). Ordem da fase 3 (18/11/2026, lista consolidada, seção 3b).
 // Os textos são rascunhos do modelo, em primeira pessoa, para ele revisar.
 // shape: "h" (4:3), "sq" (1:1), "v" (9:16), "wide" (16:9).
 window.PERCURSO = [
@@ -7,17 +7,6 @@ window.PERCURSO = [
     paragrafos: [
       "Quem me conheceu numa redação acha que eu sou jornalista. Quem viu uma capa de disco minha acha que sou designer. Quem me viu de câmera na mão acha que eu faço vídeo.",
       "Ninguém está errado. Só está vendo uma parte."
-    ]
-  },
-  {
-    kicker: "2018 · Brasília",
-    texto: "Comecei pela fotografia. Shows da cena independente de Brasília, pouca luz e muita cor.",
-    shape: "h",
-    media: [
-      { img: "media/img/fotos/show-01.jpg", alt: "Cantor de braços abertos no palco" },
-      { img: "media/img/fotos/show-04.jpg", alt: "Cantor ao microfone sob luz rosa" },
-      { img: "media/img/fotos/show-05.jpg", alt: "Guitarrista sob luz verde" },
-      { img: "media/img/fotos/show-09.jpg", alt: "Violoncelista sob luz vermelha" }
     ]
   },
   {
@@ -32,25 +21,14 @@ window.PERCURSO = [
     ]
   },
   {
-    kicker: "2021 · UnB",
-    texto: "AdFollow, a semana de publicidade e propaganda da UnB: identidade visual com cara de terminal antigo, aplicada em posts, cartazes e outdoor.",
-    shape: "sq",
+    kicker: "2018 · Brasília",
+    texto: "Comecei pela fotografia. Shows da cena independente de Brasília, pouca luz e muita cor.",
+    shape: "h",
     media: [
-      { img: "media/img/social/adfollow-01.jpg", alt: "Marca da AdFollow em verde sobre preto" },
-      { img: "media/img/social/adfollow-02.jpg", alt: "Post de divulgação da AdFollow" },
-      { img: "media/img/design/adfollow-cartaz-1.jpg", alt: "Cartaz da AdFollow" },
-      { img: "media/img/social/adfollow-03.jpg", alt: "Post com convidado da AdFollow" }
-    ]
-  },
-  {
-    kicker: "2022 · UnB",
-    texto: "Revista sobre o neoconcretismo. Tipografia no comando, como manda o tema.",
-    shape: "v",
-    media: [
-      { img: "media/img/design/neo-01.jpg", alt: "Capa da revista Neoconcretismo" },
-      { img: "media/img/design/neo-02.jpg", alt: "Página Arte como resistência" },
-      { img: "media/img/design/neo-03.jpg", alt: "Página Revolução neoconcretista" },
-      { img: "media/img/design/neo-04.jpg", alt: "Página sobre Lygia Pape" }
+      { img: "media/img/fotos/show-01.jpg", alt: "Cantor de braços abertos no palco" },
+      { img: "media/img/fotos/show-04.jpg", alt: "Cantor ao microfone sob luz rosa" },
+      { img: "media/img/fotos/show-05.jpg", alt: "Guitarrista sob luz verde" },
+      { img: "media/img/fotos/show-09.jpg", alt: "Violoncelista sob luz vermelha" }
     ]
   },
   {
@@ -73,17 +51,6 @@ window.PERCURSO = [
       { img: "media/img/social/conexis-01.jpg", alt: "Post: 5G é prioridade na agenda de telecom" },
       { img: "media/img/social/conexis-04.jpg", alt: "Post: novas tecnologias vão exigir mão de obra qualificada" },
       { img: "media/img/social/conexis-11.jpg", alt: "Post sobre carga tributária" }
-    ]
-  },
-  {
-    kicker: "2021–2022 · Freelas",
-    texto: "Freelas em paralelo: posts para a Vértice Comunicação & Jornalismo e vídeos de imóveis para a corretora Aline Bertini.",
-    shape: "sq",
-    media: [
-      { img: "media/img/social/vertice-01.jpg", alt: "Post da Vértice: criatividade é a arte de conectar ideias" },
-      { img: "media/img/social/vertice-03.jpg", alt: "Post da Vértice com dados de faixa etária" },
-      { img: "media/img/social/vertice-02.jpg", alt: "Post da Vértice com citação" },
-      { img: "media/video/aline-bertini-casa-1.jpg", alt: "Quadro do vídeo de imóvel para Aline Bertini" }
     ]
   },
   {
