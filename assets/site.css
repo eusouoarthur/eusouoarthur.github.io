@@ -135,21 +135,7 @@ p { margin: 0; }
 .secao-tit { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 22px; }
 .secao-tit h2 { font-size: 15px; font-family: var(--mono); color: var(--fg2); font-weight: 400; }
 .secao-tit a { font-size: 15px; color: var(--fg2); }
-/* Home: índice das salas — nome grande, um por linha; a peça aparece ao lado ao passar o mouse (celular: miniatura fixa). */
-.indice { border-top: 1px solid var(--line); }
-.ind { display: flex; align-items: center; gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--fg); }
-.ind-nome { font-size: clamp(28px, 7vw, 88px); font-weight: 500; line-height: 1.05; letter-spacing: -.02em; transition: color calc(var(--mov) / 4) ease; }
-.ind:hover .ind-nome, .ind:focus-visible .ind-nome { color: var(--cor); }
-.ind-fig { flex: none; width: 56px; height: 56px; overflow: hidden; background: var(--bg2); }
-.ind-fig img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .indice-mais { margin-top: 16px; }
-@media (hover: hover) and (min-width: 600px) {
-  .ind { padding: 10px 0; }
-  .ind-nome { font-size: clamp(48px, 7vw, 96px); }
-  .ind-fig { width: 160px; height: 100px; opacity: 0; transform: translateX(-12px); transition: opacity calc(var(--mov) / 3) ease, transform calc(var(--mov) / 3) ease; }
-  .ind:hover .ind-fig, .ind:focus-visible .ind-fig { opacity: 1; transform: none; }
-}
-@media (prefers-reduced-motion: reduce) { .ind-fig, .ind-nome { transition: none; } }
 .salas { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
 .sala { background: var(--bg); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 22px 20px 24px; text-decoration: none; display: flex; flex-direction: column; gap: 10px; min-height: 172px; transition: background .15s; }
 .sala:hover { background: var(--bg2); }

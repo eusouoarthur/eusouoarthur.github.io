@@ -146,21 +146,9 @@
   function iniciarHome() {
     if (homeOk) return;
     homeOk = true;
-    renderSalas();
     renderContato();
     renderParede(null, false);
     tambor();
-  }
-  function renderSalas() {
-    var el = document.getElementById('salas'), cont = {};
-    (window.PECAS || []).forEach(function (p) {
-      p.salas.forEach(function (s) { cont[s] = (cont[s] || 0) + (s === 'fotos' ? (p.imgs || []).length : 1); });
-    });
-    el.innerHTML = S.salas.map(function (s) {
-      var peca = (window.PECAS || []).filter(function (p) { return p.salas.indexOf(s.id) >= 0 && capaDe(p); })[0];
-      var fig = peca ? '<span class="ind-fig" data-peca="' + esc(peca.id) + '" aria-hidden="true">' + A.pic(capaDe(peca), '160px') + '</span>' : '';
-      return '<a class="ind" href="' + A.ROOT + s.pasta + '/" style="--cor:var(--' + s.id + ')"><span class="ind-nome">' + esc(s.nome) + '</span>' + fig + '</a>';
-    }).join('');
   }
   function renderContato() {
     var el = document.getElementById('contato'), c = S.contato || {}, itens = [];
