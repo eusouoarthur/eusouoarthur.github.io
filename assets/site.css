@@ -289,7 +289,7 @@ p.previa { font-size: 18px; margin: 12px 0 20px; line-height: 1.4; }
 /* Home: menu pela palavra ("Cuido ___") */
 .hero { overflow-x: clip; }
 .tambor { align-self: stretch; transition: font-size var(--mov) var(--mov-curva); }
-.tambor-rolo.suave { transition: transform var(--mov) var(--mov-curva); }
+.tambor-rolo.suave { transition: transform 1400ms cubic-bezier(.45, 0, .2, 1); }
 .hero .lista button.tema-item { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em; min-height: 24px; }
 .hero .lista button.tema-item:hover, .hero .lista button.tema-item[aria-pressed="true"] { color: var(--fg); }
 .hero .lista button.tema-item[aria-pressed="true"] { text-decoration-thickness: 2px; text-decoration-color: var(--destaque); }

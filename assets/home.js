@@ -410,12 +410,12 @@
     try { visto = !!sessionStorage.getItem('tamborVisto'); } catch (e) {}
     if (reduz || visto) { rolo.style.setProperty('--rot', fim + 'deg'); rolo.classList.add('suave'); return; }
     hero.classList.add('animando');
-    var total = 360 + fim, dur = 4600, t0 = performance.now() + 500;
+    var total = 360 + fim, dur = 7000, t0 = performance.now() + 500;
     function passo(now) {
       var t = (now - t0) / dur;
       if (t < 0) t = 0;
       if (t > 1) t = 1;
-      var e = 1 - Math.pow(1 - t, 4);
+      var e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
       rolo.style.setProperty('--rot', (total * e) + 'deg');
       if (t < 1) requestAnimationFrame(passo);
       else setTimeout(function () { rot = total; rolo.classList.add('suave'); hero.classList.remove('animando'); try { sessionStorage.setItem('tamborVisto', '1'); } catch (e) {} }, 300);
