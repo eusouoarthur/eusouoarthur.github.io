@@ -216,6 +216,41 @@
     if (im && img) im.dataset.capa = img + !!destaque;
     return d.firstChild;
   }
+  // Distribui as peças em linhas que fecham a largura (pela proporção --r de cada uma).
+  // A última linha, se ficar curta demais, divide espaço com a anterior: nenhuma linha sobra pela metade.
+  function justificarParede(el) {
+    var nos = [].slice.call(el.querySelectorAll('.pp'));
+    var W = el.clientWidth;
+    if (!W || !nos.length) return;
+    var cs = getComputedStyle(el), g = parseFloat(cs.columnGap) || 0, h = parseFloat(cs.getPropertyValue('--h')) || 200;
+    var rs = nos.map(function (n) { return parseFloat(n.style.getPropertyValue('--r')) || 1.333; });
+    // Escolhe onde quebrar as linhas para que todas fechem a largura com altura perto da ideal
+    // (a primeira, da peça de destaque, mais alta). Poucas peças: busca completa é barata.
+    function custo(i, j) {
+      var sr = 0; for (var k = i; k < j; k++) sr += rs[k];
+      var alt = (W - g * (j - i - 1)) / sr, ideal = i === 0 ? h * 1.9 : h, d = (alt - ideal) / ideal;
+      return { alt: alt, c: d * d };
+    }
+    var melhor = [{ c: 0, de: -1 }];
+    for (var j = 1; j <= rs.length; j++) {
+      melhor[j] = { c: Infinity, de: 0 };
+      for (var i = 0; i < j; i++) {
+        var c = melhor[i].c + custo(i, j).c;
+        if (c < melhor[j].c) melhor[j] = { c: c, de: i };
+      }
+    }
+    var fim = rs.length;
+    while (fim > 0) {
+      var ini = melhor[fim].de, alt = custo(ini, fim).alt;
+      for (var k = ini; k < fim; k++) nos[k].style.flex = '0 0 ' + Math.floor(rs[k] * alt) + 'px';
+      fim = ini;
+    }
+  }
+  var esperaParede;
+  window.addEventListener('resize', function () {
+    clearTimeout(esperaParede);
+    esperaParede = setTimeout(function () { var el = document.getElementById('parede'); if (el) justificarParede(el); }, 120);
+  });
   var trocaAtual = 0;
   function renderParede(tema, animar) {
     var el = document.getElementById('parede'), maisEl = document.getElementById('parede-mais');
@@ -241,12 +276,15 @@
           pc.outerHTML = A.pic(capa, i === 0 ? '(min-width: 1100px) 1040px, 100vw' : '50vw', i === 0);
           n.querySelector('img').dataset.capa = capa + (i === 0);
         }
-        n.className = 'pp' + (i === 0 ? ' pp-destaque' : '') + (i === 3 ? ' pp-fora' : '');
+        n.className = 'pp' + (i === 0 ? ' pp-destaque' : '');
+        var dim = capa && window.IMAGENS && window.IMAGENS[capa];
+        n.style.setProperty('--r', dim ? (dim[0] / dim[1]).toFixed(3) : '1.333');
         n.setAttribute('href', A.ROOT + s.pasta + '/#' + encodeURIComponent(p.id));
         n.style.setProperty('--cor', 'var(--' + s.id + ')');
         return n;
       });
       el.replaceChildren.apply(el, nos);
+      justificarParede(el);
       if (maisEl) maisEl.innerHTML = mais;
       return nos;
     }
