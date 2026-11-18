@@ -11,7 +11,7 @@
     { id: "fac", salas: ["design"], titulo: "Cartilha FAC Você Mesmo", periodo: "2020", onde: "UnB", papel: "Projeto gráfico e diagramação", shape: "v",
       resumo: "Guia de comunicação para organizações que não têm agência: análise, planejamento, identidade e ferramentas.",
       imgs: imgs("design", ["fac-01", "fac-02", "fac-03", "fac-04", "fac-05", "fac-06"]) },
-    { id: "neo", salas: ["design"], titulo: "Revista Neoconcretismo", periodo: "2022", onde: "UnB", papel: "Projeto gráfico e diagramação", shape: "v",
+    { id: "neo", salas: ["design"], titulo: "Revista Neoconcretismo", periodo: "2018", onde: "UnB", papel: "Projeto gráfico e diagramação", shape: "v",
       resumo: "Revista sobre o movimento neoconcreto. Tipografia como protagonista.",
       imgs: imgs("design", ["neo-01", "neo-02", "neo-03", "neo-04", "neo-05"]) },
     { id: "buzz", salas: ["design"], titulo: "App Buzz: identidade e telas", periodo: "", onde: "UnB", papel: "Identidade visual e interface", shape: "h",
@@ -84,14 +84,14 @@
       materia: "correio-enem-2023" },
     { id: "m-sora", salas: ["jornalismo"], titulo: "Empresa do ChatGPT apresenta Sora, ferramenta que gera vídeos", periodo: "2024", onde: "Correio Braziliense", papel: "Texto", shape: "h",
       materia: "correio-sora" },
-    { id: "m-cool", salas: ["jornalismo", "video"], titulo: "De Brasília, banda Cool Sorcery se prepara para turnê na Europa", periodo: "2024", onde: "Metrópoles", papel: "Texto e vídeo (a confirmar)", shape: "v",
+    { id: "m-cool", salas: ["jornalismo", "video"], titulo: "De Brasília, banda Cool Sorcery se prepara para turnê na Europa", periodo: "2024", onde: "Metrópoles", papel: "Texto e vídeo", shape: "v",
       video: V + "metropoles-cool-sorcery.mp4", poster: V + "metropoles-cool-sorcery.jpg", materia: "metropoles-cool-sorcery" },
     /* RETIRADO em 17/11/2026 a pedido do Arthur (o vídeo não é dele):
     { id: "m-agi", salas: ["jornalismo", "video"], titulo: "“Agi por instinto”, diz jovem esfaqueado ao defender mulher de assédio", periodo: "2026", onde: "Metrópoles", papel: "Texto e vídeo (a confirmar)", shape: "v",
       video: V + "metropoles-agi-por-instinto.mp4", poster: V + "metropoles-agi-por-instinto.jpg", materia: "metropoles-agi-por-instinto" }, */
-    { id: "m-detran", salas: ["jornalismo"], titulo: "Vídeo: “esquentadinho” fica furioso com atraso de 5 minutos no Detran", periodo: "2025", onde: "Metrópoles", papel: "Texto e vídeo (a confirmar)", shape: "h",
+    { id: "m-detran", salas: ["jornalismo"], titulo: "Vídeo: “esquentadinho” fica furioso com atraso de 5 minutos no Detran", periodo: "2025", onde: "Metrópoles", papel: "Texto", shape: "h",
       materia: "metropoles-detran" },
-    { id: "m-roblox", salas: ["jornalismo"], titulo: "Roblox: após mudanças, crianças protestam em game e atacam Felca", periodo: "2026", onde: "Metrópoles", papel: "Texto (a confirmar)", shape: "h",
+    { id: "m-roblox", salas: ["jornalismo"], titulo: "Roblox: após mudanças, crianças protestam em game e atacam Felca", periodo: "2026", onde: "Metrópoles", papel: "Texto", shape: "h",
       materia: "metropoles-roblox-felca" },
 
     // ——— Vídeo ———
@@ -105,7 +105,7 @@
       resumo: "A retirada de 1.628 pinheiros do Bosque dos Pinheiros e o que vem no lugar.",
       video: V + "correio-pinheiros-parque-da-cidade.mp4", poster: V + "correio-pinheiros-parque-da-cidade.jpg",
       link: { url: "https://www.youtube.com/watch?v=Ck3zUfBku2c", rotulo: "Ver no canal do Correio" } },
-    { id: "baladas", salas: ["video", "jornalismo"], titulo: "Baladas antigas de Brasília", periodo: "2023–2024", onde: "Correio Braziliense", papel: "Reportagem, vídeo e edição", shape: "wide",
+    { id: "baladas", salas: ["video", "jornalismo"], titulo: "Baladas antigas de Brasília", periodo: "2023", onde: "Correio Braziliense", papel: "Reportagem, vídeo e edição", shape: "wide",
       resumo: "Documentário sobre as boates que marcaram a noite da capital.",
       video: V + "correio-baladas.mp4", poster: V + "correio-baladas.jpg",
       link: { url: "https://www.youtube.com/watch?v=L-AX8xtm0do", rotulo: "Ver no canal do Correio" } },

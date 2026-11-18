@@ -17,7 +17,7 @@ window.SITE = {
   // PROVISÓRIO (não confirmado pelo Arthur) [sugestão do modelo]: "salas" liga cada tema às salas cujas peças aparecem na parede da home.
   // Parede da home: "max" é o número máximo de peças mostradas de cada vez.
   // "ids": peças fixas da parede, na ordem (ex.: ["pinheiros", "lago"]). Vazio = regra automática provisória.
-  parede: { max: 9, ids: [] },
+  parede: { max: 9, ids: ["baladas", "aline", "carnaval-videos", "lago"] },
   // As sete salas decididas pelo Arthur. "pasta" é o endereço; "desc" é a linha de abertura de cada sala.
   salas: [
     { id: "design",     pasta: "design",     nome: "Design Gráfico", desc: "Identidade visual, cartilhas, revistas e capas de disco." },
@@ -30,8 +30,8 @@ window.SITE = {
   ],
   // Contato. Vazio até o Arthur dizer o que publicar.
   contato: {
-    email: "",
-    linkedin: "",
-    github: ""
+    email: "arthuraramos@gmail.com",
+    linkedin: "https://www.linkedin.com/in/arthuraramos",
+    github: "https://github.com/pseudonimo207"
   }
 };
