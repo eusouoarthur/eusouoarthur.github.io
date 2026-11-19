@@ -7,14 +7,15 @@
 <meta name="description" content="Jornalismo de Arthur Ramos: matérias, reportagens em vídeo e cobertura no Correio Braziliense e no Metrópoles.">
 <meta name="theme-color" content="#0D1B2A">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/fonts.css">
 <link rel="stylesheet" href="../assets/site.css">
-<script>try{var t=localStorage.getItem('tema');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
+<script>document.documentElement.setAttribute('data-theme','dark')</script>
 </head>
 <body data-sala="jornalismo">
 <div class="wrap">
   <header class="topo"></header>
-  <section class="sala-cab">
+  <section class="sala-cab" id="conteudo" tabindex="-1">
     <p class="mono">Sala</p>
     <h1>Jornalismo</h1>
     <p>Matérias, reportagens em vídeo e cobertura. Texto, foto e câmera, muitas vezes na mesma pauta.</p>
@@ -28,6 +29,7 @@
 </dialog>
 <script src="../data/site.js"></script>
 <script src="../data/pecas.js"></script>
+<script src="../data/imagens.js"></script>
 <script src="../data/materias.js"></script>
 <script src="../assets/site.js"></script>
 <script src="../assets/sala.js"></script>

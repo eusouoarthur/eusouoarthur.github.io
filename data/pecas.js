@@ -11,7 +11,7 @@
     { id: "fac", salas: ["design"], titulo: "Cartilha FAC Você Mesmo", periodo: "2020", onde: "UnB", papel: "Projeto gráfico e diagramação", shape: "v",
       resumo: "Guia de comunicação para organizações que não têm agência: análise, planejamento, identidade e ferramentas.",
       imgs: imgs("design", ["fac-01", "fac-02", "fac-03", "fac-04", "fac-05", "fac-06"]) },
-    { id: "neo", salas: ["design"], titulo: "Revista Neoconcretismo", periodo: "2022", onde: "UnB", papel: "Projeto gráfico e diagramação", shape: "v",
+    { id: "neo", salas: ["design"], titulo: "Revista Neoconcretismo", periodo: "2018", onde: "UnB", papel: "Projeto gráfico e diagramação", shape: "v",
       resumo: "Revista sobre o movimento neoconcreto. Tipografia como protagonista.",
       imgs: imgs("design", ["neo-01", "neo-02", "neo-03", "neo-04", "neo-05"]) },
     { id: "buzz", salas: ["design"], titulo: "App Buzz: identidade e telas", periodo: "", onde: "UnB", papel: "Identidade visual e interface", shape: "h",
@@ -49,7 +49,7 @@
       imgs: imgs("design", ["yt-01", "yt-02", "yt-03", "yt-04", "yt-05", "yt-06", "yt-07", "yt-08", "yt-09", "yt-10", "yt-capa"]).concat([I + "design/falando-daquilo-logo.png"]) },
     { id: "cromo-logo", salas: ["design"], titulo: "Cromo Comunicação: marca", periodo: "2020", onde: "Cromo Comunicação", papel: "Logo e símbolo", shape: "wide",
       imgs: [I + "design/cromo-logo.png"] },
-    { id: "utilex", salas: ["design"], titulo: "Utilex: logo", periodo: "2022", onde: "Freela", papel: "Logo", shape: "sq",
+    { id: "utilex", salas: ["design"], titulo: "Utilex: logo", periodo: "2022", onde: "Autônomo", papel: "Logo", shape: "sq",
       imgs: [I + "design/utilex.png"] },
     { id: "cau", salas: ["design"], titulo: "CAU/BR: peças digitais", periodo: "2018–2020", onde: "CAU/BR", papel: "Banners e newsletter", shape: "wide",
       imgs: imgs("design", ["cau-banner", "cau-newsletter"]) },
@@ -63,14 +63,14 @@
     { id: "conexis-social", salas: ["social"], titulo: "Conexis Brasil Digital: redes sociais", periodo: "2020–2022", onde: "Conexis Brasil Digital", papel: "Conteúdo e design", shape: "sq",
       resumo: "Posts para a associação das operadoras de telecom: 5G, carga tributária, conectividade e eventos.",
       imgs: imgs("social", ["conexis-01", "conexis-02", "conexis-03", "conexis-04", "conexis-05", "conexis-06", "conexis-07", "conexis-08", "conexis-09", "conexis-10", "conexis-11", "conexis-12", "conexis-13", "conexis-14", "conexis-15", "conexis-16", "conexis-17"]) },
-    { id: "vertice", salas: ["social"], titulo: "Vértice Comunicação & Jornalismo", periodo: "2021–2022", onde: "Freela", papel: "Posts", shape: "sq",
+    { id: "vertice", salas: ["social"], titulo: "Vértice Comunicação & Jornalismo", periodo: "2021–2022", onde: "Autônomo", papel: "Posts", shape: "sq",
       imgs: imgs("social", ["vertice-01", "vertice-02", "vertice-03", "vertice-04", "vertice-05"]) },
     { id: "adfollow-social", salas: ["social"], titulo: "AdFollow: redes", periodo: "2021", onde: "UnB", papel: "Posts e capas", shape: "sq",
       imgs: imgs("social", ["adfollow-02", "adfollow-03", "adfollow-04"]) },
     { id: "bananas-social", salas: ["social", "video"], titulo: "Bananas Caipiras: divulgação", periodo: "2021–2023", onde: "Banda de amigos", papel: "Flyers, stories e reels", shape: "sq",
       imgs: imgs("social", ["bananas-01", "bananas-02", "bananas-03"]),
       videos: [{ src: V + "bananas-reel-alternatreche.mp4", poster: V + "bananas-reel-alternatreche.jpg", titulo: "Reel de divulgação do Alternatréche" }] },
-    { id: "andergraundi", salas: ["social"], titulo: "Andergraundi: evento", periodo: "2019", onde: "Freela", papel: "Peças de divulgação", shape: "wide",
+    { id: "andergraundi", salas: ["social"], titulo: "Andergraundi: evento", periodo: "2019", onde: "Autônomo", papel: "Peças de divulgação", shape: "wide",
       imgs: imgs("social", ["andergraundi-01", "andergraundi-02"]) },
 
     // ——— Jornalismo: matérias ———
@@ -84,13 +84,14 @@
       materia: "correio-enem-2023" },
     { id: "m-sora", salas: ["jornalismo"], titulo: "Empresa do ChatGPT apresenta Sora, ferramenta que gera vídeos", periodo: "2024", onde: "Correio Braziliense", papel: "Texto", shape: "h",
       materia: "correio-sora" },
-    { id: "m-cool", salas: ["jornalismo", "video"], titulo: "De Brasília, banda Cool Sorcery se prepara para turnê na Europa", periodo: "2024", onde: "Metrópoles", papel: "Texto e vídeo (a confirmar)", shape: "v",
+    { id: "m-cool", salas: ["jornalismo", "video"], titulo: "De Brasília, banda Cool Sorcery se prepara para turnê na Europa", periodo: "2024", onde: "Metrópoles", papel: "Texto e vídeo", shape: "v",
       video: V + "metropoles-cool-sorcery.mp4", poster: V + "metropoles-cool-sorcery.jpg", materia: "metropoles-cool-sorcery" },
+    /* RETIRADO em 17/11/2026 a pedido do Arthur (o vídeo não é dele):
     { id: "m-agi", salas: ["jornalismo", "video"], titulo: "“Agi por instinto”, diz jovem esfaqueado ao defender mulher de assédio", periodo: "2026", onde: "Metrópoles", papel: "Texto e vídeo (a confirmar)", shape: "v",
-      video: V + "metropoles-agi-por-instinto.mp4", poster: V + "metropoles-agi-por-instinto.jpg", materia: "metropoles-agi-por-instinto" },
-    { id: "m-detran", salas: ["jornalismo", "video"], titulo: "Vídeo: “esquentadinho” fica furioso com atraso de 5 minutos no Detran", periodo: "2025", onde: "Metrópoles", papel: "Texto e vídeo (a confirmar)", shape: "v",
-      video: V + "metropoles-detran.mp4", poster: V + "metropoles-detran.jpg", materia: "metropoles-detran" },
-    { id: "m-roblox", salas: ["jornalismo"], titulo: "Roblox: após mudanças, crianças protestam em game e atacam Felca", periodo: "2026", onde: "Metrópoles", papel: "Texto (a confirmar)", shape: "h",
+      video: V + "metropoles-agi-por-instinto.mp4", poster: V + "metropoles-agi-por-instinto.jpg", materia: "metropoles-agi-por-instinto" }, */
+    { id: "m-detran", salas: ["jornalismo"], titulo: "Vídeo: “esquentadinho” fica furioso com atraso de 5 minutos no Detran", periodo: "2025", onde: "Metrópoles", papel: "Texto", shape: "h",
+      materia: "metropoles-detran" },
+    { id: "m-roblox", salas: ["jornalismo"], titulo: "Roblox: após mudanças, crianças protestam em game e atacam Felca", periodo: "2026", onde: "Metrópoles", papel: "Texto", shape: "h",
       materia: "metropoles-roblox-felca" },
 
     // ——— Vídeo ———
@@ -104,9 +105,10 @@
       resumo: "A retirada de 1.628 pinheiros do Bosque dos Pinheiros e o que vem no lugar.",
       video: V + "correio-pinheiros-parque-da-cidade.mp4", poster: V + "correio-pinheiros-parque-da-cidade.jpg",
       link: { url: "https://www.youtube.com/watch?v=Ck3zUfBku2c", rotulo: "Ver no canal do Correio" } },
-    { id: "baladas", salas: ["video", "jornalismo"], titulo: "Baladas antigas de Brasília", periodo: "2023–2024", onde: "Correio Braziliense", papel: "Vídeo e edição", shape: "wide",
-      resumo: "Documentário curto sobre as boates que marcaram a noite da capital.",
-      video: V + "correio-baladas.mp4", poster: V + "correio-baladas.jpg" },
+    { id: "baladas", salas: ["video", "jornalismo"], titulo: "Baladas antigas de Brasília", periodo: "2023", onde: "Correio Braziliense", papel: "Reportagem, vídeo e edição", shape: "wide",
+      resumo: "Documentário sobre as boates que marcaram a noite da capital.",
+      video: V + "correio-baladas.mp4", poster: V + "correio-baladas.jpg",
+      link: { url: "https://www.youtube.com/watch?v=L-AX8xtm0do", rotulo: "Ver no canal do Correio" } },
     { id: "r-cerrado", salas: ["video", "social"], titulo: "Escola do Cerrado", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
       video: V + "correio-reel-escola-do-cerrado.mp4", poster: V + "correio-reel-escola-do-cerrado.jpg" },
     { id: "r-ipes", salas: ["video", "social"], titulo: "Ipês brancos", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
@@ -130,7 +132,7 @@
         { src: V + "correio-carnaval-orquestra-marafreboi.mp4", poster: V + "correio-carnaval-orquestra-marafreboi.jpg", titulo: "Orquestra Marafreboi" },
         { src: V + "correio-carnaval-baratona.mp4", poster: V + "correio-carnaval-baratona.jpg", titulo: "Baratona" }
       ] },
-    { id: "aline", salas: ["video"], titulo: "Aline Bertini: vídeos de imóveis", periodo: "2022", onde: "Freela", papel: "Captação e edição", shape: "wide",
+    { id: "aline", salas: ["video"], titulo: "Aline Bertini: vídeos de imóveis", periodo: "2022", onde: "Autônomo", papel: "Captação e edição", shape: "wide",
       videos: [
         { src: V + "aline-bertini-casa-1.mp4", poster: V + "aline-bertini-casa-1.jpg", titulo: "Casa 1, horizontal" },
         { src: V + "aline-bertini-casa-2-story.mp4", poster: V + "aline-bertini-casa-2-story.jpg", titulo: "Casa 2, story" }
@@ -141,10 +143,11 @@
       imgs: imgs("fotos", ["show-01", "show-02", "show-03", "show-04", "show-05", "show-06", "show-07", "show-08", "show-09", "show-10", "show-11", "show-12"]) },
     { id: "cau-arquiteto", salas: ["fotos"], titulo: "Dia do Arquiteto", periodo: "2018–2020", onde: "CAU/BR", papel: "Fotografia", shape: "h",
       imgs: imgs("fotos", ["cau-arquiteto-01", "cau-arquiteto-02", "cau-arquiteto-03", "cau-arquiteto-04", "cau-arquiteto-05"]) },
+    /* RETIRADO da sala Fotos em 17/11/2026 a pedido do Arthur (as fotos continuam dentro das matérias):
     { id: "f-cerrado", salas: ["fotos"], titulo: "Escola do Cerrado", periodo: "2023", onde: "Correio Braziliense", papel: "Fotografia", shape: "h",
       imgs: imgs("fotos", ["cerrado-01", "cerrado-02", "cerrado-03", "cerrado-04", "cerrado-05", "cerrado-06", "cerrado-07"]) },
     { id: "f-menos", salas: ["fotos"], titulo: "Menos é Mais no Beco do Mané", periodo: "2023", onde: "Correio Braziliense", papel: "Fotografia", shape: "h",
-      imgs: imgs("fotos", ["menos-e-mais-01"]) },
+      imgs: imgs("fotos", ["menos-e-mais-01"]) }, */
 
     // ——— Automações ———
     { id: "auto-extrator", salas: ["automacoes"], titulo: "Extrator de texto de matérias", periodo: "", onde: "Rotina de redação", papel: "Script", shape: "wide",
