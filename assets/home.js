@@ -96,7 +96,8 @@
       if (m.video) return '<div class="m"><video controls preload="none" playsinline poster="' + caminho(m.poster) + '" src="' + caminho(m.video) + '"></video></div>';
       return '<div class="m"><img src="' + caminho(m.img) + '" alt="' + esc(m.alt || '') + '"></div>';
     }).join('');
-    return '<div class="s-media" data-n="' + n + '" data-shape="' + shape + '" style="--n:' + n + '">' + media + '</div><div class="s-texto"><p class="mono kicker">' + esc(s.kicker) + '</p><p>' + esc(s.texto) + '</p></div>';
+    var tags = (s.tags && s.tags.length) ? '<ul class="tags">' + s.tags.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '';
+    return '<div class="s-media" data-n="' + n + '" data-shape="' + shape + '" style="--n:' + n + '">' + media + '</div><div class="s-texto"><p class="mono kicker">' + esc(s.kicker) + '</p><p>' + esc(s.texto) + '</p>' + tags + '</div>';
   }
   function renderSlide(imediato) {
     var d = window.PERCURSO, s = d[idx], el = percurso.querySelector('.slide');

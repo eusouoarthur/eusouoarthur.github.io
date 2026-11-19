@@ -116,6 +116,8 @@ p { margin: 0; }
 }
 .s-texto .kicker { margin-bottom: 14px; }
 .s-texto p:not(.kicker) { font-size: clamp(19px, 2.2vw, 26px); line-height: 1.35; font-weight: 400; }
+.tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; padding: 0; }
+.tags li { font-size: 13px; line-height: 1; padding: 7px 10px; border: 1px solid var(--line-forte); border-radius: 0; box-shadow: none; text-transform: none; letter-spacing: normal; color: var(--fg2); }
 .s-fim .s-texto p { font-size: clamp(24px, 3.4vw, 40px); line-height: 1.2; max-width: 24ch; }
 .p-base { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 12px; }
 
