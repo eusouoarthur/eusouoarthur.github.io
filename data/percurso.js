@@ -22,15 +22,15 @@ window.PERCURSO = [
     ]
   },
   {
-    kicker: "2018 · Fotografia",
-    texto: "Em 2018, fotografei shows. Foi por onde a imagem entrou no meu trabalho.",
-    tags: ["fotografia", "Lightroom", "cobertura de shows"],
+    kicker: "2018–2020 · Fotografia",
+    texto: "Em 2018, fotografei shows. No CAU/BR, entre 2018 e 2020, fotografei o Dia do Arquiteto. Foi por onde a imagem entrou no meu trabalho.",
+    tags: ["fotografia", "retrato", "Lightroom"],
     shape: "h",
     media: [
-      { img: "media/img/fotos/show-01.jpg", alt: "Cantor de braços abertos no palco" },
-      { img: "media/img/fotos/show-04.jpg", alt: "Cantor ao microfone sob luz rosa" },
-      { img: "media/img/fotos/show-05.jpg", alt: "Guitarrista sob luz verde" },
-      { img: "media/img/fotos/show-09.jpg", alt: "Violoncelista sob luz vermelha" }
+      { img: "media/img/fotos/cau-arquiteto-03.jpg", alt: "Arquiteto de chapéu sorri diante do computador" },
+      { img: "media/img/fotos/cau-arquiteto-04.jpg", alt: "Mão desenha uma planta com compasso" },
+      { img: "media/img/fotos/cau-arquiteto-01.jpg", alt: "Folhas de croquis espalhadas sobre a mesa" },
+      { img: "media/img/fotos/cau-arquiteto-05.jpg", alt: "Arquiteto olha para a janela, com a mão apoiada na mesa" }
     ]
   },
   {

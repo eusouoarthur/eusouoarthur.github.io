@@ -49,7 +49,7 @@
       imgs: imgs("design", ["yt-01", "yt-02", "yt-03", "yt-04", "yt-05", "yt-06", "yt-07", "yt-08", "yt-09", "yt-10", "yt-capa"]).concat([I + "design/falando-daquilo-logo.png"]) },
     { id: "cromo-logo", salas: ["design"], titulo: "Cromo Comunicação: marca", periodo: "2020", onde: "Cromo Comunicação", papel: "Logo e símbolo", shape: "wide",
       imgs: [I + "design/cromo-logo.png"] },
-    { id: "utilex", salas: ["design"], titulo: "Utilex: logo", periodo: "2022", onde: "Freela", papel: "Logo", shape: "sq",
+    { id: "utilex", salas: ["design"], titulo: "Utilex: logo", periodo: "2022", onde: "Autônomo", papel: "Logo", shape: "sq",
       imgs: [I + "design/utilex.png"] },
     { id: "cau", salas: ["design"], titulo: "CAU/BR: peças digitais", periodo: "2018–2020", onde: "CAU/BR", papel: "Banners e newsletter", shape: "wide",
       imgs: imgs("design", ["cau-banner", "cau-newsletter"]) },
@@ -63,14 +63,14 @@
     { id: "conexis-social", salas: ["social"], titulo: "Conexis Brasil Digital: redes sociais", periodo: "2020–2022", onde: "Conexis Brasil Digital", papel: "Conteúdo e design", shape: "sq",
       resumo: "Posts para a associação das operadoras de telecom: 5G, carga tributária, conectividade e eventos.",
       imgs: imgs("social", ["conexis-01", "conexis-02", "conexis-03", "conexis-04", "conexis-05", "conexis-06", "conexis-07", "conexis-08", "conexis-09", "conexis-10", "conexis-11", "conexis-12", "conexis-13", "conexis-14", "conexis-15", "conexis-16", "conexis-17"]) },
-    { id: "vertice", salas: ["social"], titulo: "Vértice Comunicação & Jornalismo", periodo: "2021–2022", onde: "Freela", papel: "Posts", shape: "sq",
+    { id: "vertice", salas: ["social"], titulo: "Vértice Comunicação & Jornalismo", periodo: "2021–2022", onde: "Autônomo", papel: "Posts", shape: "sq",
       imgs: imgs("social", ["vertice-01", "vertice-02", "vertice-03", "vertice-04", "vertice-05"]) },
     { id: "adfollow-social", salas: ["social"], titulo: "AdFollow: redes", periodo: "2021", onde: "UnB", papel: "Posts e capas", shape: "sq",
       imgs: imgs("social", ["adfollow-02", "adfollow-03", "adfollow-04"]) },
     { id: "bananas-social", salas: ["social", "video"], titulo: "Bananas Caipiras: divulgação", periodo: "2021–2023", onde: "Banda de amigos", papel: "Flyers, stories e reels", shape: "sq",
       imgs: imgs("social", ["bananas-01", "bananas-02", "bananas-03"]),
       videos: [{ src: V + "bananas-reel-alternatreche.mp4", poster: V + "bananas-reel-alternatreche.jpg", titulo: "Reel de divulgação do Alternatréche" }] },
-    { id: "andergraundi", salas: ["social"], titulo: "Andergraundi: evento", periodo: "2019", onde: "Freela", papel: "Peças de divulgação", shape: "wide",
+    { id: "andergraundi", salas: ["social"], titulo: "Andergraundi: evento", periodo: "2019", onde: "Autônomo", papel: "Peças de divulgação", shape: "wide",
       imgs: imgs("social", ["andergraundi-01", "andergraundi-02"]) },
 
     // ——— Jornalismo: matérias ———
@@ -132,7 +132,7 @@
         { src: V + "correio-carnaval-orquestra-marafreboi.mp4", poster: V + "correio-carnaval-orquestra-marafreboi.jpg", titulo: "Orquestra Marafreboi" },
         { src: V + "correio-carnaval-baratona.mp4", poster: V + "correio-carnaval-baratona.jpg", titulo: "Baratona" }
       ] },
-    { id: "aline", salas: ["video"], titulo: "Aline Bertini: vídeos de imóveis", periodo: "2022", onde: "Freela", papel: "Captação e edição", shape: "wide",
+    { id: "aline", salas: ["video"], titulo: "Aline Bertini: vídeos de imóveis", periodo: "2022", onde: "Autônomo", papel: "Captação e edição", shape: "wide",
       videos: [
         { src: V + "aline-bertini-casa-1.mp4", poster: V + "aline-bertini-casa-1.jpg", titulo: "Casa 1, horizontal" },
         { src: V + "aline-bertini-casa-2-story.mp4", poster: V + "aline-bertini-casa-2-story.jpg", titulo: "Casa 2, story" }
