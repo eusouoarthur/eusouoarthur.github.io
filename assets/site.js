@@ -118,14 +118,19 @@
     janelaTimer = setTimeout(function () {
       if (d.video) { vivoMostrar(alvo, d.video); return; }
       if (!janelaEl) { janelaEl = document.createElement('div'); janelaEl.className = 'janela'; janelaEl.setAttribute('aria-hidden', 'true'); document.body.appendChild(janelaEl); }
-      var imgs = (d.imgs && d.imgs.length ? d.imgs : (d.img ? [d.img] : [])).slice(0, 12);
-      var paginas = imgs.map(function (src, i) { return '<div class="janela-pg' + (i === 0 ? ' on' : '') + '">' + pic(src, '380px') + '</div>'; }).join('');
+      var todas = (d.imgs && d.imgs.length ? d.imgs : (d.img ? [d.img] : []));
+      var imgs = todas.slice(0, 6), resto = todas.length - imgs.length;
+      var paginas = imgs.map(function (src, i) {
+        var mais = (i === imgs.length - 1 && resto > 0) ? '<span class="janela-mais">+' + resto + '</span>' : '';
+        return '<div class="janela-pg" style="--i:' + i + '">' + pic(src, i === 0 ? '340px' : '170px') + mais + '</div>';
+      }).join('');
+      janelaEl.dataset.n = String(imgs.length);
       janelaEl.innerHTML = '<div class="janela-m">' + paginas + '</div><div class="janela-f"><span class="janela-t">' + esc(d.titulo || '') + '</span>' +
         (d.meta ? '<span class="janela-meta">' + esc(d.meta) + '</span>' : '') + (d.papel ? '<span class="janela-p">' + esc(d.papel) + '</span>' : '') +
-        (imgs.length > 1 ? '<span class="janela-n">1 / ' + imgs.length + '</span>' : '') + '</div>';
+        (todas.length > 1 ? '<span class="janela-n">' + todas.length + ' páginas</span>' : '') + '</div>';
       janelaEl.querySelectorAll('img').forEach(function (im) { im.loading = 'eager'; });
       janelaEl.style.setProperty('--cor', getComputedStyle(alvo).getPropertyValue('--cor') || 'var(--fg2)');
-      var r = alvo.getBoundingClientRect(), W = 380, M = 16;
+      var r = alvo.getBoundingClientRect(), W = janelaEl.offsetWidth || 380, M = 16;
       janelaEl.style.maxHeight = (innerHeight - 2 * M) + 'px';
       janelaEl.classList.add('on');
       var h = janelaEl.offsetHeight, x, y;
@@ -139,13 +144,6 @@
       janelaEl.style.left = x + 'px';
       janelaEl.style.top = y + 'px';
       clearInterval(janelaGiro);
-      if (imgs.length > 1 && !reduzMov.matches) {
-        var k = 0, pgs = janelaEl.querySelectorAll('.janela-pg'), n = janelaEl.querySelector('.janela-n');
-        janelaGiro = setInterval(function () {
-          pgs[k].classList.remove('on'); k = (k + 1) % pgs.length; pgs[k].classList.add('on');
-          if (n) n.textContent = (k + 1) + ' / ' + pgs.length;
-        }, 1200);
-      }
     }, 250);
   }
   function vivoMostrar(alvo, src) {

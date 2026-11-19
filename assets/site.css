@@ -322,3 +322,23 @@ p.previa { font-size: 18px; margin: 12px 0 20px; line-height: 1.4; }
 .vivo video { display: block; width: 100%; height: 100%; object-fit: contain; }
 @keyframes vivo-cresce { from { transform: translate(var(--de-x), var(--de-y)) scale(var(--de-s)); } to { transform: none; } }
 @media (prefers-reduced-motion: reduce) { .vivo.on { animation: none; } }
+
+/* Prévia em mosaico (F6-1): todas as páginas de uma vez. A 1ª página grande; as outras em volta. */
+.janela { width: 380px; }
+.janela[data-n="2"], .janela[data-n="3"] { width: 460px; }
+.janela[data-n="4"], .janela[data-n="5"], .janela[data-n="6"] { width: 540px; }
+.janela .janela-m { display: grid; gap: 3px; background: var(--bg); grid-template-columns: 1fr; }
+.janela[data-n="2"] .janela-m { grid-template-columns: 1fr 1fr; grid-auto-rows: 300px; }
+.janela[data-n="3"] .janela-m { grid-template-columns: 2fr 1fr; grid-template-rows: 150px 150px; }
+.janela[data-n="3"] .janela-pg:first-child { grid-row: span 2; }
+.janela[data-n="4"] .janela-m, .janela[data-n="5"] .janela-m, .janela[data-n="6"] .janela-m { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 132px; }
+.janela[data-n="4"] .janela-pg:first-child, .janela[data-n="5"] .janela-pg:first-child, .janela[data-n="6"] .janela-pg:first-child { grid-column: span 2; grid-row: span 2; }
+.janela[data-n="4"] .janela-pg:nth-child(4) { grid-column: span 3; }
+.janela[data-n="5"] .janela-pg:nth-child(4) { grid-column: span 2; }
+.janela .janela-pg { display: block; position: relative; overflow: hidden; background: var(--bg2); min-height: 0; opacity: 0; animation: janela-pg-entra 260ms ease forwards; animation-delay: calc(var(--i) * 45ms); }
+.janela[data-n="1"] .janela-pg { opacity: 1; animation: none; }
+.janela .janela-pg picture, .janela .janela-pg img { display: block; width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: center top; }
+.janela[data-n="1"] .janela-pg img { height: auto; max-height: 420px; object-fit: contain; }
+.janela-mais { position: absolute; right: 0; bottom: 0; padding: 4px 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-variant-numeric: tabular-nums; }
+@keyframes janela-pg-entra { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .janela .janela-pg { animation: none; opacity: 1; } }
