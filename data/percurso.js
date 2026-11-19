@@ -1,5 +1,5 @@
-// Slides do percurso (caminho do "Sim."). Ordem da fase 3 (18/11/2026, lista consolidada, seção 3b).
-// Os textos são rascunhos do modelo, em primeira pessoa, para ele revisar.
+// Slides do percurso (caminho "Ver o percurso"). Fase 4 (18/11/2026): textos do CEO a partir da lista consolidada (seções 1.3, 1.4 e 6).
+// Cada etapa tem 2 a 4 tags de habilidade. Fonte de cada fato: _paperclip/fase-percurso/texto.md.
 // shape: "h" (4:3), "sq" (1:1), "v" (9:16), "wide" (16:9).
 window.PERCURSO = [
   {
@@ -11,7 +11,8 @@ window.PERCURSO = [
   },
   {
     kicker: "2017–2022 · UnB",
-    texto: "Na UnB, Comunicação Organizacional. Diagramei a cartilha FAC Você Mesmo: comunicação explicada para quem não tem agência.",
+    texto: "Estudei Comunicação Organizacional na UnB. Trabalhei em campanhas de comunicação interna e externa e, na extensão, na equipe de comunicação do projeto Memória e Ditadura Militar nas escolas públicas do DF. A cartilha FAC Você Mesmo, de 2020, é desse período.",
+    tags: ["comunicação organizacional", "campanhas de comunicação", "comunicação interna e externa"],
     shape: "v",
     media: [
       { img: "media/img/design/fac-01.jpg", alt: "Capa da cartilha FAC Você Mesmo" },
@@ -21,8 +22,9 @@ window.PERCURSO = [
     ]
   },
   {
-    kicker: "2018 · Brasília",
-    texto: "Comecei pela fotografia. Shows da cena independente de Brasília, pouca luz e muita cor.",
+    kicker: "2018 · Fotografia",
+    texto: "Em 2018, fotografei shows. Foi por onde a imagem entrou no meu trabalho.",
+    tags: ["fotografia", "Lightroom", "cobertura de shows"],
     shape: "h",
     media: [
       { img: "media/img/fotos/show-01.jpg", alt: "Cantor de braços abertos no palco" },
@@ -32,8 +34,9 @@ window.PERCURSO = [
     ]
   },
   {
-    kicker: "2020–2021 · Cromo Comunicação",
-    texto: "Na Cromo, redes sociais para quem estava começando: carrosséis que explicam, sem jargão, por que comunicação é para qualquer empresa.",
+    kicker: "Desde 2020 · Cromo Comunicação",
+    texto: "Em 2020, fundei a Cromo Comunicação. Fazia o que o cliente precisasse: foto, site, videoaula, drone, redes, edição de vídeo. Tocava a operação de ponta a ponta: cliente, escopo, identidade, entrega. Em 2022, campanhas eleitorais: criação gráfica e planejamento de redes.",
+    tags: ["operação de comunicação", "identidade visual", "planejamento de redes sociais", "campanhas eleitorais"],
     shape: "sq",
     media: [
       { img: "media/img/social/cromo-01.jpg", alt: "Post: comunicação é para qualquer empresa" },
@@ -43,8 +46,9 @@ window.PERCURSO = [
     ]
   },
   {
-    kicker: "2020–2022 · Conexis Brasil Digital",
-    texto: "Na Conexis, a associação das operadoras de telecom: posts, vídeos e cartilhas sobre 5G, tributos e conectividade. Uma delas, Propostas para um Brasil + digital, foi entregue aos candidatos à Presidência em 2022.",
+    kicker: "Conexis Brasil Digital",
+    texto: "Na Conexis Brasil Digital, estágio e depois prestação de serviço. Assessoria de imprensa e relações institucionais: matérias, design e edição de vídeo. No período de prestação de serviço, a cartilha Propostas para um Brasil + digital, entregue aos presidenciáveis em 2022. Fique Antenado era para o público parlamentar.",
+    tags: ["assessoria de imprensa", "relações institucionais", "design gráfico", "edição de vídeo"],
     shape: "sq",
     media: [
       { img: "media/img/design/conexis-propostas-01.jpg", alt: "Capa da cartilha Propostas para um Brasil + digital" },
@@ -54,8 +58,9 @@ window.PERCURSO = [
     ]
   },
   {
-    kicker: "2019–2024 · Música independente",
-    texto: "Para bandas de amigos, capas de disco, camisetas, flyers e vídeos: Bananas Caipiras, Corujones, Omarazul, Tropeçália, Maxi Crimi. Feito só por fazer, e por isso mesmo.",
+    kicker: "Música independente",
+    texto: "Capas para bandas: Bananas Caipiras, Corujones, Omarazul, Tropeçália.",
+    tags: ["design gráfico", "capas de disco"],
     shape: "sq",
     media: [
       { img: "media/img/design/bananas-capa-02.jpg", alt: "Capa Alternatréche, do Bananas Caipiras" },
@@ -67,8 +72,9 @@ window.PERCURSO = [
     ]
   },
   {
-    kicker: "2023–2024 · Correio Braziliense",
-    texto: "Em abril de 2023 entrei no Correio Braziliense como repórter multimídia. Texto, foto, vídeo e redes, muitas vezes na mesma pauta.",
+    kicker: "2023–2024 · Correio Braziliense · redes",
+    texto: "No Correio Braziliense, geri e planejei todas as redes do jornal: Instagram, TikTok, X, Facebook, WhatsApp e Threads.",
+    tags: ["gestão de redes sociais", "planejamento de conteúdo", "Instagram", "TikTok"],
     shape: "h",
     media: [
       { img: "media/img/fotos/cerrado-01.jpg", alt: "Educadores da Escola do Cerrado em atividade com estudantes" },
@@ -78,8 +84,9 @@ window.PERCURSO = [
     ]
   },
   {
-    kicker: "2023 · Correio Braziliense · Memória CB",
-    texto: "Documentários curtos para o Memória CB, o projeto de acervo histórico do jornal: a cidade submersa no Lago Paranoá e o fim dos pinheiros do Parque da Cidade. E um sobre as boates que marcaram Brasília.",
+    kicker: "2023 · Correio Braziliense · reportagem em vídeo",
+    texto: "Também fiz reportagem em vídeo. No Memória CB, os documentários sobre a cidade submersa no Lago Paranoá e os pinheiros do Parque da Cidade. Nas Baladas antigas (2023), reportagem, vídeo e edição. E coberturas em reels.",
+    tags: ["reportagem em vídeo", "edição de vídeo", "Premiere"],
     shape: "wide",
     media: [
       { video: "media/video/correio-lago-paranoa.mp4", poster: "media/video/correio-lago-paranoa.jpg" },
@@ -88,19 +95,9 @@ window.PERCURSO = [
     ]
   },
   {
-    kicker: "2023–2024 · Correio Braziliense",
-    texto: "Reels de cobertura: Marcha das Margaridas, Marcha das Mulheres Indígenas, desfile de beleza negra, Carnaval 2024. Filmei e editei.",
-    shape: "v",
-    media: [
-      { img: "media/video/correio-reel-marcha-mulheres-indigenas.jpg", alt: "Quadro do reel da Marcha das Mulheres Indígenas" },
-      { img: "media/video/correio-reel-desfile-beleza-negra.jpg", alt: "Quadro do reel do desfile de beleza negra" },
-      { img: "media/video/correio-carnaval-menino-de-ceilandia.jpg", alt: "Quadro do vídeo do bloco Menino de Ceilândia" },
-      { img: "media/video/correio-carnaval-orquestra-marafreboi.jpg", alt: "Quadro do vídeo da Orquestra Marafreboi" }
-    ]
-  },
-  {
-    kicker: "2023–2024 · Correio Braziliense",
-    texto: "Também cuidei da identidade do canal do Correio no YouTube, com as capas dos podcasts e programas, e da marca do Carnaval 2024.",
+    kicker: "2023–2024 · Correio Braziliense · identidade",
+    texto: "Defini a identidade do canal do Correio no YouTube (capa, perfil e thumbnails de Podcast do Correio, CB.Poder, Pevepê e outros programas) e a marca do Carnaval 2024. As duas como sistemas: regras, padrões e aplicações.",
+    tags: ["identidade visual", "branding", "thumbnails"],
     shape: "wide",
     media: [
       { img: "media/img/design/yt-01.jpg", alt: "Capa do Podcast do Correio" },
@@ -111,7 +108,8 @@ window.PERCURSO = [
   },
   {
     kicker: "2024–2026 · Metrópoles",
-    texto: "No Metrópoles, na editoria de redes sociais: matérias e vídeos para o site e para o Instagram, do rock de Brasília ao noticiário da cidade.",
+    texto: "No Metrópoles, de 2024 a 2026, cuidei de perfis com milhões de seguidores e analisei as métricas. Escrevi scripts que automatizaram processos e reduziram erros da equipe. Em todas as matérias, fiz o texto; na Cool Sorcery, vídeo e texto.",
+    tags: ["análise de métricas", "automação de processos", "gestão de perfis"],
     shape: "v",
     media: [
       { img: "media/video/metropoles-cool-sorcery.jpg", alt: "Quadro do reel sobre a banda Cool Sorcery" }
@@ -119,6 +117,6 @@ window.PERCURSO = [
   },
   {
     fim: true,
-    texto: "Jornalismo, design, vídeo e redes sociais são meios diferentes para a mesma coisa: passar uma mensagem. Depois de redação, agência, associação e freela, dou conta de cuidar da comunicação de uma empresa inteira, do planejamento à publicação."
+    texto: "Redação, identidade, vídeo e redes foram meios diferentes para a mesma coisa: comunicar. Planejei as redes de um jornal, fundei uma empresa de comunicação e escrevi scripts que automatizaram o trabalho de uma equipe. O resto está nas salas."
   }
 ];
