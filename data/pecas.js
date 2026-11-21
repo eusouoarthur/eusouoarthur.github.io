@@ -145,7 +145,7 @@
       resumo: "Reel sobre a Marcha das Mulheres Indígenas; fiz captação e edição para o Correio Braziliense.",
       video: V + "correio-reel-marcha-mulheres-indigenas.mp4", poster: V + "correio-reel-marcha-mulheres-indigenas.jpg" },
     { id: "r-beleza", salas: ["video"], titulo: "Desfile de beleza negra", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
-      resumo: "Reel sobre o 18º Desfile de Beleza Negra; fiz captação e edição para o Correio Braziliense.",
+      resumo: "Reel sobre o Desfile de Beleza Negra; fiz captação e edição para o Correio Braziliense.",
       video: V + "correio-reel-desfile-beleza-negra.mp4", poster: V + "correio-reel-desfile-beleza-negra.jpg" },
     { id: "r-menos", salas: ["video"], titulo: "Menos é Mais no Beco do Mané", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
       resumo: "Reel sobre o show Menos é Mais no Beco do Mané; fiz captação e edição para o Correio Braziliense.",
@@ -154,7 +154,7 @@
       resumo: "Reel de cobertura do Conune; fiz captação e edição para o Correio Braziliense.",
       video: V + "correio-reel-conune.mp4", poster: V + "correio-reel-conune.jpg" },
     { id: "r-loteria", salas: ["video"], titulo: "Loteria da 106 Sul", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
-      resumo: "Reel sobre a lotérica da 106 Sul, que vendeu aposta ganhadora da Mega-Sena; fiz captação e edição para o Correio Braziliense.",
+      resumo: "Reel sobre a lotérica da 106 Sul; fiz captação e edição para o Correio Braziliense.",
       video: V + "correio-reel-loteria-106-sul.mp4", poster: V + "correio-reel-loteria-106-sul.jpg" },
 
     // ——— Fora das salas desde 21/11/2026 (curadoria: nota curta, sem apuração própria e sem foto). Os dados ficam guardados ———
