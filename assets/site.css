@@ -190,6 +190,9 @@ a.peca { text-decoration: none; color: inherit; }
 .peca:hover img { transform: scale(1.02); }
 .peca .play { position: absolute; right: 10px; bottom: 10px; font-family: var(--mono); font-size: 12px; background: var(--bg); color: var(--fg); padding: 4px 7px; }
 .capa-texto { display: flex; align-items: flex-end; height: 100%; padding: 16px; border-left: 4px solid var(--cor); font-size: 18px; line-height: 1.25; color: var(--fg); }
+.capa-texto { flex-direction: column; justify-content: flex-end; gap: 4px; }
+.ct-veic { font-weight: 600; }
+.ct-ano { opacity: .7; }
 .peca h3 { font-size: 17px; font-weight: 500; line-height: 1.3; }
 .peca .meta { font-family: var(--mono); font-size: 13px; color: var(--fg2); }
 .peca .papel { font-size: 14px; color: var(--fg2); }

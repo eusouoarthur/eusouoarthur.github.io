@@ -198,7 +198,7 @@
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
     var fig = img
       ? '<figure>' + A.pic(img, destaque ? '(min-width: 1100px) 1040px, 100vw' : '(min-width: 600px) 50vw, 50vw', destaque) + '</figure>'
-      : '<figure class="pp-semimg"><span>' + esc(p.onde || '') + '</span></figure>';
+      : '<figure class="pp-semimg"><span>' + esc([p.onde, p.periodo].filter(Boolean).join(' · ')) + '</span></figure>';
     var d = document.createElement('div');
     d.innerHTML = '<a class="pp" data-id="' + esc(p.id) + '">' + fig + '<span class="pp-t">' + esc(p.titulo) + '</span>' + (meta ? '<span class="pp-m">' + esc(meta) + '</span>' : '') + '</a>';
     var a = d.firstChild;
