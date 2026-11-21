@@ -7,7 +7,43 @@
   function imgs(pasta, nomes) { return nomes.map(function (n) { return I + pasta + "/" + n + ".jpg"; }); }
 
   window.PECAS = [
+
     // ——— Design Gráfico ———
+    { id: "yt", salas: ["design"], titulo: "Canal do Correio no YouTube: identidade e capas", periodo: "2023–2024", onde: "Correio Braziliense", papel: "Identidade visual e thumbnails", shape: "wide",
+      resumo: "Sistema de capas para podcasts e programas: Podcast do Correio, CB Poder, CB Agro, CB Saúde, Conversa com o Zé, Falando Daquilo, Pevepê, Se Pá.",
+      imgs: imgs("design", ["yt-01", "yt-02", "yt-03", "yt-04", "yt-05", "yt-06", "yt-07", "yt-08", "yt-09", "yt-10", "yt-capa"]).concat([I + "design/falando-daquilo-logo.png"]) },
+    { id: "carnaval-id", salas: ["design"], titulo: "Carnaval 2024: identidade", periodo: "2024", onde: "Correio Braziliense", papel: "Identidade visual", shape: "sq",
+      resumo: "Marca da cobertura de Carnaval do Correio, com molduras para vídeo e capas.",
+      imgs: imgs("design", ["carnaval-01", "carnaval-02", "carnaval-03", "carnaval-04"]) },
+    { id: "propostas", salas: ["design"], titulo: "Propostas para um Brasil + digital", periodo: "2022", onde: "Conexis Brasil Digital", papel: "Diagramação", shape: "v",
+      resumo: "Cartilha nacional entregue aos candidatos à Presidência em 2022.",
+      imgs: imgs("design", ["conexis-propostas-01", "conexis-propostas-02", "conexis-propostas-03"]) },
+    { id: "cartilha-5g", salas: ["design"], titulo: "Cartilha Tudo sobre o 5G", periodo: "2021", onde: "Conexis Brasil Digital", papel: "Diagramação", shape: "v",
+      resumo: "Perguntas frequentes sobre a nova forma de se conectar.",
+      imgs: imgs("design", ["conexis-5g-01", "conexis-5g-02"]) },
+    { id: "antenado", salas: ["design"], titulo: "Cartilha Fique Antenado", periodo: "", onde: "Conexis Brasil Digital", papel: "Diagramação", shape: "v",
+      imgs: imgs("design", ["conexis-antenado-01", "conexis-antenado-02"]) },
+    { id: "cromo-logo", salas: ["design"], titulo: "Cromo Comunicação: marca", periodo: "2020", onde: "Cromo Comunicação", papel: "Logo e símbolo", shape: "wide",
+      imgs: [I + "design/cromo-logo.png"] },
+    { id: "utilex", salas: ["design"], titulo: "Utilex: logo", periodo: "2022", onde: "Autônomo", papel: "Logo", shape: "sq",
+      imgs: [I + "design/utilex.png"] },
+    { id: "cau", salas: ["design"], titulo: "CAU/BR: peças digitais", periodo: "2018–2020", onde: "CAU/BR", papel: "Banners e newsletter", shape: "wide",
+      imgs: imgs("design", ["cau-banner", "cau-newsletter"]) },
+    { id: "tropecalia", salas: ["design"], titulo: "Tropeçália: capa", periodo: "2023", onde: "Banda de Brasília", papel: "Capa de disco", shape: "sq",
+      imgs: imgs("design", ["tropecalia"]) },
+    { id: "bananas-capas", salas: ["design"], titulo: "Bananas Caipiras: Alternatréche", periodo: "2023", onde: "Banda de amigos", papel: "Capas e camiseta", shape: "sq",
+      imgs: imgs("design", ["bananas-capa-02", "bananas-capa-03", "bananas-capa-01", "bananas-camiseta"]) },
+    { id: "corujones", salas: ["design"], titulo: "Corujones: capas", periodo: "2022–2023", onde: "Banda de amigos", papel: "Capas de disco", shape: "sq",
+      imgs: imgs("design", ["corujones-01", "corujones-02", "corujones-03", "corujones-04"]) },
+    { id: "omarazul", salas: ["design"], titulo: "Omarazul: capas", periodo: "", onde: "Artista de Brasília", papel: "Capas de disco", shape: "sq",
+      imgs: imgs("design", ["omarazul-01", "omarazul-02"]) },
+    { id: "maxicrimi", salas: ["design"], titulo: "Maxi Crimi: capa", periodo: "", onde: "Artista", papel: "Capa de disco", shape: "sq",
+      imgs: imgs("design", ["maxicrimi"]) },
+    { id: "pintura", salas: ["design"], titulo: "Pintura digital", periodo: "", onde: "Projeto pessoal", papel: "Ilustração", shape: "sq",
+      imgs: imgs("design", ["pintura-01", "pintura-02", "pintura-03"]) },
+    { id: "adfollow-id", salas: ["design"], titulo: "AdFollow: identidade visual", periodo: "2021", onde: "UnB", papel: "Identidade visual e peças", shape: "sq",
+      resumo: "Semana de publicidade e propaganda da UnB. Estética de terminal antigo: verde fósforo sobre preto, em cartazes, posts e outdoor.",
+      imgs: imgs("social", ["adfollow-01"]).concat(imgs("design", ["adfollow-cartaz-1", "adfollow-cartaz-2"]), imgs("social", ["adfollow-05", "adfollow-04"])) },
     { id: "fac", salas: ["design"], titulo: "Cartilha FAC Você Mesmo", periodo: "2020", onde: "UnB", papel: "Projeto gráfico e diagramação", shape: "v",
       resumo: "Guia de comunicação para organizações que não têm agência: análise, planejamento, identidade e ferramentas.",
       imgs: imgs("design", ["fac-01", "fac-02", "fac-03", "fac-04", "fac-05", "fac-06"]) },
@@ -20,41 +56,6 @@
     { id: "conexao", salas: ["design"], titulo: "Conexão Planalto: manual de identidade", periodo: "", onde: "UnB", papel: "Identidade visual", shape: "h",
       resumo: "Marca e manual de identidade visual.",
       imgs: imgs("design", ["conexao-01", "conexao-02", "conexao-03"]) },
-    { id: "adfollow-id", salas: ["design"], titulo: "AdFollow: identidade visual", periodo: "2021", onde: "UnB", papel: "Identidade visual e peças", shape: "sq",
-      resumo: "Semana de publicidade e propaganda da UnB. Estética de terminal antigo: verde fósforo sobre preto, em cartazes, posts e outdoor.",
-      imgs: imgs("social", ["adfollow-01"]).concat(imgs("design", ["adfollow-cartaz-1", "adfollow-cartaz-2"]), imgs("social", ["adfollow-05", "adfollow-04"])) },
-    { id: "propostas", salas: ["design"], titulo: "Propostas para um Brasil + digital", periodo: "2022", onde: "Conexis Brasil Digital", papel: "Diagramação", shape: "v",
-      resumo: "Cartilha nacional entregue aos candidatos à Presidência em 2022.",
-      imgs: imgs("design", ["conexis-propostas-01", "conexis-propostas-02", "conexis-propostas-03"]) },
-    { id: "cartilha-5g", salas: ["design"], titulo: "Cartilha Tudo sobre o 5G", periodo: "2021", onde: "Conexis Brasil Digital", papel: "Diagramação", shape: "v",
-      resumo: "Perguntas frequentes sobre a nova forma de se conectar.",
-      imgs: imgs("design", ["conexis-5g-01", "conexis-5g-02"]) },
-    { id: "antenado", salas: ["design"], titulo: "Cartilha Fique Antenado", periodo: "", onde: "Conexis Brasil Digital", papel: "Diagramação", shape: "v",
-      imgs: imgs("design", ["conexis-antenado-01", "conexis-antenado-02"]) },
-    { id: "corujones", salas: ["design"], titulo: "Corujones: capas", periodo: "2022–2023", onde: "Banda de amigos", papel: "Capas de disco", shape: "sq",
-      imgs: imgs("design", ["corujones-01", "corujones-02", "corujones-03", "corujones-04"]) },
-    { id: "bananas-capas", salas: ["design"], titulo: "Bananas Caipiras: Alternatréche", periodo: "2023", onde: "Banda de amigos", papel: "Capas e camiseta", shape: "sq",
-      imgs: imgs("design", ["bananas-capa-02", "bananas-capa-03", "bananas-capa-01", "bananas-camiseta"]) },
-    { id: "omarazul", salas: ["design"], titulo: "Omarazul: capas", periodo: "", onde: "Artista de Brasília", papel: "Capas de disco", shape: "sq",
-      imgs: imgs("design", ["omarazul-01", "omarazul-02"]) },
-    { id: "tropecalia", salas: ["design"], titulo: "Tropeçália: capa", periodo: "2023", onde: "Banda de Brasília", papel: "Capa de disco", shape: "sq",
-      imgs: imgs("design", ["tropecalia"]) },
-    { id: "maxicrimi", salas: ["design"], titulo: "Maxi Crimi: capa", periodo: "", onde: "Artista", papel: "Capa de disco", shape: "sq",
-      imgs: imgs("design", ["maxicrimi"]) },
-    { id: "carnaval-id", salas: ["design"], titulo: "Carnaval 2024: identidade", periodo: "2024", onde: "Correio Braziliense", papel: "Identidade visual", shape: "sq",
-      resumo: "Marca da cobertura de Carnaval do Correio, com molduras para vídeo e capas.",
-      imgs: imgs("design", ["carnaval-01", "carnaval-02", "carnaval-03", "carnaval-04"]) },
-    { id: "yt", salas: ["design"], titulo: "Canal do Correio no YouTube: identidade e capas", periodo: "2023–2024", onde: "Correio Braziliense", papel: "Identidade visual e thumbnails", shape: "wide",
-      resumo: "Sistema de capas para podcasts e programas: Podcast do Correio, CB Poder, CB Agro, CB Saúde, Conversa com o Zé, Falando Daquilo, Pevepê, Se Pá.",
-      imgs: imgs("design", ["yt-01", "yt-02", "yt-03", "yt-04", "yt-05", "yt-06", "yt-07", "yt-08", "yt-09", "yt-10", "yt-capa"]).concat([I + "design/falando-daquilo-logo.png"]) },
-    { id: "cromo-logo", salas: ["design"], titulo: "Cromo Comunicação: marca", periodo: "2020", onde: "Cromo Comunicação", papel: "Logo e símbolo", shape: "wide",
-      imgs: [I + "design/cromo-logo.png"] },
-    { id: "utilex", salas: ["design"], titulo: "Utilex: logo", periodo: "2022", onde: "Autônomo", papel: "Logo", shape: "sq",
-      imgs: [I + "design/utilex.png"] },
-    { id: "cau", salas: ["design"], titulo: "CAU/BR: peças digitais", periodo: "2018–2020", onde: "CAU/BR", papel: "Banners e newsletter", shape: "wide",
-      imgs: imgs("design", ["cau-banner", "cau-newsletter"]) },
-    { id: "pintura", salas: ["design"], titulo: "Pintura digital", periodo: "", onde: "Projeto pessoal", papel: "Ilustração", shape: "sq",
-      imgs: imgs("design", ["pintura-01", "pintura-02", "pintura-03"]) },
 
     // ——— Social Media ———
     { id: "cromo-social", salas: ["social"], titulo: "Cromo Comunicação: carrosséis", periodo: "2020–2021", onde: "Cromo Comunicação", papel: "Conteúdo, design e publicação", shape: "sq",
@@ -73,7 +74,7 @@
     { id: "andergraundi", salas: ["social"], titulo: "Andergraundi: evento", periodo: "2019", onde: "Autônomo", papel: "Peças de divulgação", shape: "wide",
       imgs: imgs("social", ["andergraundi-01", "andergraundi-02"]) },
 
-    // ——— Jornalismo: matérias ———
+    // ——— Jornalismo e Vídeo (a ordem aqui vale para as duas salas; as de Jornalismo vêm primeiro) ———
     { id: "m-cerrado", salas: ["jornalismo"], titulo: "A bordo de Kombi, Escola do Cerrado dá aula de resistência e transformação social", periodo: "2023", onde: "Correio Braziliense", papel: "Texto, fotos e reel", shape: "h",
       imgs: imgs("fotos", ["cerrado-01", "cerrado-02", "cerrado-03", "cerrado-04", "cerrado-05", "cerrado-06", "cerrado-07"]), materia: "correio-escola-do-cerrado" },
     { id: "m-menos", salas: ["jornalismo"], titulo: "Menos é Mais retorna a Brasília com show Churrasquinho Menos é Mais", periodo: "2023", onde: "Correio Braziliense", papel: "Texto, foto e reel", shape: "h",
@@ -86,15 +87,10 @@
       materia: "correio-sora" },
     { id: "m-cool", salas: ["jornalismo", "video"], titulo: "De Brasília, banda Cool Sorcery se prepara para turnê na Europa", periodo: "2024", onde: "Metrópoles", papel: "Texto e vídeo", shape: "v",
       video: V + "metropoles-cool-sorcery.mp4", poster: V + "metropoles-cool-sorcery.jpg", materia: "metropoles-cool-sorcery" },
-    /* RETIRADO em 17/11/2026 a pedido do Arthur (o vídeo não é dele):
-    { id: "m-agi", salas: ["jornalismo", "video"], titulo: "“Agi por instinto”, diz jovem esfaqueado ao defender mulher de assédio", periodo: "2026", onde: "Metrópoles", papel: "Texto e vídeo (a confirmar)", shape: "v",
-      video: V + "metropoles-agi-por-instinto.mp4", poster: V + "metropoles-agi-por-instinto.jpg", materia: "metropoles-agi-por-instinto" }, */
     { id: "m-detran", salas: ["jornalismo"], titulo: "Vídeo: “esquentadinho” fica furioso com atraso de 5 minutos no Detran", periodo: "2025", onde: "Metrópoles", papel: "Texto", shape: "h",
       materia: "metropoles-detran" },
     { id: "m-roblox", salas: ["jornalismo"], titulo: "Roblox: após mudanças, crianças protestam em game e atacam Felca", periodo: "2026", onde: "Metrópoles", papel: "Texto", shape: "h",
       materia: "metropoles-roblox-felca" },
-
-    // ——— Vídeo ———
     { id: "lago", salas: ["video", "jornalismo"], titulo: "A cidade submersa no Lago Paranoá", periodo: "2023", onde: "Correio Braziliense · Memória CB", papel: "Vídeo e edição", shape: "wide",
       resumo: "A história do lago e da Vila Amaury, que foi inundada em 1959 e hoje está no fundo do Paranoá.",
       video: V + "correio-lago-paranoa.mp4", poster: V + "correio-lago-paranoa.jpg",
@@ -143,11 +139,6 @@
       imgs: imgs("fotos", ["show-01", "show-02", "show-03", "show-04", "show-05", "show-06", "show-07", "show-08", "show-09", "show-10", "show-11", "show-12"]) },
     { id: "cau-arquiteto", salas: ["fotos"], titulo: "Dia do Arquiteto", periodo: "2018–2020", onde: "CAU/BR", papel: "Fotografia", shape: "h",
       imgs: imgs("fotos", ["cau-arquiteto-01", "cau-arquiteto-02", "cau-arquiteto-03", "cau-arquiteto-04", "cau-arquiteto-05"]) },
-    /* RETIRADO da sala Fotos em 17/11/2026 a pedido do Arthur (as fotos continuam dentro das matérias):
-    { id: "f-cerrado", salas: ["fotos"], titulo: "Escola do Cerrado", periodo: "2023", onde: "Correio Braziliense", papel: "Fotografia", shape: "h",
-      imgs: imgs("fotos", ["cerrado-01", "cerrado-02", "cerrado-03", "cerrado-04", "cerrado-05", "cerrado-06", "cerrado-07"]) },
-    { id: "f-menos", salas: ["fotos"], titulo: "Menos é Mais no Beco do Mané", periodo: "2023", onde: "Correio Braziliense", papel: "Fotografia", shape: "h",
-      imgs: imgs("fotos", ["menos-e-mais-01"]) }, */
 
     // ——— Automações ———
     { id: "auto-extrator", salas: ["automacoes"], titulo: "Extrator de texto de matérias", periodo: "", onde: "Rotina de redação", papel: "Script", shape: "wide",
@@ -156,5 +147,14 @@
     { id: "auto-tweets", salas: ["automacoes"], titulo: "Gerador de tweets formatados", periodo: "", onde: "Rotina de redação", papel: "Script", shape: "wide",
       resumo: "Transforma uma matéria numa sequência de tweets no padrão da editoria, com o corte no tamanho certo.",
       detalhe: "Feito com ajuda de IA, para resolver um problema real do dia a dia. Detalhes e código em breve." }
+
+    /* RETIRADO em 17/11/2026 a pedido do Arthur (o vídeo não é dele):
+    { id: "m-agi", salas: ["jornalismo", "video"], titulo: "“Agi por instinto”, diz jovem esfaqueado ao defender mulher de assédio", periodo: "2026", onde: "Metrópoles", papel: "Texto e vídeo (a confirmar)", shape: "v",
+      video: V + "metropoles-agi-por-instinto.mp4", poster: V + "metropoles-agi-por-instinto.jpg", materia: "metropoles-agi-por-instinto" }, */
+    /* RETIRADO da sala Fotos em 17/11/2026 a pedido do Arthur (as fotos continuam dentro das matérias):
+    { id: "f-cerrado", salas: ["fotos"], titulo: "Escola do Cerrado", periodo: "2023", onde: "Correio Braziliense", papel: "Fotografia", shape: "h",
+      imgs: imgs("fotos", ["cerrado-01", "cerrado-02", "cerrado-03", "cerrado-04", "cerrado-05", "cerrado-06", "cerrado-07"]) },
+    { id: "f-menos", salas: ["fotos"], titulo: "Menos é Mais no Beco do Mané", periodo: "2023", onde: "Correio Braziliense", papel: "Fotografia", shape: "h",
+      imgs: imgs("fotos", ["menos-e-mais-01"]) }, */
   ];
 })();
