@@ -38,9 +38,7 @@
     var img = imgDaCapa(p);
     var ehVideo = !!(p.video || p.videos);
     if (!img) {
-      var m = p.materia && window.MATERIAS ? window.MATERIAS[p.materia] : null;
-      var txt = (m && m.linhafina) ? m.linhafina : (p.resumo || p.titulo);
-      return '<figure><div class="capa-texto">' + esc(txt) + '</div></figure>';
+      return '<figure><div class="capa-texto"><span class="ct-veic">' + esc(p.onde || '') + '</span> <span class="ct-ano">' + esc(p.periodo || '') + '</span></div></figure>';
     }
     return '<figure>' + A.pic(img, TAMANHOS[sala] || '(min-width: 1100px) 260px, 50vw') + (ehVideo && sala !== 'social' ? '<span class="play">vídeo</span>' : '') + '</figure>';
   }
