@@ -88,7 +88,7 @@
       return '<a href="' + ROOT + s.pasta + '/" style="--cor:var(--' + s.id + ')"' + (s.id === ativa ? ' aria-current="page"' : '') + '>' + esc(s.nome) + '</a>';
     }).join('');
     links += '<a href="' + ROOT + 'sobre/" style="--cor:var(--fg2)"' + (ativa === 'sobre' ? ' aria-current="page"' : '') + '>Sobre</a>';
-    el.innerHTML = '<a class="pular" href="#conteudo">Pular para o conteúdo</a><a class="marca" href="' + HOME + '#site">' + esc(S.nome) + '</a><nav class="nav" aria-label="Salas">' + links + '</nav>';
+    el.innerHTML = '<a class="pular" href="#conteudo">Pular para o conteúdo</a><a class="marca" href="' + HOME + '#site">' + esc(S.nome) + '</a><nav class="nav" aria-label="Seções">' + links + '</nav>';
     atualizarBotoesTema();
   }
   function renderRodape() {
@@ -110,6 +110,7 @@
   // Prévia ao passar o mouse (só computador).
   // Peça com imagens: janela ao lado folheando as páginas sozinha (1,2 s cada), com contador e a ficha.
   // Peça com vídeo: a própria miniatura cresce (~1,6x, mínimo 380 px de largura) e o vídeo toca mudo ali.
+  // Matérias: mosaico com as fotos + trecho do texto (janela-txt), sem "N páginas".
   var janelaEl = null, janelaTimer = 0, janelaGiro = 0, vivoEl = null, semMouse = window.matchMedia('(hover: none), (max-width: 599px)');
   var reduzMov = window.matchMedia('(prefers-reduced-motion: reduce)');
   function janelaMostrar(alvo, d) {
@@ -125,9 +126,23 @@
         return '<div class="janela-pg" style="--i:' + i + '">' + pic(src, i === 0 ? '340px' : '170px') + mais + '</div>';
       }).join('');
       janelaEl.dataset.n = String(imgs.length);
+      var ehMateria = !!(d.materia && window.MATERIAS && window.MATERIAS[d.materia]);
+      var txtMateria = '';
+      if (ehMateria) {
+        var m = window.MATERIAS[d.materia];
+        var html = m.html || '';
+        var texto = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        if (texto.length > 220) {
+          var corte = texto.lastIndexOf(' ', 220);
+          if (corte > 0) texto = texto.slice(0, corte);
+          texto += '…';
+        }
+        txtMateria = '<p class="janela-txt">' + esc(texto) + '</p>';
+      }
       janelaEl.innerHTML = '<div class="janela-m">' + paginas + '</div><div class="janela-f"><span class="janela-t">' + esc(d.titulo || '') + '</span>' +
         (d.meta ? '<span class="janela-meta">' + esc(d.meta) + '</span>' : '') + (d.papel ? '<span class="janela-p">' + esc(d.papel) + '</span>' : '') +
-        (todas.length > 1 ? '<span class="janela-n">' + todas.length + ' páginas</span>' : '') + '</div>';
+        txtMateria +
+        (!ehMateria && todas.length > 1 ? '<span class="janela-n">' + todas.length + ' páginas</span>' : '') + '</div>';
       janelaEl.querySelectorAll('img').forEach(function (im) { im.loading = 'eager'; });
       janelaEl.style.setProperty('--cor', getComputedStyle(alvo).getPropertyValue('--cor') || 'var(--fg2)');
       var r = alvo.getBoundingClientRect(), W = janelaEl.offsetWidth || 380, M = 16;
