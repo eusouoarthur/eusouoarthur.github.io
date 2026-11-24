@@ -132,11 +132,15 @@
       resumo: "Matéria sobre o protesto de crianças no Roblox após mudanças no chat de voz; escrevi o texto para o Metrópoles.",
       materia: "metropoles-roblox-felca" },
     { id: "carnaval-videos", salas: ["video"], titulo: "Carnaval 2024: blocos de Brasília", periodo: "2024", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
-      resumo: "Cobertura em vídeo dos blocos Menino de Ceilândia, Orquestra Marafreboi e Baratona; fiz captação e edição para o Correio Braziliense.",
+      resumo: "Cobertura dos blocos Menino de Ceilândia, Orquestra Marafreboi, Baratona, Baile da Piki, Baratinha, Galinho e Raparigueiros; fiz captação e edição para o Correio Braziliense.",
       videos: [
         { src: V + "correio-carnaval-menino-de-ceilandia.mp4", poster: V + "correio-carnaval-menino-de-ceilandia.jpg", titulo: "Menino de Ceilândia" },
         { src: V + "correio-carnaval-orquestra-marafreboi.mp4", poster: V + "correio-carnaval-orquestra-marafreboi.jpg", titulo: "Orquestra Marafreboi" },
-        { src: V + "correio-carnaval-baratona.mp4", poster: V + "correio-carnaval-baratona.jpg", titulo: "Baratona" }
+        { src: V + "correio-carnaval-baratona.mp4", poster: V + "correio-carnaval-baratona.jpg", titulo: "Baratona" },
+        { src: V + "correio-carnaval-baile-da-piki.mp4", poster: V + "correio-carnaval-baile-da-piki.jpg", titulo: "Baile da Piki" },
+        { src: V + "correio-carnaval-baratinha.mp4", poster: V + "correio-carnaval-baratinha.jpg", titulo: "Baratinha" },
+        { src: V + "correio-carnaval-galinho.mp4", poster: V + "correio-carnaval-galinho.jpg", titulo: "Galinho" },
+        { src: V + "correio-carnaval-raparigueiros.mp4", poster: V + "correio-carnaval-raparigueiros.jpg", titulo: "Raparigueiros" }
       ] },
     { id: "aline", salas: ["video"], titulo: "Aline Bertini: vídeos de imóveis", periodo: "2022", onde: "Autônomo", papel: "Captação e edição", shape: "wide",
       resumo: "Vídeos de imóveis, um horizontal e um para stories; fiz captação e edição, como trabalho autônomo, para Aline Bertini.",
@@ -172,6 +176,67 @@
       resumo: "Reel sobre a lotérica da 106 Sul; fiz captação e edição para o Correio Braziliense.",
       video: V + "correio-reel-loteria-106-sul.mp4", poster: V + "correio-reel-loteria-106-sul.jpg" },
 
+    // ——— Novas peças de vídeo (Fase 8B) ———
+    { id: "conexis-videos", salas: ["video"], titulo: "Conexis Brasil Digital: vídeos", periodo: "2020–2022", onde: "Conexis Brasil Digital", papel: "Vídeo e edição", shape: "v",
+      resumo: "Vídeos institucionais e stories para a associação das operadoras de telecom: 5G, eventos, datas comemorativas.",
+      videos: [
+        { src: V + "conexis-1.mp4", poster: V + "conexis-1.jpg", titulo: "Vídeo 1" },
+        { src: V + "conexis-2.mp4", poster: V + "conexis-2.jpg", titulo: "Vídeo 2" },
+        { src: V + "conexis-3.mp4", poster: V + "conexis-3.jpg", titulo: "Vídeo 3" },
+        { src: V + "conexis-5g-prioridade-story.mp4", poster: V + "conexis-5g-prioridade-story.jpg", titulo: "5G é prioridade (story)" },
+        { src: V + "conexis-retorno-congresso-story.mp4", poster: V + "conexis-retorno-congresso-story.jpg", titulo: "Retorno do Congresso (story)" },
+        { src: V + "conexis-video-1-v3.mp4", poster: V + "conexis-video-1-v3.jpg", titulo: "Vídeo 1 v3.2" },
+        { src: V + "conexis-video-2.mp4", poster: V + "conexis-video-2.jpg", titulo: "Vídeo 2_2" },
+        { src: V + "conexis-video-3.mp4", poster: V + "conexis-video-3.jpg", titulo: "Vídeo 3 V3" },
+        { src: V + "conexis-dia-mulheres.mp4", poster: V + "conexis-dia-mulheres.jpg", titulo: "Dia Internacional das Mulheres" }
+      ] },
+
+    { id: "r-ep1", salas: ["video"], titulo: "Série em reels: episódio 1", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
+      resumo: "Primeiro episódio de uma série em reels para o Correio Braziliense.",
+      video: V + "r-ep1-com-intro.mp4", poster: V + "r-ep1-com-intro.jpg" },
+    { id: "r-ep2", salas: ["video"], titulo: "Série em reels: episódio 2", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
+      resumo: "Segundo episódio de uma série em reels para o Correio Braziliense.",
+      video: V + "r-ep2-borrado-som.mp4", poster: V + "r-ep2-borrado-som.jpg" },
+    { id: "r-formatura", salas: ["video"], titulo: "Formatura do Jornalismo na Prática", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
+      resumo: "Reel sobre a formatura do curso Jornalismo na Prática.",
+      video: V + "r-formatura-jornalismo.mp4", poster: V + "r-formatura-jornalismo.jpg" },
+    { id: "r-ganso", salas: ["video"], titulo: "Ganso", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
+      resumo: "Reel sobre o Ganso para o Correio Braziliense.",
+      video: V + "r-ganso.mp4", poster: V + "r-ganso.jpg" },
+    { id: "r-park-shopping", salas: ["video"], titulo: "Park Shopping", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
+      resumo: "Reel sobre o Park Shopping para o Correio Braziliense.",
+      video: V + "r-park-shopping.mp4", poster: V + "r-park-shopping.jpg" },
+    { id: "r-roland", salas: ["video"], titulo: "Roland Montenegro", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
+      resumo: "Reel sobre Roland Montenegro para o Correio Braziliense.",
+      video: V + "r-roland-montenegro.mp4", poster: V + "r-roland-montenegro.jpg" },
+    { id: "r-reel-1", salas: ["video"], titulo: "Reel do Correio (1)", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
+      resumo: "Reel produzido para o Correio Braziliense em 2023.",
+      video: V + "r-reel-correio-1.mp4", poster: V + "r-reel-correio-1.jpg" },
+    { id: "r-agua-mineral", salas: ["video"], titulo: "Água mineral", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
+      resumo: "Reel sobre água mineral para o Correio Braziliense.",
+      video: V + "r-agua-mineral.mp4", poster: V + "r-agua-mineral.jpg" },
+    { id: "r-reel-2", salas: ["video"], titulo: "Reel do Correio (2)", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
+      resumo: "Reel produzido para o Correio Braziliense em 2023.",
+      video: V + "r-reel-correio-2.mp4", poster: V + "r-reel-correio-2.jpg" },
+    { id: "r-semana-universitaria", salas: ["video"], titulo: "Semana Universitária da UnB", periodo: "2023", onde: "Correio Braziliense", papel: "Captação e edição", shape: "v",
+      resumo: "Reel sobre a Semana Universitária da UnB para o Correio Braziliense.",
+      video: V + "r-semana-universitaria.mp4", poster: V + "r-semana-universitaria.jpg" },
+
+    { id: "correio-podcast-cortes", salas: ["video"], titulo: "Podcasts do Correio: cortes", periodo: "2023", onde: "Correio Braziliense", papel: "Edição de cortes", shape: "v",
+      resumo: "Cortes verticais dos podcasts Conversa com o Zé e Se Pá para redes sociais.",
+      videos: [
+        { src: V + "correio-podcast-corte-ze.mp4", poster: V + "correio-podcast-corte-ze.jpg", titulo: "Conversa com o Zé" },
+        { src: V + "correio-podcast-corte-se-pa.mp4", poster: V + "correio-podcast-corte-se-pa.jpg", titulo: "Se pá" }
+      ] },
+
+    { id: "ribaram-drone", salas: ["video"], titulo: "Brisas do Lago: vídeo de drone", periodo: "2022", onde: "Ribamar, consultor imobiliário", papel: "Drone e edição", shape: "wide",
+      resumo: "Vídeo de drone do empreendimento Brisas do Lago; fiz a captação e a edição para Ribamar, consultor imobiliário.",
+      video: V + "ribaram-drone-brisas.mp4", poster: V + "ribaram-drone-brisas.jpg" },
+
+    { id: "lombrinhas-drone", salas: ["video"], titulo: "Lombrinhas: drone reel 2021", periodo: "2021", onde: "Projeto pessoal", papel: "Drone e edição", shape: "wide",
+      resumo: "Reel de imagens de drone de 2021, projeto pessoal.",
+      video: V + "lombrinhas-drone-reel-2021.mp4", poster: V + "lombrinhas-drone-reel-2021.jpg" },
+
     // ——— Matérias jornalísticas (agora de volta na sala jornalismo) ———
     { id: "m-enem", salas: ["jornalismo"], titulo: "Começa último dia de provas do Enem 2023; acompanhe a cobertura", periodo: "2023", onde: "Correio Braziliense", papel: "Cobertura em equipe", shape: "h",
       resumo: "Cobertura do último dia de provas do Enem 2023 para o Correio Braziliense.",
@@ -190,7 +255,7 @@
         var base = imgs("fotos", ["show-01", "show-02", "show-03", "show-04", "show-05", "show-06", "show-07", "show-08", "show-09", "show-10", "show-11", "show-12"]);
         var extra = [
           "show-foto-2", "show-foto-3", "show-foto-4", "show-foto-6", "show-foto-7", "show-foto-8", "show-foto-9", "show-foto-10", "show-foto-11", "show-foto-12", "show-foto-13", "show-foto-14", "show-foto-15", "show-foto-16", "show-foto-17", "show-foto-18", "show-foto-19", "show-foto-21", "show-foto-22", "show-foto-24", "show-foto-25", "show-foto-26", "show-foto-28", "show-foto-29", "show-foto-30", "show-foto-31", "show-foto-32", "show-foto-33", "show-foto-34", "show-foto-38", "show-foto-39",
-          "show-foto-41", "show-foto-42", "show-foto-43", "show-foto-44", "show-foto-45", "show-foto-46", "show-foto-47", "show-foto-48", "show-foto-49", "show-foto-50", "show-foto-51", "show-foto-52", "show-foto-53", "show-foto-55", "show-foto-56", "show-foto-57", "show-foto-58", "show-foto-59",
+          "show-foto-41", "show-foto-42", "show-foto-43", "show-foto-44", "show-foto-45", "show-foto-46", "show-foto-47", "show-foto-48", "show-foto-49", "show-foto-50", "show-foto-51", "show-foto-52", "show-foto-53", "show-foto-54", "show-foto-55", "show-foto-56", "show-foto-57", "show-foto-58", "show-foto-59",
           "show-foto-60", "show-foto-61", "show-foto-62", "show-foto-63", "show-foto-64"
         ];
         return base.concat(imgs("fotos", extra));
