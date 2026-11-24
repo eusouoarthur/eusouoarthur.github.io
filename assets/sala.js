@@ -53,6 +53,7 @@
     var m = p.materia && window.MATERIAS ? window.MATERIAS[p.materia] : null;
     var href = (isLink && m && m.url) ? m.url : '#' + encodeURIComponent(p.id);
     var target = isLink ? ' target="_blank" rel="noopener"' : '';
+    if (p.paginaPropria && sala !== 'video') { href = A.ROOT + 'materia/?m=' + encodeURIComponent(p.id); target = ''; }
     var tag = isLink ? 'a' : 'button';
     var typeAttr = isLink ? '' : ' type="button"';
     return '<' + tag + ' class="peca" href="' + esc(href) + '"' + target + typeAttr + ' data-i="' + i + '" data-shape="' + (p.shape || 'h') + '" style="--r:' + proporcao(p).toFixed(4) + '"' + (p._foto ? ' aria-label="' + esc(p.titulo + ', foto ' + p._n) + '"' : '') + '>' + capa(p) +

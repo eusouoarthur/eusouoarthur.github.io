@@ -399,3 +399,33 @@ p.previa { font-size: 18px; margin: 12px 0 20px; line-height: 1.4; }
 
 /* Fase 9: prévia de matérias com trecho do texto */
 .janela-txt { font-size: 14px; line-height: 1.45; color: var(--fg2); margin-top: 4px; }
+
+/* Página de matéria */
+.materia-wrap { max-width: 680px; margin: 0 auto; padding: 32px var(--pad) 64px; overflow-x: hidden; }
+.materia-voltar { display: inline-block; margin-bottom: 16px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--fg2); text-decoration: none; }
+.materia-voltar:hover { color: var(--fg); }
+.materia-wrap .mono { margin-bottom: 8px; }
+.materia-wrap h1 { font-size: clamp(28px, 4.5vw, 40px); line-height: 1.15; font-weight: 500; margin-bottom: 8px; }
+.materia-linhafina { font-size: 19px; line-height: 1.4; color: var(--fg2); margin-bottom: 12px; }
+.materia-meta { font-size: 15px; color: var(--fg2); margin-bottom: 24px; }
+.materia-capa { margin: 0 calc(-1 * var(--pad)) 32px; }
+.materia-capa img { width: 100%; height: auto; display: block; }
+.materia-texto { font-family: var(--texto); font-size: 18px; line-height: 1.65; color: var(--fg); }
+.materia-texto p { margin-top: 1.25em; }
+.materia-texto p:first-child { margin-top: 0; }
+.materia-texto h3 { font-family: var(--font); font-size: 21px; font-weight: 500; margin-top: 1.5em; }
+.materia-texto blockquote { border-left: 3px solid var(--cor); padding-left: 16px; color: var(--fg2); margin: 1.25em 0; font-style: italic; }
+.materia-texto a { color: var(--cor); text-decoration: underline; }
+.materia-video { margin: 1.5em 0; text-align: center; }
+.materia-video video { max-width: 100%; height: auto; background: #000; border-radius: 2px; }
+.materia-video video[style*="max-width:360px"] { max-width: 360px; margin-left: auto; margin-right: auto; display: block; }
+.materia-fotos { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); }
+@media (min-width: 600px) { .materia-fotos { grid-template-columns: 1fr 1fr; } }
+.materia-fotos figure { margin: 0; }
+.materia-fotos img { width: 100%; height: auto; display: block; border-radius: var(--r); background: var(--bg2); }
+.materia-original { display: inline-flex; align-items: center; gap: .5em; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); }
+.materia-erro { font-size: 18px; color: var(--fg2); text-align: center; padding: 40px 0; }
+@media (max-width: 375px) {
+  .materia-wrap { padding-left: 16px; padding-right: 16px; }
+  .materia-capa { margin-left: -16px; margin-right: -16px; }
+}

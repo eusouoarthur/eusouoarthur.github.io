@@ -207,6 +207,7 @@
     var m = p.materia && window.MATERIAS ? window.MATERIAS[p.materia] : null;
     var href = (isLink && m && m.url) ? m.url : A.ROOT + (salaNaParede(p, null) || S.salas[0]).pasta + '/#' + encodeURIComponent(p.id);
     var target = isLink ? ' target="_blank" rel="noopener"' : '';
+    if (p.paginaPropria) { href = A.ROOT + 'materia/?m=' + encodeURIComponent(p.id); target = ''; }
     var tag = isLink ? 'a' : 'a';
     var d = document.createElement('div');
     d.innerHTML = '<' + tag + ' class="pp" data-id="' + esc(p.id) + '" href="' + esc(href) + '"' + target + '>' + fig + '<span class="pp-t">' + esc(p.titulo) + '</span>' + (meta ? '<span class="pp-m">' + esc(meta) + '</span>' : '') + '</' + tag + '>';

@@ -110,11 +110,11 @@
       link: { url: "https://www.youtube.com/watch?v=L-AX8xtm0do", rotulo: "Ver no canal do Correio" } },
     { id: "m-cerrado", salas: ["jornalismo"], titulo: "A bordo de Kombi, Escola do Cerrado dá aula de resistência e transformação social", periodo: "2023", onde: "Correio Braziliense", papel: "Texto, fotos e reel", shape: "h",
       resumo: "Reportagem sobre a escola itinerante numa Kombi, que atende crianças em vulnerabilidade; escrevi o texto, fotografei e fiz o reel, para o Correio Braziliense.",
-      imgs: ["media/img/fotos/cerrado-01.jpg", "media/img/fotos/cerrado-02.jpg", "media/img/fotos/cerrado-03.jpg", "media/img/fotos/cerrado-04.jpg", "media/img/fotos/cerrado-05.jpg", "media/img/fotos/cerrado-06.jpg", "media/img/fotos/cerrado-07.jpg", "media/img/materias/m-cerrado-08.jpg", "media/img/materias/m-cerrado-09.jpg", "media/img/materias/m-cerrado-10.jpg"], materia: "correio-escola-do-cerrado" },
+      imgs: ["media/img/fotos/cerrado-01.jpg", "media/img/fotos/cerrado-02.jpg", "media/img/fotos/cerrado-03.jpg", "media/img/fotos/cerrado-04.jpg", "media/img/fotos/cerrado-05.jpg", "media/img/fotos/cerrado-06.jpg", "media/img/fotos/cerrado-07.jpg", "media/img/materias/m-cerrado-08.jpg", "media/img/materias/m-cerrado-09.jpg", "media/img/materias/m-cerrado-10.jpg"], materia: "correio-escola-do-cerrado", paginaPropria: true },
     { id: "m-cool", salas: ["jornalismo", "video"], titulo: "De Brasília, banda Cool Sorcery se prepara para turnê na Europa", periodo: "2024", onde: "Metrópoles", papel: "Texto e vídeo", shape: "h",
       imgs: ["media/img/materias/m-cool-01.jpg"],
       resumo: "Matéria sobre a banda de Brasília que se prepara para turnê na Europa; escrevi o texto e fiz o vídeo para o Metrópoles.",
-      video: V + "metropoles-cool-sorcery.mp4", poster: V + "metropoles-cool-sorcery.jpg", materia: "metropoles-cool-sorcery" },
+      video: V + "metropoles-cool-sorcery.mp4", poster: V + "metropoles-cool-sorcery.jpg", materia: "metropoles-cool-sorcery", paginaPropria: true },
     { id: "pinheiros", salas: ["video", "jornalismo"], titulo: "Fim dos pinheiros do Parque da Cidade", periodo: "2023", onde: "Correio Braziliense", papel: "Vídeo e edição", shape: "wide",
       resumo: "A retirada de 1.628 pinheiros do Bosque dos Pinheiros e o que vem no lugar; fiz vídeo e edição para o Correio Braziliense.",
       video: V + "correio-pinheiros-parque-da-cidade.mp4", poster: V + "correio-pinheiros-parque-da-cidade.jpg",
@@ -125,7 +125,7 @@
       link: { url: "https://www.youtube.com/watch?v=CzPKTIp7hNk", rotulo: "Ver no canal do Correio" } },
     { id: "m-menos", salas: ["jornalismo"], titulo: "Menos é Mais retorna a Brasília com show Churrasquinho Menos é Mais", periodo: "2023", onde: "Correio Braziliense", papel: "Texto, foto e reel", shape: "h",
       resumo: "Matéria sobre a volta do show Churrasquinho Menos é Mais a Brasília; escrevi o texto, fotografei e fiz o reel, para o Correio Braziliense.",
-      imgs: ["media/img/fotos/menos-e-mais-01.jpg", "media/img/materias/m-menos-02.jpg"], materia: "correio-menos-e-mais" },
+      imgs: ["media/img/fotos/menos-e-mais-01.jpg", "media/img/materias/m-menos-02.jpg"], materia: "correio-menos-e-mais", paginaPropria: true },
     { id: "m-sora", salas: ["jornalismo"], titulo: "Empresa do ChatGPT apresenta Sora, ferramenta que gera vídeos", periodo: "2024", onde: "Correio Braziliense", papel: "Texto", shape: "h",
       imgs: ["media/img/materias/m-sora-01.jpg"],
       resumo: "Matéria sobre o lançamento da ferramenta de vídeo da empresa do ChatGPT; escrevi o texto para o Correio Braziliense.",
@@ -275,9 +275,7 @@
       resumo: "Transforma uma matéria numa sequência de tweets no padrão da editoria, com o corte no tamanho certo.",
       detalhe: "Feito com ajuda de IA, para resolver um problema real do dia a dia. Detalhes e código em breve." }
 
-    /* RETIRADO em 17/11/2026 a pedido do Arthur (o vídeo não é dele):
-    { id: "m-agi", salas: ["jornalismo", "video"], titulo: "“Agi por instinto”, diz jovem esfaqueado ao defender mulher de assédio", periodo: "2026", onde: "Metrópoles", papel: "Texto e vídeo (a confirmar)", shape: "v",
-      video: V + "metropoles-agi-por-instinto.mp4", poster: V + "metropoles-agi-por-instinto.jpg", materia: "metropoles-agi-por-instinto" }, */
+
     /* RETIRADO da sala Fotos em 17/11/2026 a pedido do Arthur (as fotos continuam dentro das matérias):
     { id: "f-cerrado", salas: ["fotos"], titulo: "Escola do Cerrado", periodo: "2023", onde: "Correio Braziliense", papel: "Fotografia", shape: "h",
       imgs: imgs("fotos", ["cerrado-01", "cerrado-02", "cerrado-03", "cerrado-04", "cerrado-05", "cerrado-06", "cerrado-07"]) },
