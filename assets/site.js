@@ -212,6 +212,9 @@
         return '<div class="janela-pg" style="--i:' + i + '">' + pic(src, i === 0 ? '340px' : '170px') + mais + '</div>';
       }).join('');
       janelaEl.dataset.n = String(imgs.length);
+      // Feed (Social Media): todas as imagens do mesmo tamanho, em grade, como no Instagram (pares que se completam ficam lado a lado).
+      janelaEl.dataset.feed = d.feed ? '1' : '';
+      janelaEl.style.setProperty('--cols', String(Math.min(imgs.length, 3)));
       var ehMateria = !!(d.materia && window.MATERIAS && window.MATERIAS[d.materia]);
       var txtMateria = '';
       if (ehMateria) {
@@ -273,7 +276,63 @@
     if (vivoEl) { vivoEl.classList.remove('on'); var v = vivoEl.querySelector('video'); if (v) { v.pause(); v.removeAttribute('src'); v.load(); } vivoEl.innerHTML = ''; }
   }
   window.addEventListener('scroll', janelaEsconder, { passive: true });
-  window.AR = { janelaMostrar: janelaMostrar, janelaEsconder: janelaEsconder, pic: pic, ROOT: ROOT, HOME: HOME, S: S, esc: esc, caminho: caminho, thumb: thumb, fmtData: fmtData, codificar: codificar, decodificar: decodificar, ordemAtual: ordemAtual, alternarTema: alternarTema, renderTopo: renderTopo, renderRodape: renderRodape };
+  // Ícone da capa (26/11/2026, pedido do Arthur), na home e em todas as páginas.
+  // Diz o tipo de mídia (vídeo, vídeo vertical, galeria de vídeos, matéria, galeria); a cor vem da categoria da curadoria.
+  // Categoria da peça (a primeira da curadoria em que ela aparece): dá a cor da etiqueta.
+  function categoriaDe(id) {
+    var achou = '';
+    ((window.CATEGORIAS && window.CATEGORIAS.categorias) || []).forEach(function (c) { if (!achou && c.subs.some(function (s) { return s.pecas.indexOf(id) >= 0; })) achou = c.id; });
+    return achou;
+  }
+  function subsDe(id) {
+    var out = [];
+    ((window.CATEGORIAS && window.CATEGORIAS.categorias) || []).forEach(function (c) { c.subs.forEach(function (s) { if (s.pecas.indexOf(id) >= 0) out.push(s.nome); }); });
+    return out;
+  }
+  function etiquetaDe(p, img) {
+    var subs = subsDe(p.id), nVid = (p.videos || []).length + (p.video ? 1 : 0);
+    var corp = subs.indexOf('Institucional e comercial') >= 0;
+    var d = img && window.IMAGENS && window.IMAGENS[img], emPe = d && d[0] / d[1] < 0.8;
+    if (nVid > 1) return 'galeria de vídeos';
+    if (nVid === 1) {
+      var v = corp ? 'vídeo corporativo' : emPe ? 'vídeo vertical' : 'vídeo';
+      return p.materia ? v + ' e matéria' : v;
+    }
+    if (p.materia) return 'matéria';
+    // Imagens: várias = "galeria"; uma só = sem etiqueta (a capa já mostra o que é).
+    return (p.imgs || []).length > 1 ? 'galeria' : '';
+  }
+  // Ícone no canto da capa (pedido do Arthur, 26/11/2026): branco, minimalista, sem caixinha nem cor.
+  // Um vídeo = play; vários vídeos = dois quadros sobrepostos com play; várias imagens = dois quadros com montanha e sol.
+  // Foto única e matéria ficam sem ícone. O nome do tipo fica no aria-label.
+  var ESCURO = '#0d1b2a';
+  // Galeria: três quadros próximos, os de trás deslocados para cima e para a esquerda; o da frente leva o sinal.
+  var PILHA = '<rect x="1" y="1" width="13" height="10" opacity=".4"/><rect x="3.5" y="3.5" width="13" height="10" opacity=".7"/><rect x="6" y="6" width="13" height="10"/>';
+  var ICONES = {
+    galeriaVideo: PILHA + '<path d="M11 8.4v5.2l4.4-2.6z" fill="' + ESCURO + '"/>',
+    galeria: PILHA + '<path d="M7.4 14.7l3-3.6 1.9 2 1.2-1.2 2.4 2.8z" fill="' + ESCURO + '"/><circle cx="15.6" cy="9" r="1.1" fill="' + ESCURO + '"/>'
+  };
+  function iconeChave(etq) {
+    if (etq === 'galeria de vídeos') return 'galeriaVideo';
+    if (etq === 'galeria') return 'galeria';
+    if (etq.indexOf('vídeo') === 0) return 'play';
+    return '';
+  }
+  function iconeDe(etq) {
+    return '<svg viewBox="0 0 20 17" width="22" height="19" fill="currentColor" aria-hidden="true">' + ICONES[iconeChave(etq)] + '</svg>';
+  }
+  // Um vídeo só: play grande no centro da capa, num círculo meio transparente (como botão de dar play).
+  function playCentro(etq) {
+    return '<span class="pp-play" role="img" aria-label="' + esc(etq) + '"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="rgba(0,0,0,.28)" stroke="#fff" stroke-width="2.5"/><path d="M26 20v24l19-12z" fill="#fff"/></svg></span>';
+  }
+  // HTML do ícone para a capa da peça: play grande no centro (um vídeo), pilha de quadros no canto (galerias) ou nada.
+  function iconeCapa(p, img) {
+    var etq = etiquetaDe(p, img), k = etq && iconeChave(etq);
+    if (!k) return '';
+    if (k === 'play') return playCentro(etq);
+    return '<span class="pp-tag" role="img" aria-label="' + esc(etq) + '" title="' + esc(etq) + '">' + iconeDe(etq) + '</span>';
+  }
+  window.AR = { iconeCapa: iconeCapa, janelaMostrar: janelaMostrar, janelaEsconder: janelaEsconder, pic: pic, ROOT: ROOT, HOME: HOME, S: S, esc: esc, caminho: caminho, thumb: thumb, fmtData: fmtData, codificar: codificar, decodificar: decodificar, ordemAtual: ordemAtual, alternarTema: alternarTema, renderTopo: renderTopo, renderRodape: renderRodape };
 
   document.addEventListener('DOMContentLoaded', function () {
     renderTopo(document.body.getAttribute('data-sala'));

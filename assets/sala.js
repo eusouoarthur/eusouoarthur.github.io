@@ -40,7 +40,7 @@
     if (!img) {
       return '<figure><div class="capa-texto"><span class="ct-veic">' + esc(p.onde || '') + '</span> <span class="ct-ano">' + esc(p.periodo || '') + '</span></div></figure>';
     }
-    return '<figure>' + A.pic(img, TAMANHOS[sala] || '(min-width: 1100px) 260px, 50vw') + (ehVideo && sala !== 'social' ? '<span class="play">vídeo</span>' : '') + '</figure>';
+    return '<figure>' + A.pic(img, TAMANHOS[sala] || '(min-width: 1100px) 260px, 50vw') + A.iconeCapa(p, img) + '</figure>';
   }
   function ehMateriaLink(p, salaAtual) {
     if (!p.materia) return false;
@@ -120,7 +120,7 @@
     var p = itens[+b.dataset.i], im = imagensDe(p);
     b.addEventListener('pointerenter', function (e) {
       if (e.pointerType !== 'mouse' || modoCelular.matches) return;
-      A.janelaMostrar(b, { titulo: p.titulo, meta: [p.periodo, p.onde].filter(Boolean).join(' · '), papel: papelOk(p) ? p.papel : '', img: im[0] || imgDaCapa(p), imgs: im, posters: (p.videos || []).map(function (v) { return v.poster; }).filter(Boolean), video: reduz.matches ? '' : videoDe(p), materia: p.materia || '' });
+      A.janelaMostrar(b, { titulo: p.titulo, meta: [p.periodo, p.onde].filter(Boolean).join(' · '), papel: papelOk(p) ? p.papel : '', img: im[0] || imgDaCapa(p), imgs: im, feed: sala === 'social', posters: (p.videos || []).map(function (v) { return v.poster; }).filter(Boolean), video: reduz.matches ? '' : videoDe(p), materia: p.materia || '' });
     });
     b.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.vivo'))) A.janelaEsconder(); });
   });

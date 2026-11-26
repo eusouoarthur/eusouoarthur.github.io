@@ -141,62 +141,12 @@
     if (!p.materia) return false;
     return true;
   }
-  // Etiqueta do tipo de trabalho, no canto superior esquerdo da capa (só na home, 26/11/2026).
-  // Diz o tipo de mídia (vídeo, vídeo vertical, galeria de vídeos, matéria, galeria); a cor vem da categoria da curadoria.
-  // Categoria da peça (a primeira da curadoria em que ela aparece): dá a cor da etiqueta.
-  function categoriaDe(id) {
-    var achou = '';
-    ((window.CATEGORIAS && window.CATEGORIAS.categorias) || []).forEach(function (c) { if (!achou && c.subs.some(function (s) { return s.pecas.indexOf(id) >= 0; })) achou = c.id; });
-    return achou;
-  }
-  function subsDe(id) {
-    var out = [];
-    ((window.CATEGORIAS && window.CATEGORIAS.categorias) || []).forEach(function (c) { c.subs.forEach(function (s) { if (s.pecas.indexOf(id) >= 0) out.push(s.nome); }); });
-    return out;
-  }
-  function etiquetaDe(p, img) {
-    var subs = subsDe(p.id), nVid = (p.videos || []).length + (p.video ? 1 : 0);
-    var corp = subs.indexOf('Institucional e comercial') >= 0;
-    var d = img && window.IMAGENS && window.IMAGENS[img], emPe = d && d[0] / d[1] < 0.8;
-    if (nVid > 1) return 'galeria de vídeos';
-    if (nVid === 1) {
-      var v = corp ? 'vídeo corporativo' : emPe ? 'vídeo vertical' : 'vídeo';
-      return p.materia ? v + ' e matéria' : v;
-    }
-    if (p.materia) return 'matéria';
-    // Imagens: várias = "galeria"; uma só = sem etiqueta (a capa já mostra o que é).
-    return (p.imgs || []).length > 1 ? 'galeria' : '';
-  }
-  // Ícone no canto da capa (pedido do Arthur, 26/11/2026): branco, minimalista, sem caixinha nem cor.
-  // Um vídeo = play; vários vídeos = dois quadros sobrepostos com play; várias imagens = dois quadros com montanha e sol.
-  // Foto única e matéria ficam sem ícone. O nome do tipo fica no aria-label.
-  var ESCURO = '#0d1b2a';
-  // Galeria: três quadros próximos, os de trás deslocados para cima e para a esquerda; o da frente leva o sinal.
-  var PILHA = '<rect x="1" y="1" width="13" height="10" opacity=".4"/><rect x="3.5" y="3.5" width="13" height="10" opacity=".7"/><rect x="6" y="6" width="13" height="10"/>';
-  var ICONES = {
-    galeriaVideo: PILHA + '<path d="M11 8.4v5.2l4.4-2.6z" fill="' + ESCURO + '"/>',
-    galeria: PILHA + '<path d="M7.4 14.7l3-3.6 1.9 2 1.2-1.2 2.4 2.8z" fill="' + ESCURO + '"/><circle cx="15.6" cy="9" r="1.1" fill="' + ESCURO + '"/>'
-  };
-  function iconeChave(etq) {
-    if (etq === 'galeria de vídeos') return 'galeriaVideo';
-    if (etq === 'galeria') return 'galeria';
-    if (etq.indexOf('vídeo') === 0) return 'play';
-    return '';
-  }
-  function iconeDe(etq) {
-    return '<svg viewBox="0 0 20 17" width="22" height="19" fill="currentColor" aria-hidden="true">' + ICONES[iconeChave(etq)] + '</svg>';
-  }
-  // Um vídeo só: play grande no centro da capa, num círculo meio transparente (como botão de dar play).
-  function playCentro(etq) {
-    return '<span class="pp-play" role="img" aria-label="' + esc(etq) + '"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="rgba(0,0,0,.28)" stroke="#fff" stroke-width="2.5"/><path d="M26 20v24l19-12z" fill="#fff"/></svg></span>';
-  }
   function criarPeca(p, destaque) {
     var img = capaDe(p);
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
-    var etq = etiquetaDe(p, img);
-    if (etq && !iconeChave(etq)) etq = '';
+    var icone = img ? A.iconeCapa(p, img) : '';
     var fig = img
-      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + (!etq ? '' : iconeChave(etq) === 'play' ? playCentro(etq) : '<span class="pp-tag" data-cat="' + esc(categoriaDe(p.id)) + '" role="img" aria-label="' + esc(etq) + '" title="' + esc(etq) + '">' + iconeDe(etq) + '</span>') + '</figure>'
+      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + icone + '</figure>'
       : '<figure class="pp-semimg"><span>' + esc([p.onde, p.periodo].filter(Boolean).join(' · ')) + '</span></figure>';
     var isLink = ehMateriaLink(p);
     var m = p.materia && window.MATERIAS ? window.MATERIAS[p.materia] : null;
@@ -209,7 +159,7 @@
     var a = d.firstChild;
     a.addEventListener('pointerenter', function (e) {
       if (e.pointerType !== 'mouse') return;
-      A.janelaMostrar(a, { titulo: p.titulo, meta: meta, papel: (p.papel && p.papel.indexOf('a confirmar') < 0) ? p.papel : '', img: img, imgs: p.imgs || [], posters: (p.videos || []).map(function (v) { return v.poster; }).filter(Boolean), video: p.video || (p.videos && p.videos[0] && p.videos[0].src) || '', materia: p.materia || '' });
+      A.janelaMostrar(a, { titulo: p.titulo, meta: meta, papel: (p.papel && p.papel.indexOf('a confirmar') < 0) ? p.papel : '', img: img, imgs: p.imgs || [], feed: p.salas[0] === 'social', posters: (p.videos || []).map(function (v) { return v.poster; }).filter(Boolean), video: p.video || (p.videos && p.videos[0] && p.videos[0].src) || '', materia: p.materia || '' });
     });
     a.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.vivo'))) A.janelaEsconder(); });
     var im = d.firstChild.querySelector('img');
@@ -231,6 +181,10 @@
   function renderParede(tema, animar, subId) {
     var el = document.getElementById('parede'), maisEl = document.getElementById('parede-mais');
     if (!el) return;
+    // Automação de processos (pedido do Arthur, 26/11/2026): no lugar das peças, um texto sobre o que ele sabe fazer.
+    var autoTexto = document.getElementById('automacao-texto'), ehAuto = !!(tema && tema.id === 'automacao');
+    if (autoTexto) { autoTexto.hidden = !ehAuto; el.hidden = ehAuto; }
+    if (ehAuto) { if (maisEl) maisEl.innerHTML = ''; return; }
     var max = (S.parede && S.parede.max) || 9;
     var fixas = pecasFixas();
     // Com categoria escolhida a parede mostra todas as peças dela (ou da subcategoria).

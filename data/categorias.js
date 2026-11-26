@@ -382,8 +382,7 @@ window.CATEGORIAS = {
      "media/img/social/vertice-05.jpg",
      "media/img/social/vertice-01.jpg",
      "media/img/social/vertice-02.jpg",
-     "media/img/social/vertice-03.jpg",
-     "media/img/social/vertice-24.jpg"
+     "media/img/social/vertice-03.jpg"
     ]
    },
    "omarazul": {
@@ -483,8 +482,6 @@ window.CATEGORIAS = {
      "media/img/social/conexis-14.jpg",
      "media/img/social/conexis-15.jpg",
      "media/img/social/conexis-16.jpg",
-     "media/img/social/conexis-5g-e-prioridade-post-do-instagram.jpg",
-     "media/img/social/conexis-card-cartilha-5g.jpg",
      "media/img/social/conexis-card-ig-fb-wpp.jpg",
      "media/img/social/conexis-retorno-do-congresso-post-para-instagram.jpg"
     ]

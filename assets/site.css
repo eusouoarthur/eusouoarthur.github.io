@@ -584,3 +584,16 @@ body.com-veu .subcats { transform: translateY(6px); }
 .pp:hover .pp-play { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
 .pp-tag svg { width: 22px; height: 19px; }
 @media (max-width: 599px) { .pp-play { width: 44px; height: 44px; } }
+/* Ícones também nas páginas (26/11/2026): sombra diagonal atrás do ícone do canto. */
+.peca figure:has(.pp-tag)::before { content: ""; position: absolute; z-index: 1; inset: 0; background: linear-gradient(135deg, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, 0) 50%); pointer-events: none; }
+.peca:hover .pp-play { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+/* Prévia de peças de feed (Social Media): grade de quadrados iguais, até 3 por linha (26/11/2026). */
+.janela[data-feed="1"] { width: 460px; }
+.janela[data-feed="1"] .janela-m { grid-template-columns: repeat(var(--cols, 3), 1fr); grid-template-rows: none; grid-auto-rows: auto; gap: 2px; }
+.janela[data-feed="1"] .janela-pg, .janela[data-feed="1"] .janela-pg:first-child, .janela[data-feed="1"] .janela-pg:nth-child(4) { grid-column: auto; grid-row: auto; aspect-ratio: 1; }
+.janela[data-feed="1"] .janela-pg img { height: 100%; object-fit: cover; }
+/* Texto de automação de processos (no lugar das peças quando essa categoria é escolhida). */
+.automacao-texto { max-width: 40ch; font-size: clamp(20px, 1.8vw, 24px); line-height: 1.45; animation: subcats-entra .35s var(--mov-curva); }
+.automacao-texto p + p { margin-top: 1em; }
+.automacao-texto p:first-child { font-family: var(--titulo); font-size: clamp(26px, 2.6vw, 34px); font-weight: 600; line-height: 1.2; letter-spacing: -.01em; }
+.automacao-texto a { color: var(--destaque); }
