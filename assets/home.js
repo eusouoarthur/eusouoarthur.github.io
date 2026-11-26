@@ -143,6 +143,12 @@
   }
   // Etiqueta do tipo de trabalho, no canto superior esquerdo da capa (só na home, 26/11/2026).
   // Usa o formato da peça (vídeo, em pé, vários vídeos, matéria, fotos) e as subcategorias da curadoria.
+  // Categoria da peça (a primeira da curadoria em que ela aparece): dá a cor da etiqueta.
+  function categoriaDe(id) {
+    var achou = '';
+    ((window.CATEGORIAS && window.CATEGORIAS.categorias) || []).forEach(function (c) { if (!achou && c.subs.some(function (s) { return s.pecas.indexOf(id) >= 0; })) achou = c.id; });
+    return achou;
+  }
   function subsDe(id) {
     var out = [];
     ((window.CATEGORIAS && window.CATEGORIAS.categorias) || []).forEach(function (c) { c.subs.forEach(function (s) { if (s.pecas.indexOf(id) >= 0) out.push(s.nome); }); });
@@ -152,7 +158,7 @@
     var subs = subsDe(p.id), nVid = (p.videos || []).length + (p.video ? 1 : 0);
     var corp = subs.indexOf('Institucional e comercial') >= 0;
     var d = img && window.IMAGENS && window.IMAGENS[img], emPe = d && d[0] / d[1] < 0.8;
-    if (nVid > 1) return corp ? 'galeria de vídeos corporativos' : 'galeria de vídeos';
+    if (nVid > 1) return 'galeria de vídeos';
     if (nVid === 1) {
       var v = corp ? 'vídeo corporativo' : emPe ? 'vídeo vertical' : 'vídeo';
       return p.materia ? v + ' e matéria' : v;
@@ -166,7 +172,7 @@
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
     var etq = etiquetaDe(p, img);
     var fig = img
-      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + (etq ? '<span class="pp-tag">' + esc(etq) + '</span>' : '') + '</figure>'
+      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + (etq ? '<span class="pp-tag" data-cat="' + esc(categoriaDe(p.id)) + '">' + esc(etq) + '</span>' : '') + '</figure>'
       : '<figure class="pp-semimg"><span>' + esc([p.onde, p.periodo].filter(Boolean).join(' · ')) + '</span></figure>';
     var isLink = ehMateriaLink(p);
     var m = p.materia && window.MATERIAS ? window.MATERIAS[p.materia] : null;

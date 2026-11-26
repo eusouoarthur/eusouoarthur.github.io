@@ -562,5 +562,10 @@ body.com-veu .subcats { transform: translateY(6px); }
 @media (max-width: 599px) { .parede { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 12px; } .parede .pp { grid-column: span 4; padding-bottom: 28px; } .parede .pp[data-f="q"], .parede .pp[data-f="v"] { grid-column: span 2; } }
 /* Etiqueta do tipo de trabalho na capa (só na home, 26/11/2026). */
 .parede .pp figure { position: relative; }
-.pp-tag { position: absolute; top: 10px; left: 10px; z-index: 1; padding: 5px 9px; background: var(--bg); color: var(--fg); font-family: var(--titulo); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: .01em; pointer-events: none; }
-@media (max-width: 599px) { .pp-tag { top: 6px; left: 6px; font-size: 11px; padding: 4px 7px; } }
+/* Etiqueta discreta: menor, peso leve, caixa alta; fundo meio transparente na cor da categoria. */
+.pp-tag { position: absolute; top: 8px; left: 8px; z-index: 1; padding: 4px 7px 3px; background: rgba(13, 27, 42, .6); color: #fff; font-family: var(--font); font-size: 10px; font-weight: 500; line-height: 1.1; letter-spacing: .08em; text-transform: uppercase; pointer-events: none; }
+.pp-tag[data-cat="audiovisual"] { background: rgba(229, 85, 63, .72); }
+.pp-tag[data-cat="design"] { background: rgba(196, 140, 24, .78); }
+.pp-tag[data-cat="redes"] { background: rgba(46, 132, 112, .75); }
+.pp-tag[data-cat="texto"] { background: rgba(104, 86, 170, .75); }
+.pp-tag[data-cat="automacao"] { background: rgba(90, 100, 115, .75); }
