@@ -125,7 +125,7 @@
       '<span class="tambor tambor-fixo" role="button" tabindex="0" aria-label="Escolher o que eu cuido (agora: ' + esc(palavra) + ')" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-cuido">' +
       '<span class="tambor-win" aria-hidden="true"><ul class="tambor-rolo">' +
       cats.map(function (c) { return c.frase; }).concat(['da comunicação.']).map(function (t, i) { return '<li style="--i:' + i + '"' + (t === palavra ? ' class="atual"' : '') + ' data-frase="' + esc(t) + '">' + esc(t) + '</li>'; }).join('') +
-      '</ul></span></span></div>' +
+      '</ul></span></span></div><a class="spotlight-sobre" href="' + HOME + '#site-sobre">Saiba mais <span>sobre mim</span></a>' +
       '<nav class="lista" id="menu-cuido" aria-label="O que eu cuido">' + itens + '</nav></section>';
   }
   function ligarCabecalhoFrase(el) {

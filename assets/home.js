@@ -476,7 +476,10 @@
   function rotear() {
     var h = location.hash.replace('#', '');
     if (h === 'historia') iniciarPercurso();
-    else mostrar('home');
+    else {
+      mostrar('home');
+      if (h === 'site-sobre') requestAnimationFrame(function () { document.getElementById('home-sobre').scrollIntoView(); });
+    }
   }
   window.addEventListener('hashchange', rotear);
   rotear();

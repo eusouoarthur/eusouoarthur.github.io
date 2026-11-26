@@ -379,8 +379,14 @@ h1, h2, h3 { font-family: var(--titulo); }
 /* Sobre e contato na home: tamanho de leitura */
 #home .prosa { max-width: none; font-size: clamp(20px, 1.8vw, 24px); line-height: 1.45; }
 #home .prosa p { max-width: 40ch; }
+#home .prosa .home-sobre-frase { max-width: none; white-space: nowrap; }
 #home .prosa p + p { margin-top: 1.2em; }
 #home .prosa p:last-child { max-width: none; font-size: 17px; display: flex; gap: 8px 28px; flex-wrap: wrap; }
+#home .prosa .home-sobre-link { font-family: var(--titulo); font-size: clamp(36px, 4.4vw, 60px); font-weight: 700; letter-spacing: -.025em; line-height: 1; color: var(--destaque); }
+.spotlight-sobre { display: block; width: fit-content; margin-top: 8px; font-family: var(--titulo); font-size: var(--cuido-tam); font-weight: 700; letter-spacing: -.03em; line-height: 1.02; text-decoration: none; color: var(--fg); }
+.spotlight-sobre span { color: var(--destaque); }
+body[data-sala="sobre"] .spotlight-sobre { display: none; }
+body[data-sala="sobre"] .hero-topo { padding-top: clamp(16px, 3vh, 32px); }
 .contato { flex-direction: column; gap: 8px; }
 .contato a { font-size: clamp(20px, 2vw, 26px); font-weight: 500; text-underline-offset: .2em; overflow-wrap: anywhere; transition: color .2s; }
 .contato a:hover { color: var(--destaque); }
@@ -479,8 +485,9 @@ body.veu-saindo .veu { opacity: 0; transition: opacity .45s ease; }
 /* 26/11 (pedido do Arthur): "sobre mim" e "home" descem, separados das categorias. */
 /* Ficam perto do pé da tela, seja qual for a altura dela (fixed sem left: mantém o alinhamento à esquerda do menu).
    No celular o menu vira gaveta: entram na lista, com um respiro. */
-.hero .lista .lista-fim { position: fixed; bottom: clamp(20px, 7vh, 72px); display: flex; gap: 10px; }
-@media (hover: none), (max-width: 599px) { .hero .lista .lista-fim { position: static; display: contents; } .hero .lista .lista-fim > :first-child { margin-top: 16px; } }
+.hero .lista .lista-fim { position: static; display: contents; }
+.hero .lista .lista-fim .tema-item { color: var(--destaque); border-color: var(--destaque); }
+.hero .lista .lista-fim .tema-item:hover, .hero .lista .lista-fim .tema-item:focus-visible { background: var(--destaque); color: var(--bg); }
 
 /* Celular e telas de toque: gaveta que sobe de baixo */
 @media (hover: none), (max-width: 599px) {
