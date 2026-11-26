@@ -476,6 +476,11 @@ body.veu-saindo .veu { opacity: 0; transition: opacity .45s ease; }
 .hero .lista button.tema-item[aria-pressed="true"]:hover { color: var(--bg); }
 .hero .lista .tudo-wrap { display: contents; }
 .hero .lista .tudo-wrap[hidden] { display: none !important; }
+/* 26/11 (pedido do Arthur): "sobre mim" e "home" descem, separados das categorias. */
+/* Ficam perto do pé da tela, seja qual for a altura dela (fixed sem left: mantém o alinhamento à esquerda do menu).
+   No celular o menu vira gaveta: entram na lista, com um respiro. */
+.hero .lista .lista-fim { position: fixed; bottom: clamp(20px, 7vh, 72px); display: flex; gap: 10px; }
+@media (hover: none), (max-width: 599px) { .hero .lista .lista-fim { position: static; display: contents; } .hero .lista .lista-fim > :first-child { margin-top: 16px; } }
 
 /* Celular e telas de toque: gaveta que sobe de baixo */
 @media (hover: none), (max-width: 599px) {

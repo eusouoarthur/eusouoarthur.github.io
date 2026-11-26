@@ -117,9 +117,9 @@
     var palavra = atual ? atual.frase : 'da comunicação.';
     var itens = cats.map(function (c, i) {
       return '<a class="tema-item" style="--k:' + i + '" href="' + HOME + '?cat=' + encodeURIComponent(c.id) + '#site" data-frase="' + esc(c.frase) + '"' + (atual && c.id === atual.id ? ' aria-current="page"' : '') + '>' + esc(c.nome.toLowerCase()) + '</a>';
-    }).join('') +
+    }).join('') + '<span class="lista-fim">' +
       '<a class="tema-item" style="--k:' + cats.length + '" href="' + ROOT + 'sobre/"' + (ativa === 'sobre' ? ' aria-current="page"' : '') + '>sobre mim</a>' +
-      '<a class="tema-item" style="--k:' + (cats.length + 1) + '" href="' + HOME + '#site">home</a>';
+      '<a class="tema-item" style="--k:' + (cats.length + 1) + '" href="' + HOME + '#site">home</a></span>';
     return '<section class="hero hero-topo"><div class="cuido"><span class="cuido-verbo">Oi! Eu sou o Arthur Ramos <span class="quebra">e eu cuido</span></span> ' +
       // O mesmo rolo da home: as frases das categorias e "da comunicação." giram como um tambor.
       '<span class="tambor tambor-fixo" role="button" tabindex="0" aria-label="Escolher o que eu cuido (agora: ' + esc(palavra) + ')" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-cuido">' +
