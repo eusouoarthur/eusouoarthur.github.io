@@ -448,3 +448,35 @@ h1, h2, h3 { font-family: var(--titulo); }
 .hero .subcats button.sub-item:hover, .hero .subcats button.sub-item[aria-pressed="true"] { color: var(--fg); }
 .hero .subcats button.sub-item[aria-pressed="true"] { text-decoration-thickness: 2px; text-decoration-color: var(--destaque); }
 
+
+/* Fase 13b (25/11/2026): menu da palavra. Passar o mouse na palavra vermelha abre as categorias embaixo da frase;
+   o resto da tela escurece um pouco e borra (o desfoque só existe com o menu aberto). No celular, toque abre uma gaveta. */
+.hero { position: relative; }
+.hero.menu-aberto { z-index: 31; }
+.tambor { cursor: pointer; outline-offset: 6px; }
+.tambor-rolo li.atual { text-decoration: underline; text-decoration-thickness: .055em; text-underline-offset: .1em; text-decoration-color: rgba(229, 85, 63, .4); transition: text-decoration-color .2s; }
+.tambor:hover .tambor-rolo li.atual, .menu-aberto .tambor-rolo li.atual { text-decoration-color: var(--destaque); }
+.veu { position: fixed; inset: 0; z-index: 30; background: rgba(13, 27, 42, .38); opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility 0s linear .3s, backdrop-filter .3s ease; }
+body.com-veu .veu { opacity: 1; visibility: visible; -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); transition: opacity .3s ease, backdrop-filter .3s ease; }
+
+.hero .lista { position: absolute; left: 0; right: 0; margin-top: 28px; max-width: none; display: flex; flex-wrap: wrap; gap: 10px; visibility: hidden; pointer-events: none; transition: visibility 0s linear .25s; }
+.hero.menu-aberto .lista { visibility: visible; pointer-events: auto; transition: none; }
+.hero .lista .tema-item, .hero .lista button.tema-item { font-family: var(--titulo); font-size: clamp(18px, 1.7vw, 24px); font-weight: 600; letter-spacing: -.01em; line-height: 1; padding: .55em .85em; border: 1px solid var(--line-forte); background: rgba(13, 27, 42, .7); color: var(--fg); text-decoration: none; opacity: 0; transform: translateY(-8px); transition: opacity .25s ease, transform .3s var(--mov-curva), background .15s, color .15s, border-color .15s; }
+.hero.menu-aberto .lista .tema-item { opacity: 1; transform: none; transition-delay: calc(var(--k, 0) * 35ms), calc(var(--k, 0) * 35ms), 0s, 0s, 0s; }
+.hero .lista span.tema-item { color: var(--fg2); border-style: dashed; }
+.hero .lista button.tema-item:hover, .hero .lista button.tema-item:focus-visible { background: var(--destaque); border-color: var(--destaque); color: var(--bg); text-decoration: none; }
+.hero .lista button.tema-item[aria-pressed="true"] { border-color: var(--destaque); color: var(--destaque); text-decoration: none; }
+.hero .lista button.tema-item[aria-pressed="true"]:hover { color: var(--bg); }
+.hero .lista .tudo-wrap { display: contents; }
+.hero .lista .tudo-wrap[hidden] { display: none !important; }
+
+/* Celular e telas de toque: gaveta que sobe de baixo */
+@media (hover: none), (max-width: 599px) {
+  .hero .lista { position: fixed; left: 0; right: 0; bottom: 0; top: auto; margin: 0; z-index: 32; flex-direction: column; gap: 0; padding: 18px var(--pad) calc(24px + env(safe-area-inset-bottom)); background: var(--bg2); border-top: 1px solid var(--line-forte); transform: translateY(100%); transition: transform .32s var(--mov-curva), visibility 0s linear .32s; }
+  .hero.menu-aberto .lista { transform: none; transition: transform .32s var(--mov-curva); }
+  .hero .lista::before { content: "Eu cuido…"; font-size: 14px; color: var(--fg2); padding-bottom: 6px; }
+  .hero .lista .tema-item, .hero .lista button.tema-item { width: 100%; text-align: left; font-size: 24px; padding: 14px 0; border: 0; border-bottom: 1px solid var(--line); background: none; transform: none; }
+  .hero .lista button.tema-item:hover, .hero .lista button.tema-item:focus-visible { background: none; color: var(--destaque); }
+  .hero .lista button.tema-item[aria-pressed="true"]:hover { color: var(--destaque); }
+}
+@media (prefers-reduced-motion: reduce) { .veu, .hero .lista, .hero .lista .tema-item { transition: none !important; } }

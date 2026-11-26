@@ -301,7 +301,10 @@
     lista.innerHTML = temas.map(function (t) {
       if (!pecasDoTema(t).length) return '<span class="tema-item">' + esc(t.curto) + '</span>';
       return '<button class="tema-item" type="button" data-tema="' + esc(t.id) + '" aria-pressed="false">' + esc(t.curto) + '</button>';
-    }).join(' · ') + '<span class="tudo-wrap" hidden> · <button class="tema-item" type="button" data-tema="">tudo</button></span>';
+    }).join('') + '<span class="tudo-wrap" hidden><button class="tema-item" type="button" data-tema="">tudo</button></span>';
+    lista.id = 'menu-cuido';
+    lista.setAttribute('role', 'menu');
+    [].forEach.call(lista.querySelectorAll('.tema-item'), function (b, i) { b.style.setProperty('--k', i); });
     function escolher(id) {
       if (hero.classList.contains('animando')) return;
       sel = (id && id !== sel) ? id : null;
@@ -329,8 +332,71 @@
     }
     lista.addEventListener('click', function (e) {
       var b = e.target.closest('button[data-tema]');
-      if (b) escolher(b.dataset.tema);
+      if (b) { escolher(b.dataset.tema); fecharMenu(); }
     });
+
+    // Menu da palavra (fase 13b): passar o mouse na palavra vermelha (ou tocar, no celular) abre as categorias
+    // embaixo da frase; o resto da tela escurece um pouco e borra. Passar o mouse numa opção já gira a palavra.
+    var veu = document.createElement('div');
+    veu.className = 'veu';
+    document.body.appendChild(veu);
+    tamborEl.removeAttribute('aria-hidden');
+    hero.querySelector('.tambor-win').setAttribute('aria-hidden', 'true');
+    tamborEl.setAttribute('role', 'button');
+    tamborEl.setAttribute('tabindex', '0');
+    tamborEl.setAttribute('aria-label', 'Escolher o que eu cuido');
+    tamborEl.setAttribute('aria-haspopup', 'menu');
+    tamborEl.setAttribute('aria-controls', 'menu-cuido');
+    tamborEl.setAttribute('aria-expanded', 'false');
+    var aberto = false, esperaFechar = null;
+    function posDe(id) { var k = -1; temas.forEach(function (t, i) { if (t.id === id) k = i; }); return k < 0 ? N - 1 : N - 2 - k; }
+    function abrirMenu() {
+      clearTimeout(esperaFechar);
+      if (aberto || hero.classList.contains('animando')) return;
+      aberto = true;
+      hero.classList.add('menu-aberto');
+      document.body.classList.add('com-veu');
+      tamborEl.setAttribute('aria-expanded', 'true');
+    }
+    function fecharMenu() {
+      clearTimeout(esperaFechar);
+      if (!aberto) return;
+      aberto = false;
+      hero.classList.remove('menu-aberto');
+      document.body.classList.remove('com-veu');
+      tamborEl.setAttribute('aria-expanded', 'false');
+      if (pos !== posDe(sel)) girarPara(posDe(sel));
+    }
+    function fecharDepois() { clearTimeout(esperaFechar); esperaFechar = setTimeout(fecharMenu, 220); }
+    var mouse = function (e) { return e.pointerType === 'mouse'; };
+    tamborEl.addEventListener('pointerenter', function (e) { if (mouse(e)) abrirMenu(); });
+    tamborEl.addEventListener('pointerleave', function (e) { if (mouse(e)) fecharDepois(); });
+    lista.addEventListener('pointerenter', function (e) { if (mouse(e)) clearTimeout(esperaFechar); });
+    lista.addEventListener('pointerleave', function (e) { if (mouse(e)) fecharDepois(); });
+    // Com mouse o clique só abre (o passar do mouse já abriu); com toque ou teclado, abre e fecha.
+    tamborEl.addEventListener('click', function (e) { if (aberto && e.pointerType !== 'mouse') fecharMenu(); else abrirMenu(); });
+    tamborEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+        e.preventDefault(); abrirMenu();
+        var b = lista.querySelector('button.tema-item'); if (b) b.focus();
+      }
+    });
+    lista.addEventListener('pointerover', function (e) {
+      var b = e.target.closest('button[data-tema]');
+      if (b && aberto && mouse(e)) girarPara(posDe(b.dataset.tema || null));
+    });
+    lista.addEventListener('focusin', function (e) {
+      var b = e.target.closest('button[data-tema]');
+      if (b && aberto) girarPara(posDe(b.dataset.tema || null));
+    });
+    lista.addEventListener('keydown', function (e) {
+      var bs = [].filter.call(lista.querySelectorAll('button.tema-item'), function (b) { return b.offsetParent; });
+      var i = bs.indexOf(document.activeElement);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); bs[(i + 1) % bs.length].focus(); }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); bs[(i - 1 + bs.length) % bs.length].focus(); }
+    });
+    veu.addEventListener('click', fecharMenu);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && aberto) { fecharMenu(); tamborEl.focus(); } });
     if (subcats) subcats.addEventListener('click', function (e) {
       var b = e.target.closest('button[data-sub]');
       if (!b || !sel) return;
