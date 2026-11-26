@@ -572,3 +572,6 @@ body.com-veu .subcats { transform: translateY(6px); }
 /* Sombra leve na diagonal, do canto superior esquerdo (etiqueta) até o meio da capa. */
 .parede .pp figure:has(.pp-tag)::before { content: ""; position: absolute; z-index: 1; inset: 0; background: linear-gradient(135deg, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, 0) 50%); pointer-events: none; }
 .pp-tag { z-index: 2; }
+/* Etiqueta virou ícone (26/11/2026): quadradinho translúcido na cor da categoria, ícone branco. */
+.pp-tag { display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; padding: 0; letter-spacing: 0; text-transform: none; color: #fff; }
+.pp-tag svg { display: block; }

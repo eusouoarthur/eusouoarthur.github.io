@@ -167,12 +167,24 @@
     // Imagens: várias = "galeria"; uma só = sem etiqueta (a capa já mostra o que é).
     return (p.imgs || []).length > 1 ? 'galeria' : '';
   }
+  // Ícone da etiqueta (pedido do Arthur, 26/11/2026): play para vídeo, quadradinhos para galeria,
+  // quadradinhos com play para galeria de vídeos, folha com linhas para matéria. O texto fica no aria-label.
+  var ICONES = {
+    play: '<path d="M5 3v10l8.5-5z"/>',
+    galeria: '<rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/>',
+    galeriaVideo: '<rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><path d="M9.5 8.8v5.4l4.5-2.7z"/>',
+    materia: '<path d="M3 1.5h7l3 3v10H3z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 7h5M5.5 9.5h5M5.5 12h3.5" stroke="currentColor" stroke-width="1.3"/>'
+  };
+  function iconeDe(etq) {
+    var k = etq === 'galeria de vídeos' ? 'galeriaVideo' : etq === 'galeria' ? 'galeria' : etq === 'matéria' ? 'materia' : 'play';
+    return '<svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">' + ICONES[k] + '</svg>';
+  }
   function criarPeca(p, destaque) {
     var img = capaDe(p);
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
     var etq = etiquetaDe(p, img);
     var fig = img
-      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + (etq ? '<span class="pp-tag" data-cat="' + esc(categoriaDe(p.id)) + '">' + esc(etq) + '</span>' : '') + '</figure>'
+      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + (etq ? '<span class="pp-tag" data-cat="' + esc(categoriaDe(p.id)) + '" role="img" aria-label="' + esc(etq) + '" title="' + esc(etq) + '">' + iconeDe(etq) + '</span>' : '') + '</figure>'
       : '<figure class="pp-semimg"><span>' + esc([p.onde, p.periodo].filter(Boolean).join(' · ')) + '</span></figure>';
     var isLink = ehMateriaLink(p);
     var m = p.materia && window.MATERIAS ? window.MATERIAS[p.materia] : null;
