@@ -535,25 +535,24 @@ body.com-veu .subcats { transform: translateY(6px); }
 /* Subcategorias embaixo da linha da frase, no topo de Trabalhos (26/11/2026). */
 .parede-secao .subcats { margin: 0 0 clamp(28px, 4vh, 40px); }
 
+/* Home: capa em pé ou quadrada aparece inteira, com a própria imagem desfocada preenchendo o resto do quadro. */
+.pp.pp-inteira figure img { object-fit: contain; position: relative; }
+.pp .pp-fundo { position: absolute; inset: 0; background-size: cover; background-position: center; filter: blur(22px) brightness(.55) saturate(1.2); transform: scale(1.25); pointer-events: none; }
 
 /* Proporção original de cada capa, sem cortar nada (pedido do Arthur, 26/11/2026).
    Salas: cada quadro tem a proporção real da imagem (--r) e a imagem entra inteira.
    Home: quadros 16:9; capa de outro formato aparece inteira, com a própria imagem desfocada atrás. */
+#parede .pp figure { aspect-ratio: 16 / 9; }
+#parede .pp img { object-fit: contain; }
 
-
-
-/* Mosaico desencontrado (26/11/2026): home e salas Vídeo, Design e Jornalismo. Montado por A.mosaico (site.js).
-   Duas colunas independentes, a da direita começa mais abaixo; pares de capas em pé com a segunda mais baixa.
-   Cada capa na proporção original (--r), inteira, sem corte. */
-.mos, .pecas.mos[data-sala], .parede.mos, .pecas.mos[data-sala], .parede.mos { display: flex; align-items: flex-start; gap: clamp(20px, 3vw, 40px); }
-.mos-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: clamp(36px, 4vw, 56px); }
-.mos-col + .mos-col { margin-top: clamp(32px, 5vw, 72px); }
-.mos-un.par { display: flex; align-items: flex-start; gap: clamp(12px, 1.6vw, 20px); }
-.mos .mos-un.par > * { flex: 1 1 0; min-width: 0; width: auto; }
-.mos .mos-un.par > :nth-child(2) { margin-top: clamp(28px, 4vw, 64px); }
-.mos .mos-un.so > * { width: 56%; }
-.mos .mos-un.so.dir > * { margin-left: auto; }
-.mos .peca, .mos .pp { width: auto; flex: none; padding-bottom: 0; }
-.mos .peca figure, .mos .peca[data-shape] figure, .mos .pp figure { aspect-ratio: var(--r); padding: 0; background: none; }
-.mos .peca img, .mos .pp img { object-fit: contain; }
-.mos-un.par .peca h3, .mos-un.par .pp-t { font-size: 15px; }
+/* Mosaico das salas Vídeo, Design e Jornalismo (26/11/2026): proporção original, sem corte, alturas diferentes.
+   A altura em linhas (grid-row-end) é medida por sala.js. */
+.pecas.mosaico { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-rows: 4px; gap: 0 var(--vao); grid-auto-flow: row dense; align-items: start; }
+.mosaico .peca { grid-column: span 6; padding-bottom: 40px; flex: none; width: auto; }
+.mosaico .peca[data-f="q"] { grid-column: span 3; }
+.mosaico .peca[data-f="v"] { grid-column: span 3; }
+.mosaico .peca figure, .mosaico .peca[data-shape] figure { aspect-ratio: var(--r); padding: 0; background: none; }
+.mosaico .peca img { object-fit: contain; }
+.mosaico .peca[data-f="v"] h3 { font-size: 15px; }
+@media (max-width: 899px) { .pecas.mosaico { grid-template-columns: repeat(8, minmax(0, 1fr)); } .mosaico .peca { grid-column: span 4; } .mosaico .peca[data-f="q"], .mosaico .peca[data-f="v"] { grid-column: span 2; } }
+@media (max-width: 599px) { .pecas.mosaico { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 12px; } .mosaico .peca { grid-column: span 4; padding-bottom: 28px; } .mosaico .peca[data-f="q"], .mosaico .peca[data-f="v"] { grid-column: span 2; } }

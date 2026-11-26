@@ -273,38 +273,7 @@
     if (vivoEl) { vivoEl.classList.remove('on'); var v = vivoEl.querySelector('video'); if (v) { v.pause(); v.removeAttribute('src'); v.load(); } vivoEl.innerHTML = ''; }
   }
   window.addEventListener('scroll', janelaEsconder, { passive: true });
-  // Mosaico desencontrado (26/11/2026, pedido do Arthur): duas colunas que descem cada uma no seu ritmo (a da direita
-  // começa mais abaixo). Deitada ocupa a largura da coluna; duas em pé ou quadradas seguidas viram um par, com a segunda
-  // um pouco mais baixa; cada bloco vai para a coluna mais curta. No celular, uma coluna só.
-  // Os itens precisam de data-f ("h", "q" ou "v") e da proporção em --r.
-  function mosaico(cont, sel) {
-    var itens = [].slice.call(cont.querySelectorAll(sel));
-    if (!itens.length) return;
-    itens.sort(function (a, b) { return (+a.dataset.ordem || 0) - (+b.dataset.ordem || 0); });
-    // Capa em pé ou quadrada procura par até 3 peças à frente (menos capa sozinha, menos vão do lado).
-    var resto = itens.slice(), blocos = [];
-    while (resto.length) {
-      var it = resto.shift();
-      if (it.dataset.f === 'h') { blocos.push([it]); continue; }
-      var j = -1;
-      for (var k = 0; k < Math.min(3, resto.length); k++) if (resto[k].dataset.f !== 'h') { j = k; break; }
-      blocos.push(j < 0 ? [it] : [it, resto.splice(j, 1)[0]]);
-    }
-    var n = cont.clientWidth < 600 ? 1 : 2, cols = [];
-    cont.classList.add('mos');
-    cont.textContent = '';
-    for (var c = 0; c < n; c++) { var col = document.createElement('div'); col.className = 'mos-col'; cont.appendChild(col); cols.push(col); }
-    var sozinho = 0;
-    blocos.forEach(function (bl) {
-      var u = document.createElement('div');
-      u.className = 'mos-un' + (bl.length > 1 ? ' par' : (bl[0].dataset.f !== 'h' ? ' so' + (sozinho++ % 2 ? ' dir' : '') : ''));
-      bl.forEach(function (it) { u.appendChild(it); });
-      var alvo = cols[0];
-      cols.forEach(function (col) { if (col.offsetTop + col.offsetHeight < alvo.offsetTop + alvo.offsetHeight) alvo = col; });
-      alvo.appendChild(u);
-    });
-  }
-  window.AR = { mosaico: mosaico, janelaMostrar: janelaMostrar, janelaEsconder: janelaEsconder, pic: pic, ROOT: ROOT, HOME: HOME, S: S, esc: esc, caminho: caminho, thumb: thumb, fmtData: fmtData, codificar: codificar, decodificar: decodificar, ordemAtual: ordemAtual, alternarTema: alternarTema, renderTopo: renderTopo, renderRodape: renderRodape };
+  window.AR = { janelaMostrar: janelaMostrar, janelaEsconder: janelaEsconder, pic: pic, ROOT: ROOT, HOME: HOME, S: S, esc: esc, caminho: caminho, thumb: thumb, fmtData: fmtData, codificar: codificar, decodificar: decodificar, ordemAtual: ordemAtual, alternarTema: alternarTema, renderTopo: renderTopo, renderRodape: renderRodape };
 
   document.addEventListener('DOMContentLoaded', function () {
     renderTopo(document.body.getAttribute('data-sala'));
