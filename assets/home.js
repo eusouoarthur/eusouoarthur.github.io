@@ -293,6 +293,7 @@
       rolo.style.setProperty('--rot', rot + 'deg');
       ajustar();
     }
+    rolo.style.setProperty('--rot', fim + 'deg');
     medir();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(medir);
     window.addEventListener('resize', medir);
@@ -415,8 +416,8 @@
 
     // Sem giro na abertura (pedido do Arthur, 26/11/2026): a frase já chega parada em "da comunicação.".
     // O rolo só gira quando se passa pelas categorias do menu.
-    rolo.style.setProperty('--rot', fim + 'deg');
-    rolo.classList.add('suave');
+    // A transição só liga depois que a frase já apareceu parada (senão o rolo gira de 0 até "da comunicação.").
+    requestAnimationFrame(function () { requestAnimationFrame(function () { rolo.classList.add('suave'); }); });
   }
 
   // Rotas: #historia abre o percurso; o resto abre a home direto.

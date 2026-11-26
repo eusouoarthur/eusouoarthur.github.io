@@ -137,7 +137,9 @@ window.CATEGORIAS = {
       "utilex",
       "buzz",
       "r-reel-2",
-      "cromo-logo"
+      "cromo-logo",
+      "cartilha-5g",
+      "fac"
      ]
     },
     {
@@ -157,8 +159,8 @@ window.CATEGORIAS = {
      "pecas": [
       "corujones",
       "bananas-capas",
-      "omarazul",
       "maxicrimi",
+      "omarazul",
       "bananas-camisetas",
       "tropecalia"
      ]
