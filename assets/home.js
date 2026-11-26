@@ -142,7 +142,7 @@
     return true;
   }
   // Etiqueta do tipo de trabalho, no canto superior esquerdo da capa (só na home, 26/11/2026).
-  // Usa o formato da peça (vídeo, em pé, vários vídeos, matéria, fotos) e as subcategorias da curadoria.
+  // Diz o tipo de mídia (vídeo, vídeo vertical, galeria de vídeos, matéria, galeria); a cor vem da categoria da curadoria.
   // Categoria da peça (a primeira da curadoria em que ela aparece): dá a cor da etiqueta.
   function categoriaDe(id) {
     var achou = '';
@@ -164,8 +164,8 @@
       return p.materia ? v + ' e matéria' : v;
     }
     if (p.materia) return 'matéria';
-    if (p.salas[0] === 'fotos') return 'galeria de fotos';
-    return (subs[0] || '').toLowerCase();
+    // Imagens: várias = "galeria"; uma só = sem etiqueta (a capa já mostra o que é).
+    return (p.imgs || []).length > 1 ? 'galeria' : '';
   }
   function criarPeca(p, destaque) {
     var img = capaDe(p);
