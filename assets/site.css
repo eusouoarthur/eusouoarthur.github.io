@@ -555,3 +555,12 @@ body.com-veu .subcats { transform: translateY(6px); }
 /* Home: capa em pé ou quadrada aparece inteira, com a própria imagem desfocada preenchendo o resto do quadro. */
 .pp.pp-inteira figure img { object-fit: contain; position: relative; }
 .pp .pp-fundo { position: absolute; inset: 0; background-size: cover; background-position: center; filter: blur(22px) brightness(.55) saturate(1.2); transform: scale(1.25); pointer-events: none; }
+
+/* Proporção original de cada capa, sem cortar nada (pedido do Arthur, 26/11/2026).
+   Salas: cada quadro tem a proporção real da imagem (--r) e a imagem entra inteira.
+   Home: quadros 16:9; capa de outro formato aparece inteira, com a própria imagem desfocada atrás. */
+.faixa { align-items: start; }
+.faixa .peca figure, .faixa .peca[data-shape] figure, .faixa[data-f="q"] .peca figure, .faixa[data-f="v"] .peca figure { aspect-ratio: var(--r); padding: 0; background: none; }
+.faixa .peca img, .pecas[data-sala="design"] .faixa .peca img { object-fit: contain; }
+#parede .pp figure { aspect-ratio: 16 / 9; }
+#parede .pp img { object-fit: contain; }
