@@ -5,6 +5,22 @@
   var HOME = ROOT || './';
   var S = window.SITE || { temas: [], salas: [], contato: {} };
 
+  // Curadoria do Arthur (data/categorias.js): as categorias viram os temas do "e eu cuido ___"
+  // e as peças marcadas "fora" somem do site inteiro.
+  var C = window.CATEGORIAS;
+  if (C) {
+    var fora = C.fora || [];
+    window.PECAS = (window.PECAS || []).filter(function (p) { return fora.indexOf(p.id) < 0; });
+    var existe = {};
+    window.PECAS.forEach(function (p) { existe[p.id] = true; });
+    S.temas = C.categorias.map(function (c) {
+      var subs = c.subs.map(function (s) {
+        return { id: s.id, nome: s.nome, pecas: s.pecas.filter(function (id) { return existe[id]; }) };
+      }).filter(function (s) { return s.pecas.length; });
+      return { id: c.id, frase: c.frase, curto: c.nome.toLowerCase(), subs: subs };
+    });
+  }
+
   // Tema: escuro por padrão; o visitante pode trocar e a escolha fica no navegador dele.
   var tema = null;
   try { tema = localStorage.getItem('tema'); } catch (e) {}
@@ -94,7 +110,7 @@
   function renderRodape() {
     var el = document.querySelector('.rodape');
     if (!el) return;
-    el.innerHTML = '<span>' + esc(S.nome) + ' · Brasília</span><span><a href="' + HOME + '#historia">Ver a história</a></span>';
+    el.innerHTML = '<span>' + esc(S.nome) + ' · Brasília</span>';
   }
 
   // <picture> com AVIF e WebP (tamanhos de data/imagens.js), carregamento sob demanda e width/height.

@@ -164,11 +164,15 @@
   // Parede de peças da home. "tema" nulo = mostra de tudo (uma peça de cada sala, em rodízio).
   function capaDe(p) { return (p.imgs && p.imgs[0]) || p.poster || (p.videos && p.videos[0] && p.videos[0].poster) || ''; }
   function salaPorId(id) { return S.salas.filter(function (s) { return s.id === id; })[0]; }
-  function pecasDoTema(t) {
-    var alvo = (t && t.salas) || [];
-    return (window.PECAS || []).filter(function (p) {
-      return p.salas.some(function (s) { return alvo.indexOf(s) >= 0; });
+  // Peças de uma categoria (todas as subcategorias, na ordem da curadoria, sem repetir) ou de uma subcategoria só.
+  function pecasDoTema(t, subId) {
+    var porId = {}, vistos = {}, out = [];
+    (window.PECAS || []).forEach(function (p) { porId[p.id] = p; });
+    ((t && t.subs) || []).forEach(function (s) {
+      if (subId && s.id !== subId) return;
+      s.pecas.forEach(function (id) { if (porId[id] && !vistos[id]) { vistos[id] = true; out.push(porId[id]); } });
     });
+    return out;
   }
   function pecasDeTudo(max) {
     var porSala = S.salas.map(function (s) { return (window.PECAS || []).filter(function (p) { return p.salas[0] === s.id; }); });
@@ -187,10 +191,6 @@
   // Cada peça da parede é um elemento com data-id; na troca de tema os que ficam são reaproveitados (e deslizam).
   function salaNaParede(p, tema) {
     var idSala = p.salas[0];
-    if (tema) {
-      var dentro = p.salas.filter(function (s) { return tema.salas.indexOf(s) >= 0; });
-      if (dentro.length) idSala = dentro[0];
-    }
     return salaPorId(idSala) || S.salas[0];
   }
   function ehMateriaLink(p) {
@@ -257,14 +257,14 @@
     esperaParede = setTimeout(function () { var el = document.getElementById('parede'); if (el) justificarParede(el); }, 120);
   });
   var trocaAtual = 0;
-  function renderParede(tema, animar) {
+  function renderParede(tema, animar, subId) {
     var el = document.getElementById('parede'), maisEl = document.getElementById('parede-mais');
     if (!el) return;
     var max = (S.parede && S.parede.max) || 9;
     var fixas = pecasFixas();
-    var lista = tema ? pecasDoTema(tema).slice(0, max) : (fixas.length ? fixas : pecasDeTudo(max));
+    // Com categoria escolhida a parede mostra todas as peças dela (ou da subcategoria).
+    var lista = tema ? pecasDoTema(tema, subId) : (fixas.length ? fixas : pecasDeTudo(max));
     var mais = '';
-    if (tema) mais = tema.salas.map(salaPorId).filter(Boolean).map(function (s) { return '<a href="' + A.ROOT + s.pasta + '/">Ver todos: ' + esc(s.nome) + '</a>'; }).join('');
     var vez = ++trocaAtual;
     var atuais = [].slice.call(el.querySelectorAll('.pp'));
     var porId = {};
@@ -323,7 +323,7 @@
     });
   }
 
-  // O tambor: "Cuido" fixo, os temas rodando como um rolo, parando em "de tudo."
+  // O tambor: "e eu cuido" fixo, as categorias rodando como um rolo, parando em "da comunicação."
   // Depois da animação, a lista de temas vira menu: clicar num tema troca a palavra e filtra a parede.
   function tambor() {
     var hero = document.querySelector('.hero');
@@ -335,7 +335,7 @@
     var ordem = A.ordemAtual();
     var temas = ordem.map(function (i) { return S.temas[i]; });
     // O rolo passa pelos temas de trás para a frente: o primeiro da lista é o último que se lê antes de "tudo".
-    var seq = temas.slice().reverse().map(function (t) { return t.frase; }).concat(['de tudo.']);
+    var seq = temas.slice().reverse().map(function (t) { return t.frase; }).concat(['da comunicação.']);
     var N = seq.length, ang = 360 / N;
     rolo.innerHTML = seq.map(function (t, i) { return '<li style="--i:' + i + '"' + (i === N - 1 ? ' class="fim"' : '') + '>' + esc(t) + '</li>'; }).join('');
     rolo.style.setProperty('--ang', ang + 'deg');
@@ -346,6 +346,8 @@
     var rot = fim;      // rotação atual do rolo, em graus
     var pos = N - 1;    // posição do rolo que está à mostra (N - 1 = "de tudo.")
     var sel = null;     // id do tema escolhido; null = tudo
+    var subSel = null;  // id da subcategoria escolhida; null = a categoria inteira
+    var subcats = hero.querySelector('.subcats');
     var larg = [];      // largura de cada palavra no tamanho cheio, em "em"
 
     // Mede cada palavra no tamanho cheio. Roda de novo quando a fonte carrega e quando a tela muda.
@@ -397,19 +399,39 @@
     function escolher(id) {
       if (hero.classList.contains('animando')) return;
       sel = (id && id !== sel) ? id : null;
+      subSel = null;
       var k = -1;
       temas.forEach(function (t, i) { if (t.id === sel) k = i; });
       girarPara(k < 0 ? N - 1 : N - 2 - k);
-      if (falado) falado.textContent = k < 0 ? 'de tudo.' : temas[k].frase + '.';
+      if (falado) falado.textContent = k < 0 ? 'da comunicação.' : temas[k].frase + '.';
       lista.querySelectorAll('button[data-tema]').forEach(function (b) {
         if (b.dataset.tema) b.setAttribute('aria-pressed', b.dataset.tema === sel ? 'true' : 'false');
       });
       lista.querySelector('.tudo-wrap').hidden = !sel;
+      renderSubcats(k < 0 ? null : temas[k]);
       renderParede(k < 0 ? null : temas[k], true);
+    }
+    // Subcategorias da categoria escolhida: "todas" + uma por subcategoria. Só aparecem se houver mais de uma.
+    function renderSubcats(t) {
+      if (!subcats) return;
+      var subs = (t && t.subs) || [];
+      if (subs.length < 2) { subcats.hidden = true; subcats.innerHTML = ''; return; }
+      subcats.innerHTML = [{ id: '', nome: 'todas' }].concat(subs).map(function (s) {
+        return '<button class="sub-item" type="button" data-sub="' + esc(s.id) + '" aria-pressed="' + ((s.id || null) === subSel) + '">' + esc(s.nome.toLowerCase()) + '</button>';
+      }).join(' · ');
+      subcats.hidden = false;
     }
     lista.addEventListener('click', function (e) {
       var b = e.target.closest('button[data-tema]');
       if (b) escolher(b.dataset.tema);
+    });
+    if (subcats) subcats.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-sub]');
+      if (!b || !sel) return;
+      subSel = b.dataset.sub || null;
+      var t = temas.filter(function (x) { return x.id === sel; })[0];
+      renderSubcats(t);
+      renderParede(t, true, subSel);
     });
     renderParede(null, false);
 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Curadoria — Separar as peças</title>
+  <link rel="stylesheet" href="../assets/fonts.css">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="curadoria.css">
+</head>
+<body>
+  <header class="cur-topo">
+    <h1>Separar as peças</h1>
+    <p class="cur-explica">Arraste para mudar a ordem. Clique numa peça para escolher onde ela entra. Tudo é salvo sozinho no navegador. Para guardar no computador, aperte Salvar.</p>
+    <p class="cur-salvar-linha"><button id="cur-salvar" class="btn btn-cheio" type="button">Salvar</button> <span id="cur-salvo" class="mono" aria-live="polite"></span></p>
+  </header>
+
+  <nav class="cur-abas" role="tablist" aria-label="Categorias"></nav>
+
+  <main class="cur-conteudo">
+    <section class="cur-subs" role="region" aria-label="Subcategorias"></section>
+
+    <section id="cur-sem" class="cur-sec-fixas" aria-label="Sem categoria">
+      <h2>Sem categoria</h2>
+      <div class="cur-grade"></div>
+    </section>
+
+    <section id="cur-fora" class="cur-sec-fixas" aria-label="Fora do site">
+      <h2>Fora do site</h2>
+      <div class="cur-grade"></div>
+    </section>
+  </main>
+
+  <footer class="cur-rodape">
+    <button id="cur-restaurar" type="button">Voltar à separação inicial</button>
+  </footer>
+
+  <div class="cur-editor" role="dialog" aria-modal="true" aria-labelledby="cur-editor-titulo" hidden>
+    <div class="cur-editor-conteudo">
+      <header class="cur-editor-topo">
+        <h2 id="cur-editor-titulo"></h2>
+        <button type="button" class="cur-editor-fechar" aria-label="Fechar">Fechar</button>
+      </header>
+      <div class="cur-editor-corpo"></div>
+    </div>
+  </div>
+
+  <script src="../data/pecas.js"></script>
+  <script src="inicial.js"></script>
+  <script src="curadoria.js"></script>
+</body>
+</html>
