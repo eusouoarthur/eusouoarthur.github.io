@@ -60,26 +60,20 @@
       '<h3>' + esc(p.titulo) + '</h3><span class="meta">' + esc(meta) + '</span>' + (papelOk(p) ? '<span class="papel">' + esc(p.papel) + '</span>' : '') + '</' + tag + '>';
   }).join('');
   if (!itens.length) grid.innerHTML = '<p class="vazio">Ainda não tem nada aqui.</p>';
-  // Mosaico (26/11/2026, pedido do Arthur): cada capa na proporção original, sem corte, com alturas diferentes.
-  // Grade de 12 colunas; a peça ocupa colunas pelo formato (deitada 6, quadrada e em pé 3) e as linhas pela altura real;
-  // as seguintes preenchem os buracos (grid-auto-flow: dense).
+  // Mosaico desencontrado (26/11/2026, pedido do Arthur): capa na proporção original, sem corte; ver A.mosaico em site.js.
   if (itens.length && (sala === 'video' || sala === 'design' || sala === 'jornalismo')) {
     grid.classList.add('mosaico');
     [].slice.call(grid.querySelectorAll('.peca')).forEach(function (b) {
       var r = parseFloat(b.style.getPropertyValue('--r')) || 1.6;
       b.dataset.f = r < 0.8 ? 'v' : r < 1.2 ? 'q' : 'h';
     });
-    var LINHA = 4;
-    var medirMosaico = function () {
-      [].slice.call(grid.querySelectorAll('.peca')).forEach(function (b) { b.style.gridRowEnd = 'auto'; });
-      [].slice.call(grid.querySelectorAll('.peca')).forEach(function (b) {
-        b.style.gridRowEnd = 'span ' + Math.ceil(b.getBoundingClientRect().height / LINHA);
-      });
-    };
-    medirMosaico();
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(medirMosaico);
-    var esperaMosaico;
-    window.addEventListener('resize', function () { clearTimeout(esperaMosaico); esperaMosaico = setTimeout(medirMosaico, 120); });
+    [].slice.call(grid.querySelectorAll('.peca')).forEach(function (b, k) { b.dataset.ordem = k; });
+    A.mosaico(grid, '.peca');
+    var colsMosaico = grid.querySelectorAll('.mos-col').length, esperaMosaico;
+    window.addEventListener('resize', function () {
+      clearTimeout(esperaMosaico);
+      esperaMosaico = setTimeout(function () { var n = grid.clientWidth < 600 ? 1 : 2; if (n !== colsMosaico) { A.mosaico(grid, '.peca'); colsMosaico = n; } }, 150);
+    });
   }
 
   // Prévia. No computador: mover o mouse na horizontal folheia as imagens da peça; vídeo toca um trecho mudo em loop.
