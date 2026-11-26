@@ -267,11 +267,13 @@
     var k = +b.dataset.k, acao = b.dataset.acao;
     if (acao === 'quadro') {
       var v = $('.ped-video[data-k="' + k + '"] video');
-      if (!v.videoWidth) { aviso('Toque o vídeo primeiro e pare no quadro que quiser.'); return; }
+      // Parado no começo, o vídeo mostra a capa atual por cima, mas o quadro de verdade é o primeiro: não grava.
+      if (!v.videoWidth || v.currentTime === 0) { aviso('Toque o vídeo (ou arraste a barra dele) e pare no quadro que quiser. Depois aperte o botão.'); return; }
       aviso('Guardando o quadro…');
       v.pause();
       capturar(v, atual + '-capa.jpg').then(function (cam) {
         mudar(function (p) { var vs = videosDe(p).slice(); vs[k] = Object.assign({}, vs[k], { poster: cam }); gravarVideos(p, vs); });
+        aviso('Capa do vídeo trocada e salva. Veja em "Capa atual".');
       }, function (er) { aviso('Não consegui pegar o quadro: ' + er.message); });
       return;
     }
