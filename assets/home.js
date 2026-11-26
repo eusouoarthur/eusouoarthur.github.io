@@ -349,12 +349,14 @@
     tamborEl.setAttribute('aria-haspopup', 'menu');
     tamborEl.setAttribute('aria-controls', 'menu-cuido');
     tamborEl.setAttribute('aria-expanded', 'false');
-    var aberto = false, esperaFechar = null;
+    var aberto = false, esperaFechar = null, esperaVeu = null;
     function posDe(id) { var k = -1; temas.forEach(function (t, i) { if (t.id === id) k = i; }); return k < 0 ? N - 1 : N - 2 - k; }
     function abrirMenu() {
       clearTimeout(esperaFechar);
       if (aberto || hero.classList.contains('animando')) return;
       aberto = true;
+      clearTimeout(esperaVeu);
+      document.body.classList.remove('veu-saindo');
       hero.classList.add('menu-aberto');
       document.body.classList.add('com-veu');
       tamborEl.setAttribute('aria-expanded', 'true');
@@ -364,7 +366,11 @@
       if (!aberto) return;
       aberto = false;
       hero.classList.remove('menu-aberto');
+      // O véu esmaece com o desfoque junto; a frase fica na frente até ele sumir.
+      document.body.classList.add('veu-saindo');
       document.body.classList.remove('com-veu');
+      clearTimeout(esperaVeu);
+      esperaVeu = setTimeout(function () { document.body.classList.remove('veu-saindo'); }, 480);
       tamborEl.setAttribute('aria-expanded', 'false');
       if (pos !== posDe(sel)) girarPara(posDe(sel));
     }

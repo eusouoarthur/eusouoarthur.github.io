@@ -456,12 +456,15 @@ h1, h2, h3 { font-family: var(--titulo); }
 .hero::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; }
 .tambor-win { overflow: hidden; }
 html, body { overflow-x: clip; }
-.hero.menu-aberto { z-index: 31; }
+.hero.menu-aberto, body.veu-saindo .hero { z-index: 31; }
 .tambor { cursor: pointer; outline-offset: 6px; }
 .tambor-rolo li.atual { text-decoration: underline; text-decoration-thickness: .055em; text-underline-offset: .1em; text-decoration-color: rgba(229, 85, 63, .4); transition: text-decoration-color .2s; }
 .tambor:hover .tambor-rolo li.atual, .menu-aberto .tambor-rolo li.atual { text-decoration-color: var(--destaque); }
-.veu { position: fixed; inset: 0; z-index: 30; background: rgba(13, 27, 42, .38); opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility 0s linear .3s, backdrop-filter .3s ease; }
-body.com-veu .veu { opacity: 1; visibility: visible; -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); transition: opacity .3s ease, backdrop-filter .3s ease; }
+/* O desfoque fica fixo enquanto o véu está visível; só a opacidade anima (entrar e sair), para não piscar. */
+.veu { position: fixed; inset: 0; z-index: 30; background: rgba(13, 27, 42, .38); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .45s ease; }
+body.com-veu .veu, body.veu-saindo .veu { visibility: visible; -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); }
+body.com-veu .veu { opacity: 1; pointer-events: auto; transition: opacity .45s ease; }
+body.veu-saindo .veu { opacity: 0; transition: opacity .45s ease; }
 
 .hero .lista { position: absolute; left: 0; right: 0; margin-top: 28px; max-width: none; display: flex; flex-wrap: wrap; gap: 10px; visibility: hidden; pointer-events: none; transition: visibility 0s linear .25s; }
 .hero.menu-aberto .lista { visibility: visible; pointer-events: auto; transition: none; }
