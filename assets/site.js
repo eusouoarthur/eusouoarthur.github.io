@@ -120,14 +120,37 @@
     }).join('') +
       '<a class="tema-item" style="--k:' + cats.length + '" href="' + ROOT + 'sobre/"' + (ativa === 'sobre' ? ' aria-current="page"' : '') + '>sobre mim</a>' +
       '<a class="tema-item" style="--k:' + (cats.length + 1) + '" href="' + HOME + '#site">home</a>';
-    return '<section class="hero hero-topo"><p class="cuido"><span class="cuido-verbo">Oi! Eu sou o Arthur Ramos <span class="quebra">e eu cuido</span></span> ' +
-      '<button class="tambor tambor-fixo" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-cuido">' + esc(palavra) + '</button></p>' +
+    return '<section class="hero hero-topo"><div class="cuido"><span class="cuido-verbo">Oi! Eu sou o Arthur Ramos <span class="quebra">e eu cuido</span></span> ' +
+      // O mesmo rolo da home: as frases das categorias e "da comunicação." giram como um tambor.
+      '<span class="tambor tambor-fixo" role="button" tabindex="0" aria-label="Escolher o que eu cuido (agora: ' + esc(palavra) + ')" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-cuido">' +
+      '<span class="tambor-win" aria-hidden="true"><ul class="tambor-rolo">' +
+      cats.map(function (c) { return c.frase; }).concat(['da comunicação.']).map(function (t, i) { return '<li style="--i:' + i + '"' + (t === palavra ? ' class="atual"' : '') + ' data-frase="' + esc(t) + '">' + esc(t) + '</li>'; }).join('') +
+      '</ul></span></span></div>' +
       '<nav class="lista" id="menu-cuido" aria-label="O que eu cuido">' + itens + '</nav></section>';
   }
   function ligarCabecalhoFrase(el) {
     var hero = el.querySelector('.hero-topo');
     if (!hero) return;
-    var palavra = hero.querySelector('.tambor'), lista = hero.querySelector('.lista'), original = palavra.textContent;
+    var palavra = hero.querySelector('.tambor'), lista = hero.querySelector('.lista');
+    var rolo = hero.querySelector('.tambor-rolo'), lis = [].slice.call(rolo.querySelectorAll('li'));
+    var N = lis.length, ang = 360 / N, rot = 0, pos = 0;
+    lis.forEach(function (li, i) { if (li.classList.contains('atual')) pos = i; });
+    var original = pos;
+    rolo.style.setProperty('--ang', ang + 'deg');
+    rolo.style.setProperty('--rz', (0.55 / Math.tan((ang / 2) * Math.PI / 180)).toFixed(3) + 'em');
+    function girarPara(i) {
+      var d = ((i * ang - rot) % 360 + 540) % 360 - 180;
+      rot += d; pos = i;
+      rolo.style.setProperty('--rot', rot + 'deg');
+      palavra.style.width = lis[i].offsetWidth + 'px';
+      lis.forEach(function (li, k) { li.classList.toggle('atual', k === i); });
+    }
+    function idxDaFrase(f) { for (var k = 0; k < N; k++) if (lis[k].dataset.frase === f) return k; return original; }
+    // Começa parado na palavra da página; a transição só liga depois (sem giro ao carregar).
+    rot = pos * ang; rolo.style.setProperty('--rot', rot + 'deg');
+    girarPara(pos);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { palavra.style.width = lis[pos].offsetWidth + 'px'; });
+    requestAnimationFrame(function () { requestAnimationFrame(function () { rolo.classList.add('suave'); }); });
     var veu = document.createElement('div'); veu.className = 'veu'; document.body.appendChild(veu);
     var aberto = false, espera = null, esperaVeu = null;
     function abrir() {
@@ -138,15 +161,16 @@
     function fechar() {
       clearTimeout(espera); if (!aberto) return; aberto = false;
       hero.classList.remove('menu-aberto'); document.body.classList.add('veu-saindo'); document.body.classList.remove('com-veu');
-      palavra.setAttribute('aria-expanded', 'false'); palavra.textContent = original;
+      palavra.setAttribute('aria-expanded', 'false'); if (pos !== original) girarPara(original);
       esperaVeu = setTimeout(function () { document.body.classList.remove('veu-saindo'); }, 480);
     }
     var mouse = function (e) { return e.pointerType === 'mouse'; };
     hero.addEventListener('pointerenter', function (e) { if (mouse(e)) abrir(); });
     hero.addEventListener('pointerleave', function (e) { if (mouse(e)) { clearTimeout(espera); espera = setTimeout(fechar, 220); } });
     palavra.addEventListener('click', function (e) { if (aberto && e.pointerType !== 'mouse') fechar(); else abrir(); });
-    lista.addEventListener('pointerover', function (e) { var a = e.target.closest('a[data-frase]'); if (a) palavra.textContent = a.dataset.frase; });
-    lista.addEventListener('pointerout', function (e) { var para = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('a[data-frase]'); if (!para) palavra.textContent = original; });
+    lista.addEventListener('pointerover', function (e) { var a = e.target.closest('a[data-frase]'); if (a && mouse(e)) girarPara(idxDaFrase(a.dataset.frase)); });
+    lista.addEventListener('pointerout', function (e) { var para = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('a[data-frase]'); if (!para && pos !== original) girarPara(original); });
+    palavra.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(); var a = lista.querySelector('a'); if (a) a.focus(); } });
     veu.addEventListener('click', fechar);
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && aberto) { fechar(); palavra.focus(); } });
   }

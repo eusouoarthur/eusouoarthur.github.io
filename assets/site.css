@@ -528,7 +528,7 @@ body.com-veu .subcats { opacity: 0; pointer-events: none; }
   .cuido .quebra::before { content: "\A"; white-space: pre; }
 }
 .cuido .tambor { display: inline-block; vertical-align: top; align-self: auto; transition: width .7s cubic-bezier(.45, 0, .2, 1), font-size var(--mov) var(--mov-curva); }
-.cuido .tambor-fixo { display: inline; }
+.cuido .tambor-fixo { display: inline-block; text-decoration: none; }
 .subcats { transition: opacity .35s ease, transform .35s var(--mov-curva); }
 body.com-veu .subcats { transform: translateY(6px); }
 
