@@ -14,14 +14,13 @@ window.CATEGORIAS = {
      "pecas": [
       "baladas",
       "pinheiros",
-      "m-cool",
+      "v-cool",
       "aline",
       "carnaval-videos",
       "r-ipes",
       "r-margaridas",
       "r-cerrado",
       "r-menos",
-      "carnaval-orquestra-marafreboi",
       "carnaval-baile-da-piki",
       "carnaval-baratinha",
       "carnaval-galinho",
@@ -53,7 +52,7 @@ window.CATEGORIAS = {
       "baladas",
       "pinheiros",
       "lago",
-      "m-cool",
+      "v-cool",
       "aline",
       "r-cerrado",
       "r-ipes",
@@ -70,7 +69,6 @@ window.CATEGORIAS = {
       "r-reel-1",
       "r-agua-mineral",
       "r-semana-universitaria",
-      "carnaval-orquestra-marafreboi",
       "carnaval-baratona",
       "carnaval-baile-da-piki",
       "carnaval-baratinha",
@@ -195,7 +193,7 @@ window.CATEGORIAS = {
      "id": "criacao",
      "nome": "Criação de conteúdo",
      "pecas": [
-      "m-cool",
+      "v-cool",
       "carnaval-menino-de-ceilandia",
       "carnaval-baratona",
       "carnaval-baile-da-piki",
@@ -306,7 +304,6 @@ window.CATEGORIAS = {
       "r-reel-1",
       "r-agua-mineral",
       "r-semana-universitaria",
-      "carnaval-orquestra-marafreboi",
       "carnaval-baratona",
       "carnaval-baile-da-piki",
       "carnaval-baratinha",
@@ -346,10 +343,282 @@ window.CATEGORIAS = {
   "r-roland",
   "lombrinhas-drone",
   "drone-lago",
-  "cau"
+  "cau",
+  "carnaval-orquestra-marafreboi",
+  "psb-maria-jose",
+  "r-reel-1",
+  "r-reel-2"
  ],
  "ajustes": {
-  "pecas": {},
+  "pecas": {
+   "carnaval-baratona": {
+    "poster": "media/novos/carnaval-baratona/carnaval-baratona-capa.jpg"
+   },
+   "carnaval-menino-de-ceilandia": {
+    "poster": "media/novos/carnaval-menino-de-ceilandia/carnaval-menino-de-ceilandia-capa.jpg"
+   },
+   "carnaval-orquestra-marafreboi": {
+    "video": "",
+    "poster": ""
+   },
+   "carnaval-baile-da-piki": {
+    "poster": "media/novos/carnaval-baile-da-piki/carnaval-baile-da-piki-capa-5.jpg"
+   },
+   "cromo-logo": {
+    "shape": "sq"
+   },
+   "neo": {
+    "imgs": [
+     "media/img/design/neo-01.jpg",
+     "media/img/design/neo-02.jpg",
+     "media/img/design/neo-03.jpg",
+     "media/img/design/neo-04.jpg",
+     "media/img/design/neo-05.jpg"
+    ]
+   },
+   "vertice": {
+    "imgs": [
+     "media/img/social/vertice-04.jpg",
+     "media/img/social/vertice-05.jpg",
+     "media/img/social/vertice-01.jpg",
+     "media/img/social/vertice-02.jpg",
+     "media/img/social/vertice-03.jpg",
+     "media/img/social/vertice-24.jpg"
+    ]
+   },
+   "omarazul": {
+    "imgs": [
+     "media/img/design/omarazul-02.jpg"
+    ]
+   },
+   "pintura": {
+    "imgs": [
+     "media/img/design/pintura-01.jpg"
+    ]
+   },
+   "psb-andreia": {
+    "imgs": [
+     "media/img/social/psb-andreia-18.jpg",
+     "media/img/social/psb-andreia-49.jpg",
+     "media/img/social/psb-andreia-56.jpg"
+    ]
+   },
+   "psb-dora": {
+    "imgs": [
+     "media/img/social/psb-dora-1.jpg",
+     "media/img/social/psb-dora-16.jpg",
+     "media/img/social/psb-dora-13.jpg",
+     "media/img/social/psb-dora-14.jpg"
+    ]
+   },
+   "baladas": {
+    "titulo": "Brasília boa de dançar: baladas antigas de Brasília",
+    "poster": "media/novos/baladas/baladas-capa.jpg"
+   },
+   "m-cerrado": {
+    "imgs": [
+     "media/img/fotos/cerrado-02.jpg",
+     "media/img/fotos/cerrado-04.jpg",
+     "media/img/fotos/cerrado-01.jpg",
+     "media/img/materias/m-cerrado-09.jpg",
+     "media/img/fotos/cerrado-07.jpg"
+    ]
+   },
+   "pinheiros": {
+    "poster": "media/novos/pinheiros/pinheiros-capa.jpg"
+   },
+   "corujones": {
+    "imgs": [
+     "media/img/design/corujones-01.jpg",
+     "media/img/design/corujones-02.jpg",
+     "media/img/design/corujones-3000x3000.jpg"
+    ]
+   },
+   "fac": {
+    "imgs": [
+     "media/img/design/fac-01.jpg",
+     "media/img/design/fac-02.jpg",
+     "media/img/design/fac-03.jpg",
+     "media/img/design/fac-04.jpg",
+     "media/img/design/fac-06.jpg",
+     "media/img/design/fac-fac-voce-mesmo-page-04.jpg",
+     "media/img/design/fac-fac-voce-mesmo-page-06.jpg",
+     "media/img/design/fac-fac-voce-mesmo-page-07.jpg",
+     "media/img/design/fac-fac-voce-mesmo-page-10.jpg",
+     "media/img/design/fac-fac-voce-mesmo-page-11.jpg"
+    ]
+   },
+   "buzz": {
+    "imgs": [
+     "media/img/design/buzz-guia.jpg",
+     "media/img/design/buzz-tela-3.jpg",
+     "media/img/design/buzz-paleta.jpg",
+     "media/img/design/buzz-plataforma.jpg",
+     "media/img/design/buzz-artboard-2-copy.jpg",
+     "media/img/design/buzz-artboard-2-copy-2.jpg",
+     "media/img/design/buzz-artboard-2-copy-3.jpg",
+     "media/img/design/buzz-artboard-2-copy-5.jpg",
+     "media/img/design/buzz-artboard-2-copy-6.jpg",
+     "media/img/design/buzz-artboard-2-copy-7.jpg",
+     "media/img/design/buzz-mockup.jpg",
+     "media/img/design/buzz-buzz-layout-2.jpg",
+     "media/img/design/buzz-tela-1.jpg"
+    ]
+   },
+   "conexao": {
+    "imgs": [
+     "media/img/design/conexao-01.jpg",
+     "media/img/design/conexao-02.jpg",
+     "media/img/design/conexao-03.jpg"
+    ]
+   },
+   "conexis-social": {
+    "imgs": [
+     "media/img/social/conexis-01.jpg",
+     "media/img/social/conexis-02.jpg",
+     "media/img/social/conexis-07.jpg",
+     "media/img/social/conexis-06.jpg",
+     "media/img/social/conexis-11.jpg",
+     "media/img/social/conexis-12.jpg",
+     "media/img/social/conexis-14.jpg",
+     "media/img/social/conexis-15.jpg",
+     "media/img/social/conexis-16.jpg",
+     "media/img/social/conexis-5g-e-prioridade-post-do-instagram.jpg",
+     "media/img/social/conexis-card-cartilha-5g.jpg",
+     "media/img/social/conexis-card-ig-fb-wpp.jpg",
+     "media/img/social/conexis-retorno-do-congresso-post-para-instagram.jpg"
+    ]
+   },
+   "bananas-social": {
+    "imgs": [
+     "media/img/social/bananas-01.jpg",
+     "media/img/social/bananas-02.jpg",
+     "media/img/social/bananas-03.jpg"
+    ],
+    "videos": [
+     {
+      "src": "media/video/bananas-reel-alternatreche.mp4",
+      "poster": "media/novos/bananas-social/bananas-social-capa.jpg",
+      "titulo": "Reel de divulgação do Alternatréche"
+     }
+    ]
+   },
+   "carnaval-baratinha": {
+    "poster": "media/novos/carnaval-baratinha/carnaval-baratinha-capa.jpg"
+   },
+   "carnaval-galinho": {
+    "poster": "media/novos/carnaval-galinho/carnaval-galinho-capa.jpg"
+   },
+   "carnaval-raparigueiros": {
+    "poster": "media/novos/carnaval-raparigueiros/carnaval-raparigueiros-capa.jpg"
+   },
+   "aline": {
+    "videos": [
+     {
+      "src": "media/video/aline-bertini-casa-1.mp4",
+      "poster": "media/novos/aline/aline-capa.jpg",
+      "titulo": "Casa 1, horizontal"
+     },
+     {
+      "src": "media/video/aline-bertini-casa-2-story.mp4",
+      "poster": "media/video/aline-bertini-casa-2-story.jpg",
+      "titulo": "Casa 2, story"
+     }
+    ]
+   },
+   "r-cerrado": {
+    "poster": "media/novos/r-cerrado/r-cerrado-capa.jpg"
+   },
+   "r-ipes": {
+    "poster": "media/novos/r-ipes/r-ipes-capa.jpg"
+   },
+   "r-margaridas": {
+    "poster": "media/novos/r-margaridas/r-margaridas-capa.jpg"
+   },
+   "r-indigenas": {
+    "poster": "media/novos/r-indigenas/r-indigenas-capa.jpg"
+   },
+   "r-beleza": {
+    "poster": "media/novos/r-beleza/r-beleza-capa-2.jpg"
+   },
+   "r-menos": {
+    "poster": "media/novos/r-menos/r-menos-capa.jpg"
+   },
+   "r-conune": {
+    "poster": "media/novos/r-conune/r-conune-capa.jpg"
+   },
+   "conexis-videos": {
+    "videos": [
+     {
+      "src": "media/video/conexis-2.mp4",
+      "poster": "media/video/conexis-2.jpg",
+      "titulo": "Vídeo 2"
+     },
+     {
+      "src": "media/video/conexis-3.mp4",
+      "poster": "media/video/conexis-3.jpg",
+      "titulo": "Vídeo 3"
+     },
+     {
+      "src": "media/video/conexis-5g-prioridade-story.mp4",
+      "poster": "media/video/conexis-5g-prioridade-story.jpg",
+      "titulo": "5G é prioridade (story)"
+     },
+     {
+      "src": "media/video/conexis-retorno-congresso-story.mp4",
+      "poster": "media/video/conexis-retorno-congresso-story.jpg",
+      "titulo": "Retorno do Congresso (story)"
+     },
+     {
+      "src": "media/video/conexis-video-1-v3.mp4",
+      "poster": "media/video/conexis-video-1-v3.jpg",
+      "titulo": "Vídeo 1 v3.2"
+     },
+     {
+      "src": "media/video/conexis-video-2.mp4",
+      "poster": "media/video/conexis-video-2.jpg",
+      "titulo": "Vídeo 2_2"
+     },
+     {
+      "src": "media/video/conexis-video-3.mp4",
+      "poster": "media/video/conexis-video-3.jpg",
+      "titulo": "Vídeo 3 V3"
+     },
+     {
+      "src": "media/video/conexis-dia-mulheres.mp4",
+      "poster": "media/video/conexis-dia-mulheres.jpg",
+      "titulo": "Dia Internacional das Mulheres"
+     }
+    ]
+   },
+   "r-park-shopping": {
+    "poster": "media/novos/r-park-shopping/r-park-shopping-capa.jpg"
+   },
+   "r-roland": {
+    "video": "",
+    "poster": ""
+   },
+   "r-agua-mineral": {
+    "poster": "media/novos/r-agua-mineral/r-agua-mineral-capa.jpg"
+   },
+   "correio-podcast-cortes": {
+    "videos": [
+     {
+      "src": "media/video/correio-podcast-corte-ze.mp4",
+      "poster": "media/video/correio-podcast-corte-ze.jpg",
+      "titulo": "Conversa com o Zé"
+     },
+     {
+      "src": "media/video/correio-podcast-corte-se-pa.mp4",
+      "poster": "media/video/correio-podcast-corte-se-pa.jpg",
+      "titulo": "Se pá"
+     }
+    ]
+   },
+   "ribaram-drone": {
+    "poster": "media/novos/ribaram-drone/ribaram-drone-capa.jpg"
+   }
+  },
   "novas": []
  }
 };
