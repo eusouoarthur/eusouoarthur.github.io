@@ -463,7 +463,7 @@ html, body { overflow-x: clip; }
 /* O desfoque fica fixo enquanto o véu está visível; só a opacidade anima (entrar e sair), para não piscar. */
 .veu { position: fixed; inset: 0; z-index: 30; background: rgba(13, 27, 42, .38); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .45s ease; }
 body.com-veu .veu, body.veu-saindo .veu { visibility: visible; -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); }
-body.com-veu .veu { opacity: 1; pointer-events: auto; transition: opacity .45s ease; }
+body.com-veu .veu { opacity: 1; transition: opacity .45s ease; }
 body.veu-saindo .veu { opacity: 0; transition: opacity .45s ease; }
 
 .hero .lista { position: absolute; left: 0; right: 0; margin-top: 28px; max-width: none; display: flex; flex-wrap: wrap; gap: 10px; visibility: hidden; pointer-events: none; transition: visibility 0s linear .25s; }
@@ -487,3 +487,16 @@ body.veu-saindo .veu { opacity: 0; transition: opacity .45s ease; }
   .hero .lista button.tema-item[aria-pressed="true"]:hover { color: var(--destaque); }
 }
 @media (prefers-reduced-motion: reduce) { .veu, .hero .lista, .hero .lista .tema-item { transition: none !important; } }
+
+/* Fase 13f (26/11/2026): sem cabeçalho; a frase é o topo. Navegação só pelo menu da palavra (sem barra fixa). */
+.topo { display: block; padding: 0; border: 0; }
+.hero { padding-top: clamp(56px, 11vh, 120px); }
+.sala-cab { padding-top: clamp(48px, 9vh, 96px); }
+@media (prefers-reduced-motion: reduce) { /* Cabeçalho das outras páginas: a frase da home, com a palavra da página (não fica presa ao rolar). */
+.hero-topo { padding-bottom: clamp(24px, 4vh, 40px); }
+.tambor-fixo { display: block; font: inherit; letter-spacing: inherit; line-height: inherit; color: var(--destaque); text-align: left; padding: 0; text-decoration: underline; text-decoration-thickness: .055em; text-underline-offset: .1em; text-decoration-color: rgba(229, 85, 63, .4); }
+.tambor-fixo:hover, .menu-aberto .tambor-fixo { text-decoration-color: var(--destaque); }
+.hero .lista a.tema-item[aria-current] { border-color: var(--destaque); color: var(--destaque); }
+.hero .lista a.tema-item:hover, .hero .lista a.tema-item:focus-visible { background: var(--destaque); border-color: var(--destaque); color: var(--bg); }
+.hero-topo + .sala-cab, .topo + .sala-cab { padding-top: clamp(16px, 3vh, 32px); }
+@media (hover: none), (max-width: 599px) { .hero .lista a.tema-item:hover { background: none; color: var(--destaque); } }

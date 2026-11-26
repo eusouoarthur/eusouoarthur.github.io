@@ -302,7 +302,8 @@
     lista.innerHTML = temas.map(function (t) {
       if (!pecasDoTema(t).length) return '<span class="tema-item">' + esc(t.curto) + '</span>';
       return '<button class="tema-item" type="button" data-tema="' + esc(t.id) + '" aria-pressed="false">' + esc(t.curto) + '</button>';
-    }).join('') + '<span class="tudo-wrap" hidden><button class="tema-item" type="button" data-tema="">home</button></span>';
+    }).join('') + '<a class="tema-item" href="' + A.ROOT + 'sobre/">sobre mim</a>' +
+      '<span class="tudo-wrap" hidden><button class="tema-item" type="button" data-tema="">home</button></span>';
     lista.id = 'menu-cuido';
     lista.setAttribute('role', 'menu');
     [].forEach.call(lista.querySelectorAll('.tema-item'), function (b, i) { b.style.setProperty('--k', i); });
@@ -416,7 +417,14 @@
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); bs[(i + 1) % bs.length].focus(); }
       if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); bs[(i - 1 + bs.length) % bs.length].focus(); }
     });
-    veu.addEventListener('click', fecharMenu);
+    // O véu não segura o mouse; tocar ou clicar fora da frase e do menu fecha.
+    document.addEventListener('pointerdown', function (e) {
+      if (aberto && !e.target.closest('.hero')) fecharMenu();
+    });
+    // Vindo de outra página com ?cat=: abre a home já na categoria escolhida.
+    var catUrl = new URLSearchParams(location.search).get('cat');
+    if (catUrl && temas.some(function (t) { return t.id === catUrl; })) { escolher(catUrl); history.replaceState(null, '', location.pathname + '#site'); }
+
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && aberto) { fecharMenu(); tamborEl.focus(); } });
     if (subcats) subcats.addEventListener('click', function (e) {
       var b = e.target.closest('button[data-sub]');
