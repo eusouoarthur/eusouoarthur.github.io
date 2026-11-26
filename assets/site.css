@@ -575,3 +575,6 @@ body.com-veu .subcats { transform: translateY(6px); }
 /* Etiqueta virou ícone (26/11/2026): quadradinho translúcido na cor da categoria, ícone branco. */
 .pp-tag { display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; padding: 0; letter-spacing: 0; text-transform: none; color: #fff; }
 .pp-tag svg { display: block; }
+/* Ícones sem caixinha e sem cor (26/11/2026): branco sobre a sombra diagonal. */
+.pp-tag, .pp-tag[data-cat] { background: none; width: auto; height: auto; top: 10px; left: 10px; color: #fff; }
+.pp-tag svg { width: 20px; height: 20px; }

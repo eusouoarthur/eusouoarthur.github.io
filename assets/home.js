@@ -167,22 +167,29 @@
     // Imagens: várias = "galeria"; uma só = sem etiqueta (a capa já mostra o que é).
     return (p.imgs || []).length > 1 ? 'galeria' : '';
   }
-  // Ícone da etiqueta (pedido do Arthur, 26/11/2026): play para vídeo, quadradinhos para galeria,
-  // quadradinhos com play para galeria de vídeos, folha com linhas para matéria. O texto fica no aria-label.
+  // Ícone no canto da capa (pedido do Arthur, 26/11/2026): branco, minimalista, sem caixinha nem cor.
+  // Um vídeo = play; vários vídeos = dois quadros sobrepostos com play; várias imagens = dois quadros com montanha e sol.
+  // Foto única e matéria ficam sem ícone. O nome do tipo fica no aria-label.
+  var ESCURO = '#0d1b2a';
   var ICONES = {
-    play: '<path d="M5 3v10l8.5-5z"/>',
-    galeria: '<rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/>',
-    galeriaVideo: '<rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><path d="M9.5 8.8v5.4l4.5-2.7z"/>',
-    materia: '<path d="M3 1.5h7l3 3v10H3z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 7h5M5.5 9.5h5M5.5 12h3.5" stroke="currentColor" stroke-width="1.3"/>'
+    play: '<path d="M6 3.5v13l11-6.5z"/>',
+    galeriaVideo: '<rect x="7" y="2" width="11" height="11" opacity=".55"/><rect x="2" y="7" width="11" height="11"/><path d="M6 9.8v5.4l4.6-2.7z" fill="' + ESCURO + '"/>',
+    galeria: '<rect x="7" y="2" width="11" height="11" opacity=".55"/><rect x="2" y="7" width="11" height="11"/><path d="M3.5 16.5l3.2-4 2 2.3 1.3-1.4 2.5 3.1z" fill="' + ESCURO + '"/><circle cx="10" cy="10.2" r="1.2" fill="' + ESCURO + '"/>'
   };
+  function iconeChave(etq) {
+    if (etq === 'galeria de vídeos') return 'galeriaVideo';
+    if (etq === 'galeria') return 'galeria';
+    if (etq.indexOf('vídeo') === 0) return 'play';
+    return '';
+  }
   function iconeDe(etq) {
-    var k = etq === 'galeria de vídeos' ? 'galeriaVideo' : etq === 'galeria' ? 'galeria' : etq === 'matéria' ? 'materia' : 'play';
-    return '<svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true">' + ICONES[k] + '</svg>';
+    return '<svg viewBox="0 0 20 20" width="20" height="20" fill="currentColor" aria-hidden="true">' + ICONES[iconeChave(etq)] + '</svg>';
   }
   function criarPeca(p, destaque) {
     var img = capaDe(p);
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
     var etq = etiquetaDe(p, img);
+    if (etq && !iconeChave(etq)) etq = '';
     var fig = img
       ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + (etq ? '<span class="pp-tag" data-cat="' + esc(categoriaDe(p.id)) + '" role="img" aria-label="' + esc(etq) + '" title="' + esc(etq) + '">' + iconeDe(etq) + '</span>' : '') + '</figure>'
       : '<figure class="pp-semimg"><span>' + esc([p.onde, p.periodo].filter(Boolean).join(' · ')) + '</span></figure>';
