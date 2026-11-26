@@ -31,7 +31,6 @@ window.SITE = {
   // Contato. Vazio até o Arthur dizer o que publicar.
   contato: {
     email: "arthuraramos@gmail.com",
-    linkedin: "https://www.linkedin.com/in/arthuraramos",
-    github: "https://github.com/pseudonimo207"
+    linkedin: "https://www.linkedin.com/in/arthuraramos"
   }
 };
