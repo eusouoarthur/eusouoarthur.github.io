@@ -603,7 +603,7 @@
   function init() {
     estadoAtual = carregarEstado();
     // Sem nada no navegador (outro endereço ou outro navegador): pega o que foi salvo no computador.
-    if (!localStorage.getItem(STORAGE_KEY) && location.port === '8777') {
+    if (!localStorage.getItem(STORAGE_KEY)) {
       fetch('selecao.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; })
         .then(function (d) { if (d && d.categorias) { estadoAtual = d; localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); render(); } })
         .catch(function () {});
