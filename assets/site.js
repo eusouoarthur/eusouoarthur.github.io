@@ -5,6 +5,23 @@
   var HOME = ROOT || './';
   var S = window.SITE || { temas: [], salas: [], contato: {} };
 
+  // Curadoria do Arthur (data/categorias.js): as categorias viram os temas do "e eu cuido ___"
+  // e as peças marcadas "fora" somem do site inteiro.
+  var C = window.CATEGORIAS;
+  if (window.aplicarAjustes) window.aplicarAjustes();
+  if (C) {
+    var fora = C.fora || [];
+    window.PECAS = (window.PECAS || []).filter(function (p) { return fora.indexOf(p.id) < 0; });
+    var existe = {};
+    window.PECAS.forEach(function (p) { existe[p.id] = true; });
+    S.temas = C.categorias.map(function (c) {
+      var subs = c.subs.map(function (s) {
+        return { id: s.id, nome: s.nome, pecas: s.pecas.filter(function (id) { return existe[id]; }) };
+      }).filter(function (s) { return s.pecas.length; });
+      return { id: c.id, frase: c.frase, curto: c.nome.toLowerCase(), subs: subs };
+    });
+  }
+
   // Tema: escuro por padrão; o visitante pode trocar e a escolha fica no navegador dele.
   var tema = null;
   try { tema = localStorage.getItem('tema'); } catch (e) {}
@@ -84,17 +101,59 @@
   function renderTopo(ativa) {
     var el = document.querySelector('.topo');
     if (!el) return;
-    var links = S.salas.map(function (s) {
-      return '<a href="' + ROOT + s.pasta + '/" style="--cor:var(--' + s.id + ')"' + (s.id === ativa ? ' aria-current="page"' : '') + '>' + esc(s.nome) + '</a>';
-    }).join('');
-    links += '<a href="' + ROOT + 'sobre/" style="--cor:var(--fg2)"' + (ativa === 'sobre' ? ' aria-current="page"' : '') + '>Sobre</a>';
-    el.innerHTML = '<a class="pular" href="#conteudo">Pular para o conteúdo</a><a class="marca" href="' + HOME + '#site">' + esc(S.nome) + '</a><nav class="nav" aria-label="Seções">' + links + '</nav>';
+    // Fase 13f (26/11/2026, pedido do Arthur): sem cabeçalho nem barra fixa. A navegação é o menu da palavra:
+    // na home, categorias e "sobre mim"; nas outras páginas, a mesma frase no topo, com categorias, "sobre mim" e "home".
+    var naHome = !document.body.getAttribute('data-sala');
+    el.innerHTML = '<a class="pular" href="#conteudo">Pular para o conteúdo</a>' + (naHome ? '' : cabecalhoFrase(ativa));
+    if (!naHome) ligarCabecalhoFrase(el);
     atualizarBotoesTema();
+  }
+  // Cabeçalho das outras páginas (26/11/2026, pedido do Arthur): a mesma frase da home é o topo de todas as páginas
+  // (não fica presa ao rolar). A palavra vermelha é a da página; o menu da palavra leva à home já filtrada.
+  var SALA_CAT = { design: 'design', social: 'redes', video: 'audiovisual', fotos: 'audiovisual', jornalismo: 'texto' };
+  function cabecalhoFrase(ativa) {
+    var cats = (window.CATEGORIAS && window.CATEGORIAS.categorias) || [];
+    var atual = cats.filter(function (c) { return c.id === SALA_CAT[ativa]; })[0];
+    var palavra = atual ? atual.frase : 'da comunicação.';
+    var itens = cats.map(function (c, i) {
+      return '<a class="tema-item" style="--k:' + i + '" href="' + HOME + '?cat=' + encodeURIComponent(c.id) + '#site" data-frase="' + esc(c.frase) + '"' + (atual && c.id === atual.id ? ' aria-current="page"' : '') + '>' + esc(c.nome.toLowerCase()) + '</a>';
+    }).join('') +
+      '<a class="tema-item" style="--k:' + cats.length + '" href="' + ROOT + 'sobre/"' + (ativa === 'sobre' ? ' aria-current="page"' : '') + '>sobre mim</a>' +
+      '<a class="tema-item" style="--k:' + (cats.length + 1) + '" href="' + HOME + '#site">home</a>';
+    return '<section class="hero hero-topo"><p class="cuido"><span class="cuido-verbo">Oi! Eu sou o Arthur Ramos <span class="quebra">e eu cuido</span></span> ' +
+      '<button class="tambor tambor-fixo" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-cuido">' + esc(palavra) + '</button></p>' +
+      '<nav class="lista" id="menu-cuido" aria-label="O que eu cuido">' + itens + '</nav></section>';
+  }
+  function ligarCabecalhoFrase(el) {
+    var hero = el.querySelector('.hero-topo');
+    if (!hero) return;
+    var palavra = hero.querySelector('.tambor'), lista = hero.querySelector('.lista'), original = palavra.textContent;
+    var veu = document.createElement('div'); veu.className = 'veu'; document.body.appendChild(veu);
+    var aberto = false, espera = null, esperaVeu = null;
+    function abrir() {
+      clearTimeout(espera); if (aberto) return; aberto = true;
+      clearTimeout(esperaVeu); document.body.classList.remove('veu-saindo');
+      hero.classList.add('menu-aberto'); document.body.classList.add('com-veu'); palavra.setAttribute('aria-expanded', 'true');
+    }
+    function fechar() {
+      clearTimeout(espera); if (!aberto) return; aberto = false;
+      hero.classList.remove('menu-aberto'); document.body.classList.add('veu-saindo'); document.body.classList.remove('com-veu');
+      palavra.setAttribute('aria-expanded', 'false'); palavra.textContent = original;
+      esperaVeu = setTimeout(function () { document.body.classList.remove('veu-saindo'); }, 480);
+    }
+    var mouse = function (e) { return e.pointerType === 'mouse'; };
+    hero.addEventListener('pointerenter', function (e) { if (mouse(e)) abrir(); });
+    hero.addEventListener('pointerleave', function (e) { if (mouse(e)) { clearTimeout(espera); espera = setTimeout(fechar, 220); } });
+    palavra.addEventListener('click', function (e) { if (aberto && e.pointerType !== 'mouse') fechar(); else abrir(); });
+    lista.addEventListener('pointerover', function (e) { var a = e.target.closest('a[data-frase]'); if (a) palavra.textContent = a.dataset.frase; });
+    lista.addEventListener('pointerout', function (e) { var para = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('a[data-frase]'); if (!para) palavra.textContent = original; });
+    veu.addEventListener('click', fechar);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && aberto) { fechar(); palavra.focus(); } });
   }
   function renderRodape() {
     var el = document.querySelector('.rodape');
     if (!el) return;
-    el.innerHTML = '<span>' + esc(S.nome) + ' · Brasília</span><span><a href="' + HOME + '#historia">Ver a história</a></span>';
+    el.innerHTML = '<span>' + esc(S.nome) + ' · Brasília</span>';
   }
 
   // <picture> com AVIF e WebP (tamanhos de data/imagens.js), carregamento sob demanda e width/height.

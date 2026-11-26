@@ -7,15 +7,23 @@
 <title>Painel</title>
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/bricolage-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/fonts.css">
 <link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="painel.css">
 <script>document.documentElement.setAttribute('data-theme','dark')</script>
 </head>
 <body>
+<nav class="painel-nav"><a href="./" aria-current="page">Painel</a> <a href="curadoria/">Separar as peças</a> <a href="pecas/">Editar peças</a> <a href="../#site">Ver o site</a></nav>
 <div class="painel">
   <p class="mono">Painel</p>
-  <h1>Ordem dos temas</h1>
-  <p class="explica">Arraste (ou use as setas) para colocar os temas na ordem que a vaga pede. O primeiro da lista é o último que aparece antes de "Cuido de tudo." e o primeiro da lista visível. Depois, gere o link e mande.</p>
+  <h1>Cuidar do site</h1>
+  <ul class="painel-atalhos">
+    <li><a href="curadoria/"><strong>Separar as peças</strong><span>Em que categoria cada peça entra, a ordem delas e o que fica fora do site.</span></a></li>
+    <li><a href="pecas/"><strong>Editar peças</strong><span>Ordem das imagens, capa de cada peça, quadro do vídeo que vira capa, arquivos novos e peças novas.</span></a></li>
+  </ul>
+  <h2 class="painel-h2">Ordem das categorias</h2>
+  <p class="explica">Arraste (ou use as setas) para colocar as categorias na ordem que a vaga pede. A primeira da lista é a última que gira antes de "eu cuido da comunicação." e a primeira da lista visível. Depois, gere o link e mande.</p>
   <ul class="ordem" id="ordem"></ul>
   <p class="previa" id="previa"></p>
   <div class="acoes">
@@ -28,6 +36,7 @@
   </div>
 </div>
 <script src="../data/site.js"></script>
+<script src="../data/categorias.js"></script>
 <script src="../assets/site.js"></script>
 <script src="../assets/painel.js"></script>
 </body>

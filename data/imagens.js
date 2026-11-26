@@ -732,6 +732,7 @@ window.IMAGENS = {
   "media/video/correio-carnaval-baratona.jpg": [540, 960, [400, 540]],
   "media/video/correio-carnaval-galinho.jpg": [540, 960, [400, 540]],
   "media/video/correio-carnaval-menino-de-ceilandia.jpg": [540, 960, [400, 540]],
+  "media/video/r-olhinhos.jpg": [540, 960, [400, 540]],
   "media/video/correio-carnaval-orquestra-marafreboi.jpg": [540, 960, [400, 540]],
   "media/video/correio-carnaval-raparigueiros.jpg": [540, 960, [400, 540]],
   "media/video/correio-drone-lago-paranoa.jpg": [960, 540, [400, 800]],

@@ -1,17 +1,13 @@
-// Página inicial: abertura, percurso (a história) e a home com o tambor do "Cuido".
+// Página inicial: a home com o tambor do "eu cuido" e o percurso (a história, em #historia).
 (function () {
   var A = window.AR, S = A.S, esc = A.esc, caminho = A.caminho;
-  var abertura = document.getElementById('abertura');
   var percurso = document.getElementById('percurso');
   var home = document.getElementById('home');
   var reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var visitou = false;
-  try { visitou = !!localStorage.getItem('visitou'); } catch (e) {}
-  function marcarVisita() { try { localStorage.setItem('visitou', '1'); } catch (e) {} }
 
   // Troca de telas com fade.
   function mostrar(tela) {
-    [abertura, percurso].forEach(function (t) {
+    [percurso].forEach(function (t) {
       if (t.id === tela) {
         if (t.hidden) { t.classList.add('saindo'); t.hidden = false; requestAnimationFrame(function () { requestAnimationFrame(function () { t.classList.remove('saindo'); }); }); }
       } else if (!t.hidden) {
@@ -26,58 +22,6 @@
     } else {
       document.body.classList.add('travado');
     }
-  }
-
-  // Abertura: o interlocutor fala em cima, as opções ficam embaixo.
-  var aberturaOk = false;
-  function iniciarAbertura() {
-    mostrar('abertura');
-    if (aberturaOk) return;
-    aberturaOk = true;
-    var f1 = abertura.querySelector('.f1'), f2 = abertura.querySelector('.f2'), op = abertura.querySelector('.opcoes');
-    // A fala aparece palavra por palavra; pausa maior na vírgula e no ponto. Clique ou tecla pula.
-    var palavras = [];
-    [f1, f2].forEach(function (p) {
-      var txt = p.textContent.trim().split(/\s+/);
-      p.textContent = '';
-      txt.forEach(function (w, k) {
-        var sp = document.createElement('span');
-        sp.className = 'palavra'; sp.textContent = w;
-        p.appendChild(sp);
-        if (k < txt.length - 1) p.appendChild(document.createTextNode(' '));
-        palavras.push(sp);
-      });
-    });
-    var PALAVRA = 180, VIRGULA = 400, PONTO = 800, timers = [];
-    function tudo() {
-      timers.forEach(clearTimeout); timers = [];
-      palavras.forEach(function (w) { w.classList.add('visivel'); });
-      op.classList.add('visivel');
-      document.removeEventListener('keydown', pular);
-    }
-    function pular(e) { if (!/^(Arrow|Enter$|Tab$)/.test(e.key)) tudo(); }
-    if (reduz) setTimeout(tudo, 400);
-    else {
-      var t = 300;
-      palavras.forEach(function (w) {
-        (function (t0) { timers.push(setTimeout(function () { w.classList.add('visivel'); }, t0)); })(t);
-        var fim = w.textContent.slice(-1);
-        t += PALAVRA + (/[.?!]/.test(fim) ? PONTO : /[,;:]/.test(fim) ? VIRGULA : 0);
-      });
-      timers.push(setTimeout(function () { op.classList.add('visivel'); }, t));
-    }
-    abertura.addEventListener('click', function (e) { if (!e.target.closest('button')) tudo(); });
-    document.addEventListener('keydown', pular);
-    abertura.querySelector('.sim').addEventListener('click', function () { marcarVisita(); location.hash = 'historia'; });
-    abertura.querySelector('.nao').addEventListener('click', function () { marcarVisita(); location.hash = 'site'; });
-    // Teclado: as setas escolhem entre as duas opções; Enter confirma (é o próprio botão).
-    var botoes = [abertura.querySelector('.sim'), abertura.querySelector('.nao')];
-    document.addEventListener('keydown', function (e) {
-      if (abertura.hidden) return;
-      var i = botoes.indexOf(document.activeElement);
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); botoes[(i + 1) % 2].focus(); }
-      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); botoes[i < 0 ? 1 : (i + 1) % 2].focus(); }
-    });
   }
 
   // Percurso: slides com peças reais, em ordem cronológica.
@@ -124,7 +68,7 @@
   function ligarPercurso() {
     var prox = percurso.querySelector('.prox'), ant = percurso.querySelector('.ant');
     prox.addEventListener('click', function () {
-      if (window.PERCURSO[idx].fim) { marcarVisita(); location.hash = 'site'; }
+      if (window.PERCURSO[idx].fim) { location.hash = 'site'; }
       else { idx++; renderSlide(); }
     });
     ant.addEventListener('click', function () { if (idx > 0) { idx--; renderSlide(); } });
@@ -164,11 +108,15 @@
   // Parede de peças da home. "tema" nulo = mostra de tudo (uma peça de cada sala, em rodízio).
   function capaDe(p) { return (p.imgs && p.imgs[0]) || p.poster || (p.videos && p.videos[0] && p.videos[0].poster) || ''; }
   function salaPorId(id) { return S.salas.filter(function (s) { return s.id === id; })[0]; }
-  function pecasDoTema(t) {
-    var alvo = (t && t.salas) || [];
-    return (window.PECAS || []).filter(function (p) {
-      return p.salas.some(function (s) { return alvo.indexOf(s) >= 0; });
+  // Peças de uma categoria (todas as subcategorias, na ordem da curadoria, sem repetir) ou de uma subcategoria só.
+  function pecasDoTema(t, subId) {
+    var porId = {}, vistos = {}, out = [];
+    (window.PECAS || []).forEach(function (p) { porId[p.id] = p; });
+    ((t && t.subs) || []).forEach(function (s) {
+      if (subId && s.id !== subId) return;
+      s.pecas.forEach(function (id) { if (porId[id] && !vistos[id]) { vistos[id] = true; out.push(porId[id]); } });
     });
+    return out;
   }
   function pecasDeTudo(max) {
     var porSala = S.salas.map(function (s) { return (window.PECAS || []).filter(function (p) { return p.salas[0] === s.id; }); });
@@ -187,10 +135,6 @@
   // Cada peça da parede é um elemento com data-id; na troca de tema os que ficam são reaproveitados (e deslizam).
   function salaNaParede(p, tema) {
     var idSala = p.salas[0];
-    if (tema) {
-      var dentro = p.salas.filter(function (s) { return tema.salas.indexOf(s) >= 0; });
-      if (dentro.length) idSala = dentro[0];
-    }
     return salaPorId(idSala) || S.salas[0];
   }
   function ehMateriaLink(p) {
@@ -201,12 +145,13 @@
     var img = capaDe(p);
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
     var fig = img
-      ? '<figure>' + A.pic(img, destaque ? '(min-width: 1100px) 1040px, 100vw' : '(min-width: 600px) 50vw, 50vw', destaque) + '</figure>'
+      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + '</figure>'
       : '<figure class="pp-semimg"><span>' + esc([p.onde, p.periodo].filter(Boolean).join(' · ')) + '</span></figure>';
     var isLink = ehMateriaLink(p);
     var m = p.materia && window.MATERIAS ? window.MATERIAS[p.materia] : null;
     var href = (isLink && m && m.url) ? m.url : A.ROOT + (salaNaParede(p, null) || S.salas[0]).pasta + '/#' + encodeURIComponent(p.id);
     var target = isLink ? ' target="_blank" rel="noopener"' : '';
+    if (p.paginaPropria) { href = A.ROOT + 'materia/?m=' + encodeURIComponent(p.id); target = ''; }
     var tag = isLink ? 'a' : 'a';
     var d = document.createElement('div');
     d.innerHTML = '<' + tag + ' class="pp" data-id="' + esc(p.id) + '" href="' + esc(href) + '"' + target + '>' + fig + '<span class="pp-t">' + esc(p.titulo) + '</span>' + (meta ? '<span class="pp-m">' + esc(meta) + '</span>' : '') + '</' + tag + '>';
@@ -220,50 +165,15 @@
     if (im && img) im.dataset.capa = img + !!destaque;
     return d.firstChild;
   }
-  // Distribui as peças em linhas que fecham a largura (pela proporção --r de cada uma).
-  // A última linha, se ficar curta demais, divide espaço com a anterior: nenhuma linha sobra pela metade.
-  function justificarParede(el) {
-    var nos = [].slice.call(el.querySelectorAll('.pp'));
-    var W = el.clientWidth;
-    if (!W || !nos.length) return;
-    var cs = getComputedStyle(el), g = parseFloat(cs.columnGap) || 0, h = parseFloat(cs.getPropertyValue('--h')) || 200;
-    var rs = nos.map(function (n) { return parseFloat(n.style.getPropertyValue('--r')) || 1.333; });
-    // Escolhe onde quebrar as linhas para que todas fechem a largura com altura perto da ideal
-    // (a primeira, da peça de destaque, mais alta). Poucas peças: busca completa é barata.
-    function custo(i, j) {
-      var sr = 0; for (var k = i; k < j; k++) sr += rs[k];
-      var alt = (W - g * (j - i - 1)) / sr, ideal = i === 0 ? h * 1.9 : h, d = (alt - ideal) / ideal;
-      return { alt: alt, c: d * d };
-    }
-    var melhor = [{ c: 0, de: -1 }];
-    for (var j = 1; j <= rs.length; j++) {
-      melhor[j] = { c: Infinity, de: 0 };
-      for (var i = 0; i < j; i++) {
-        var c = melhor[i].c + custo(i, j).c;
-        if (c < melhor[j].c) melhor[j] = { c: c, de: i };
-      }
-    }
-    var fim = rs.length;
-    while (fim > 0) {
-      var ini = melhor[fim].de, alt = custo(ini, fim).alt;
-      for (var k = ini; k < fim; k++) nos[k].style.flex = '0 0 ' + Math.floor(rs[k] * alt) + 'px';
-      fim = ini;
-    }
-  }
-  var esperaParede;
-  window.addEventListener('resize', function () {
-    clearTimeout(esperaParede);
-    esperaParede = setTimeout(function () { var el = document.getElementById('parede'); if (el) justificarParede(el); }, 120);
-  });
   var trocaAtual = 0;
-  function renderParede(tema, animar) {
+  function renderParede(tema, animar, subId) {
     var el = document.getElementById('parede'), maisEl = document.getElementById('parede-mais');
     if (!el) return;
     var max = (S.parede && S.parede.max) || 9;
     var fixas = pecasFixas();
-    var lista = tema ? pecasDoTema(tema).slice(0, max) : (fixas.length ? fixas : pecasDeTudo(max));
+    // Com categoria escolhida a parede mostra todas as peças dela (ou da subcategoria).
+    var lista = tema ? pecasDoTema(tema, subId) : (fixas.length ? fixas : pecasDeTudo(max));
     var mais = '';
-    if (tema) mais = tema.salas.map(salaPorId).filter(Boolean).map(function (s) { return '<a href="' + A.ROOT + s.pasta + '/">Ver todos: ' + esc(s.nome) + '</a>'; }).join('');
     var vez = ++trocaAtual;
     var atuais = [].slice.call(el.querySelectorAll('.pp'));
     var porId = {};
@@ -277,12 +187,10 @@
         var n = porId[p.id] || criarPeca(p, i === 0), s = salaNaParede(p, tema);
         var pc = n.querySelector('figure picture'), capa = capaDe(p);
         if (pc && capa && pc.querySelector('img').dataset.capa !== capa + (i === 0)) {
-          pc.outerHTML = A.pic(capa, i === 0 ? '(min-width: 1100px) 1040px, 100vw' : '50vw', i === 0);
+          pc.outerHTML = A.pic(capa, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', i === 0);
           n.querySelector('img').dataset.capa = capa + (i === 0);
         }
-        n.className = 'pp' + (i === 0 ? ' pp-destaque' : '');
-        var dim = capa && window.IMAGENS && window.IMAGENS[capa];
-        n.style.setProperty('--r', dim ? (dim[0] / dim[1]).toFixed(3) : '1.333');
+        n.className = 'pp';
         if (!ehMateriaLink(p)) {
           n.setAttribute('href', A.ROOT + s.pasta + '/#' + encodeURIComponent(p.id));
         }
@@ -290,7 +198,6 @@
         return n;
       });
       el.replaceChildren.apply(el, nos);
-      justificarParede(el);
       if (maisEl) maisEl.innerHTML = mais;
       return nos;
     }
@@ -322,7 +229,7 @@
     });
   }
 
-  // O tambor: "Cuido" fixo, os temas rodando como um rolo, parando em "de tudo."
+  // O tambor: "e eu cuido" fixo, as categorias rodando como um rolo, parando em "da comunicação."
   // Depois da animação, a lista de temas vira menu: clicar num tema troca a palavra e filtra a parede.
   function tambor() {
     var hero = document.querySelector('.hero');
@@ -334,7 +241,7 @@
     var ordem = A.ordemAtual();
     var temas = ordem.map(function (i) { return S.temas[i]; });
     // O rolo passa pelos temas de trás para a frente: o primeiro da lista é o último que se lê antes de "tudo".
-    var seq = temas.slice().reverse().map(function (t) { return t.frase; }).concat(['de tudo.']);
+    var seq = temas.slice().reverse().map(function (t) { return t.frase; }).concat(['da comunicação.']);
     var N = seq.length, ang = 360 / N;
     rolo.innerHTML = seq.map(function (t, i) { return '<li style="--i:' + i + '"' + (i === N - 1 ? ' class="fim"' : '') + '>' + esc(t) + '</li>'; }).join('');
     rolo.style.setProperty('--ang', ang + 'deg');
@@ -345,11 +252,13 @@
     var rot = fim;      // rotação atual do rolo, em graus
     var pos = N - 1;    // posição do rolo que está à mostra (N - 1 = "de tudo.")
     var sel = null;     // id do tema escolhido; null = tudo
+    var subSel = null;  // id da subcategoria escolhida; null = a categoria inteira
+    var subcats = document.querySelector('.subcats'); // embaixo da linha, no topo de Trabalhos (26/11/2026)
     var larg = [];      // largura de cada palavra no tamanho cheio, em "em"
 
     // Mede cada palavra no tamanho cheio. Roda de novo quando a fonte carrega e quando a tela muda.
-    // A palavra que não cabe primeiro condensa (eixo de largura da Archivo, até 62%); só depois a letra diminui.
-    var LARGURA_MIN = 62;
+    // A fonte dos títulos não condensa (LARGURA_MIN = 100): se a palavra não couber, a letra diminui só o necessário.
+    var LARGURA_MIN = 100;
     function medir() {
       var ft = parseFloat(getComputedStyle(tamborEl).fontSize) || 16;
       var fs = parseFloat(getComputedStyle(cuido).fontSize) || 16;
@@ -375,6 +284,8 @@
       var cabe = hero.clientWidth / fs - 0.1;
       var k = Math.min(1, cabe / (larg[pos] || 1));
       tamborEl.style.fontSize = k.toFixed(3) + 'em';
+      // A palavra fica na mesma linha de "e eu cuido": a caixa do tambor acompanha a largura da palavra à mostra.
+      tamborEl.style.width = (larg[pos] || 0).toFixed(3) + 'em';
       lis.forEach(function (li, i) { li.classList.toggle('atual', i === pos); });
     }
     function girarPara(i) {
@@ -384,6 +295,7 @@
       rolo.style.setProperty('--rot', rot + 'deg');
       ajustar();
     }
+    rolo.style.setProperty('--rot', fim + 'deg');
     medir();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(medir);
     window.addEventListener('resize', medir);
@@ -392,49 +304,156 @@
     lista.innerHTML = temas.map(function (t) {
       if (!pecasDoTema(t).length) return '<span class="tema-item">' + esc(t.curto) + '</span>';
       return '<button class="tema-item" type="button" data-tema="' + esc(t.id) + '" aria-pressed="false">' + esc(t.curto) + '</button>';
-    }).join(' · ') + '<span class="tudo-wrap" hidden> · <button class="tema-item" type="button" data-tema="">tudo</button></span>';
+    }).join('') + '<a class="tema-item" href="' + A.ROOT + 'sobre/">sobre mim</a>' +
+      '<span class="tudo-wrap" hidden><button class="tema-item" type="button" data-tema="">home</button></span>';
+    lista.id = 'menu-cuido';
+    lista.setAttribute('role', 'menu');
+    [].forEach.call(lista.querySelectorAll('.tema-item'), function (b, i) { b.style.setProperty('--k', i); });
     function escolher(id) {
       if (hero.classList.contains('animando')) return;
       sel = (id && id !== sel) ? id : null;
+      subSel = null;
       var k = -1;
       temas.forEach(function (t, i) { if (t.id === sel) k = i; });
       girarPara(k < 0 ? N - 1 : N - 2 - k);
-      if (falado) falado.textContent = k < 0 ? 'de tudo.' : temas[k].frase + '.';
+      if (falado) falado.textContent = k < 0 ? 'da comunicação.' : temas[k].frase + '.';
       lista.querySelectorAll('button[data-tema]').forEach(function (b) {
         if (b.dataset.tema) b.setAttribute('aria-pressed', b.dataset.tema === sel ? 'true' : 'false');
       });
       lista.querySelector('.tudo-wrap').hidden = !sel;
+      renderSubcats(k < 0 ? null : temas[k]);
       renderParede(k < 0 ? null : temas[k], true);
+    }
+    // Subcategorias da categoria escolhida: "todas" + uma por subcategoria. Só aparecem se houver mais de uma.
+    function renderSubcats(t) {
+      if (!subcats) return;
+      var subs = (t && t.subs) || [];
+      if (subs.length < 2) { subcats.hidden = true; subcats.innerHTML = ''; return; }
+      subcats.innerHTML = [{ id: '', nome: 'todas' }].concat(subs).map(function (s) {
+        return '<button class="sub-item" type="button" data-sub="' + esc(s.id) + '" aria-pressed="' + ((s.id || null) === subSel) + '">' + esc(s.nome.toLowerCase()) + '</button>';
+      }).join('');
+      subcats.hidden = false;
     }
     lista.addEventListener('click', function (e) {
       var b = e.target.closest('button[data-tema]');
-      if (b) escolher(b.dataset.tema);
+      if (b) { escolher(b.dataset.tema); fecharMenu(); suprimido = true; }
+    });
+
+    // Menu da palavra (fase 13b): passar o mouse na palavra vermelha (ou tocar, no celular) abre as categorias
+    // embaixo da frase; o resto da tela escurece um pouco e borra. Passar o mouse numa opção já gira a palavra.
+    var veu = document.createElement('div');
+    veu.className = 'veu';
+    document.body.appendChild(veu);
+    tamborEl.removeAttribute('aria-hidden');
+    hero.querySelector('.tambor-win').setAttribute('aria-hidden', 'true');
+    tamborEl.setAttribute('role', 'button');
+    tamborEl.setAttribute('tabindex', '0');
+    tamborEl.setAttribute('aria-label', 'Escolher o que eu cuido');
+    tamborEl.setAttribute('aria-haspopup', 'menu');
+    tamborEl.setAttribute('aria-controls', 'menu-cuido');
+    tamborEl.setAttribute('aria-expanded', 'false');
+    var aberto = false, esperaFechar = null, esperaVeu = null;
+    function posDe(id) { var k = -1; temas.forEach(function (t, i) { if (t.id === id) k = i; }); return k < 0 ? N - 1 : N - 2 - k; }
+    function abrirMenu() {
+      clearTimeout(esperaFechar);
+      if (aberto || hero.classList.contains('animando')) return;
+      aberto = true;
+      clearTimeout(esperaVeu);
+      document.body.classList.remove('veu-saindo');
+      hero.classList.add('menu-aberto');
+      document.body.classList.add('com-veu');
+      tamborEl.setAttribute('aria-expanded', 'true');
+    }
+    function fecharMenu() {
+      clearTimeout(esperaFechar);
+      if (!aberto) return;
+      aberto = false;
+      hero.classList.remove('menu-aberto');
+      // O véu esmaece com o desfoque junto; a frase fica na frente até ele sumir.
+      document.body.classList.add('veu-saindo');
+      document.body.classList.remove('com-veu');
+      clearTimeout(esperaVeu);
+      esperaVeu = setTimeout(function () { document.body.classList.remove('veu-saindo'); }, 480);
+      tamborEl.setAttribute('aria-expanded', 'false');
+      if (pos !== posDe(sel)) girarPara(posDe(sel));
+    }
+    function fecharDepois() { clearTimeout(esperaFechar); esperaFechar = setTimeout(fecharMenu, 220); }
+    var mouse = function (e) { return e.pointerType === 'mouse'; };
+    // Área de hover: o bloco inteiro da frase, de ponta a ponta da tela (pedido do Arthur, 26/11/2026).
+    // Depois de escolher, o menu só reabre quando o mouse sai da área e volta (a página muda de altura embaixo dele).
+    var suprimido = false;
+    // O submenu (subcategorias) fica fora da área do spotlight: em cima dele o menu não abre (e fecha se estava aberto).
+    hero.addEventListener('pointermove', function (e) {
+      if (!mouse(e)) return;
+      if (e.target.closest('.subcats')) { if (aberto) fecharDepois(); }
+      else if (!suprimido) abrirMenu();
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (!suprimido || !mouse(e)) return;
+      var r = hero.getBoundingClientRect();
+      if (e.clientY < r.top || e.clientY > r.bottom) suprimido = false;
+    });
+    hero.addEventListener('pointerleave', function (e) { if (mouse(e)) fecharDepois(); });
+    lista.addEventListener('pointerenter', function (e) { if (mouse(e)) clearTimeout(esperaFechar); });
+    lista.addEventListener('pointerleave', function (e) { if (mouse(e)) fecharDepois(); });
+    // Com mouse o clique só abre (o passar do mouse já abriu); com toque ou teclado, abre e fecha.
+    tamborEl.addEventListener('click', function (e) { if (aberto && e.pointerType !== 'mouse') fecharMenu(); else abrirMenu(); });
+    tamborEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+        e.preventDefault(); abrirMenu();
+        var b = lista.querySelector('button.tema-item'); if (b) b.focus();
+      }
+    });
+    lista.addEventListener('pointerover', function (e) {
+      var b = e.target.closest('button[data-tema]');
+      if (b && aberto && mouse(e)) girarPara(posDe(b.dataset.tema || null));
+    });
+    // Saiu de cima das opções sem escolher: o rolo volta para a categoria que estava.
+    lista.addEventListener('pointerout', function (e) {
+      if (!mouse(e) || !e.target.closest('button[data-tema]')) return;
+      var para = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('button[data-tema]');
+      if (!para && pos !== posDe(sel)) girarPara(posDe(sel));
+    });
+    lista.addEventListener('focusin', function (e) {
+      var b = e.target.closest('button[data-tema]');
+      if (b && aberto) girarPara(posDe(b.dataset.tema || null));
+    });
+    lista.addEventListener('keydown', function (e) {
+      var bs = [].filter.call(lista.querySelectorAll('button.tema-item'), function (b) { return b.offsetParent; });
+      var i = bs.indexOf(document.activeElement);
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); bs[(i + 1) % bs.length].focus(); }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); bs[(i - 1 + bs.length) % bs.length].focus(); }
+    });
+    // O véu não segura o mouse; tocar ou clicar fora da frase e do menu fecha.
+    document.addEventListener('pointerdown', function (e) {
+      if (aberto && !e.target.closest('.hero')) fecharMenu();
+    });
+    // Vindo de outra página com ?cat=: abre a home já na categoria escolhida.
+    var catUrl = new URLSearchParams(location.search).get('cat');
+    if (catUrl && temas.some(function (t) { return t.id === catUrl; })) { escolher(catUrl); history.replaceState(null, '', location.pathname + '#site'); }
+
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && aberto) { fecharMenu(); tamborEl.focus(); } });
+    if (subcats) subcats.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-sub]');
+      if (!b || !sel) return;
+      subSel = b.dataset.sub || null;
+      var t = temas.filter(function (x) { return x.id === sel; })[0];
+      renderSubcats(t);
+      renderParede(t, true, subSel);
     });
     renderParede(null, false);
 
-    var visto = false;
-    try { visto = !!sessionStorage.getItem('tamborVisto'); } catch (e) {}
-    if (reduz || visto) { rolo.style.setProperty('--rot', fim + 'deg'); rolo.classList.add('suave'); return; }
-    hero.classList.add('animando');
-    var total = 360 + fim, dur = 7000, t0 = performance.now() + 500;
-    function passo(now) {
-      var t = (now - t0) / dur;
-      if (t < 0) t = 0;
-      if (t > 1) t = 1;
-      var e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      rolo.style.setProperty('--rot', (total * e) + 'deg');
-      if (t < 1) requestAnimationFrame(passo);
-      else setTimeout(function () { rot = total; rolo.classList.add('suave'); hero.classList.remove('animando'); try { sessionStorage.setItem('tamborVisto', '1'); } catch (e) {} }, 300);
-    }
-    requestAnimationFrame(passo);
+    // Sem giro na abertura (pedido do Arthur, 26/11/2026): a frase já chega parada em "da comunicação.".
+    // O rolo só gira quando se passa pelas categorias do menu.
+    // A transição só liga depois que a frase já apareceu parada (senão o rolo gira de 0 até "da comunicação.").
+    requestAnimationFrame(function () { requestAnimationFrame(function () { rolo.classList.add('suave'); }); });
   }
 
-  // Rotas: #historia, #site ou nada.
+  // Rotas: #historia abre o percurso; o resto abre a home direto.
   function rotear() {
     var h = location.hash.replace('#', '');
     if (h === 'historia') iniciarPercurso();
-    else if (h === 'site' || h === 'conteudo' || visitou) mostrar('home');
-    else iniciarAbertura();
+    else mostrar('home');
   }
   window.addEventListener('hashchange', rotear);
   rotear();
