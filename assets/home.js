@@ -191,6 +191,8 @@
           n.querySelector('img').dataset.capa = capa + (i === 0);
         }
         n.className = 'pp';
+        // Uma troca interrompida deixa o esmaecer preso (fill: forwards) e a peça reaproveitada fica invisível.
+        if (n.getAnimations) n.getAnimations().forEach(function (a) { a.cancel(); });
         if (!ehMateriaLink(p)) {
           n.setAttribute('href', A.ROOT + s.pasta + '/#' + encodeURIComponent(p.id));
         }
