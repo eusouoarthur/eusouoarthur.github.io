@@ -165,6 +165,17 @@
     if (im && img) im.dataset.capa = img + !!destaque;
     return d.firstChild;
   }
+  // Altura de cada peça no mosaico da parede, em linhas de 4 px (mesma regra das salas).
+  function medirParede() {
+    var el = document.getElementById('parede');
+    if (!el) return;
+    var nos = [].slice.call(el.querySelectorAll('.pp'));
+    nos.forEach(function (n) { n.style.gridRowEnd = 'auto'; });
+    nos.forEach(function (n) { n.style.gridRowEnd = 'span ' + Math.ceil(n.getBoundingClientRect().height / 4); });
+  }
+  var esperaParede;
+  window.addEventListener('resize', function () { clearTimeout(esperaParede); esperaParede = setTimeout(medirParede, 120); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(medirParede);
   var trocaAtual = 0;
   function renderParede(tema, animar, subId) {
     var el = document.getElementById('parede'), maisEl = document.getElementById('parede-mais');
@@ -191,15 +202,10 @@
           n.querySelector('img').dataset.capa = capa + (i === 0);
         }
         n.className = 'pp';
-        // Capa que não é 16:9 aparece inteira (sem corte), com a própria imagem desfocada atrás (26/11/2026).
-        var dimC = capa && window.IMAGENS && window.IMAGENS[capa], rC = dimC ? dimC[0] / dimC[1] : 1.6;
-        var figC = n.querySelector('figure'), fundoC = figC && figC.querySelector('.pp-fundo');
-        var foraDoQuadro = Math.abs(rC - 16 / 9) > 0.08; // capa que não é 16:9 aparece inteira, com fundo desfocado
-        if (foraDoQuadro && figC && !fundoC) {
-          var im0 = figC.querySelector('img');
-          if (im0) { var f = document.createElement('div'); f.className = 'pp-fundo'; f.setAttribute('aria-hidden', 'true'); f.style.backgroundImage = 'url("' + (im0.currentSrc || im0.src) + '")'; figC.insertBefore(f, figC.firstChild); }
-        }
-        n.classList.toggle('pp-inteira', foraDoQuadro);
+        // Mosaico (26/11/2026): capa na proporção original, sem corte; em pé aparece em pé. A largura vem do formato.
+        var dimC = capa && window.IMAGENS && window.IMAGENS[capa], rC = dimC ? dimC[0] / dimC[1] : 16 / 9;
+        n.style.setProperty('--r', rC.toFixed(4));
+        n.dataset.f = rC < 0.8 ? 'v' : rC < 1.2 ? 'q' : 'h';
         // Uma troca interrompida deixa o esmaecer preso (fill: forwards) e a peça reaproveitada fica invisível.
         if (n.getAnimations) n.getAnimations().forEach(function (a) { a.cancel(); });
         if (!ehMateriaLink(p)) {
@@ -209,6 +215,7 @@
         return n;
       });
       el.replaceChildren.apply(el, nos);
+      medirParede();
       if (maisEl) maisEl.innerHTML = mais;
       return nos;
     }
