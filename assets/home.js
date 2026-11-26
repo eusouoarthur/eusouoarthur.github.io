@@ -141,11 +141,32 @@
     if (!p.materia) return false;
     return true;
   }
+  // Etiqueta do tipo de trabalho, no canto superior esquerdo da capa (só na home, 26/11/2026).
+  // Usa o formato da peça (vídeo, em pé, vários vídeos, matéria, fotos) e as subcategorias da curadoria.
+  function subsDe(id) {
+    var out = [];
+    ((window.CATEGORIAS && window.CATEGORIAS.categorias) || []).forEach(function (c) { c.subs.forEach(function (s) { if (s.pecas.indexOf(id) >= 0) out.push(s.nome); }); });
+    return out;
+  }
+  function etiquetaDe(p, img) {
+    var subs = subsDe(p.id), nVid = (p.videos || []).length + (p.video ? 1 : 0);
+    var corp = subs.indexOf('Institucional e comercial') >= 0;
+    var d = img && window.IMAGENS && window.IMAGENS[img], emPe = d && d[0] / d[1] < 0.8;
+    if (nVid > 1) return corp ? 'galeria de vídeos corporativos' : 'galeria de vídeos';
+    if (nVid === 1) {
+      var v = corp ? 'vídeo corporativo' : emPe ? 'vídeo vertical' : 'vídeo';
+      return p.materia ? v + ' e matéria' : v;
+    }
+    if (p.materia) return 'matéria';
+    if (p.salas[0] === 'fotos') return 'galeria de fotos';
+    return (subs[0] || '').toLowerCase();
+  }
   function criarPeca(p, destaque) {
     var img = capaDe(p);
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
+    var etq = etiquetaDe(p, img);
     var fig = img
-      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + '</figure>'
+      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + (etq ? '<span class="pp-tag">' + esc(etq) + '</span>' : '') + '</figure>'
       : '<figure class="pp-semimg"><span>' + esc([p.onde, p.periodo].filter(Boolean).join(' · ')) + '</span></figure>';
     var isLink = ehMateriaLink(p);
     var m = p.materia && window.MATERIAS ? window.MATERIAS[p.materia] : null;

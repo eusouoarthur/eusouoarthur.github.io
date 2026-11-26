@@ -560,3 +560,7 @@ body.com-veu .subcats { transform: translateY(6px); }
 .parede .pp img { object-fit: contain; }
 @media (max-width: 899px) { .parede { grid-template-columns: repeat(8, minmax(0, 1fr)); } .parede .pp { grid-column: span 4; } .parede .pp[data-f="q"], .parede .pp[data-f="v"] { grid-column: span 2; } }
 @media (max-width: 599px) { .parede { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 12px; } .parede .pp { grid-column: span 4; padding-bottom: 28px; } .parede .pp[data-f="q"], .parede .pp[data-f="v"] { grid-column: span 2; } }
+/* Etiqueta do tipo de trabalho na capa (só na home, 26/11/2026). */
+.parede .pp figure { position: relative; }
+.pp-tag { position: absolute; top: 10px; left: 10px; z-index: 1; padding: 5px 9px; background: var(--bg); color: var(--fg); font-family: var(--titulo); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: .01em; pointer-events: none; }
+@media (max-width: 599px) { .pp-tag { top: 6px; left: 6px; font-size: 11px; padding: 4px 7px; } }
