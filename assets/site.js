@@ -201,7 +201,8 @@
     clearTimeout(janelaTimer);
     janelaTimer = setTimeout(function () {
       // Peça com mais de um item (fotos + capas dos vídeos) mostra o mosaico; com um vídeo só, ele toca no lugar.
-      var itensTodos = (d.imgs && d.imgs.length ? d.imgs : (d.img ? [d.img] : [])).concat(d.posters || []);
+      var temPosters = !!(d.posters && d.posters.length);
+      var itensTodos = (d.imgs && d.imgs.length ? d.imgs : (d.img && !temPosters ? [d.img] : [])).concat(d.posters || []);
       if (d.video && itensTodos.length < 2) { vivoMostrar(alvo, d.video); return; }
       if (!janelaEl) { janelaEl = document.createElement('div'); janelaEl.className = 'janela'; janelaEl.setAttribute('aria-hidden', 'true'); document.body.appendChild(janelaEl); }
       var todas = itensTodos;
