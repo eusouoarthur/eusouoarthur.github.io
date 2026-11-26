@@ -154,7 +154,7 @@
             (k ? '<button type="button" data-acao="capa" data-k="' + k + '">Capa</button>' : '') +
             '<button type="button" data-acao="tirar" data-k="' + k + '">Tirar</button></figcaption></figure>';
         }).join('') + '</div>'
-        : '<p class="ped-dica">Ainda sem imagens. Use "Adicionar arquivos" abaixo.</p>') +
+        : '<p class="ped-dica">Ainda sem imagens. Use "Adicionar arquivos", no fim da página.</p>') +
       '</section>') +
 
       (vs.length ? '<section class="ped-sec"><h2>' + (vs.length > 1 ? 'Vídeos' : 'Vídeo') + '</h2>' +
@@ -172,23 +172,58 @@
             '</div></div>';
         }).join('') + '</section>' : '') +
 
-      '<section class="ped-sec"><h2>Adicionar arquivos</h2>' +
-      '<label class="ped-solta" id="ped-solta">Solte aqui imagens ou vídeos que ficaram de fora, ou clique para escolher.<input type="file" id="ped-arquivos" accept="image/*,video/*" multiple hidden></label>' +
-      '<p class="ped-dica">Imagens entram no fim da lista; vídeos entram com a capa no quadro de 1 segundo (dá para trocar depois).</p></section>' +
-
       '<section class="ped-sec"><h2>Textos</h2>' +
       '<div class="ped-form">' +
       '<label>Título <input type="text" data-campo="titulo" value="' + esc(p.titulo) + '"></label>' +
       '<label>Onde / para quem <input type="text" data-campo="onde" value="' + esc(p.onde) + '"></label>' +
       '<label>Ano <input type="text" data-campo="periodo" value="' + esc(p.periodo) + '"></label>' +
-      '<label>O que eu fiz <input type="text" data-campo="papel" value="' + esc(p.papel) + '"></label>' +
       '<label class="ped-largo">Legenda <textarea data-campo="resumo" rows="3">' + esc(p.resumo) + '</textarea></label>' +
       '<label>Página do site <select data-campo="sala">' + salas + '</select></label>' +
       '<label>Formato da capa <select data-campo="shape">' + formatos + '</select></label>' +
       '</div></section>' +
+      secaoCategorias(p.id) +
+      '<section class="ped-sec"><h2>Adicionar arquivos</h2>' +
+      '<label class="ped-solta" id="ped-solta">Solte aqui imagens ou vídeos que ficaram de fora, ou clique para escolher.<input type="file" id="ped-arquivos" accept="image/*,video/*" multiple hidden></label>' +
+      '<p class="ped-dica">Imagens entram no fim da lista; vídeos entram com a capa no quadro de 1 segundo (dá para trocar depois).</p></section>' +
+
       (ehNova(p.id) ? '<section class="ped-sec"><p class="ped-dica">Peça nova: depois de pôr os arquivos, vá em <a href="../curadoria/">Separar as peças</a> e escolha a categoria dela (ela aparece em "Sem categoria").</p>' +
         '<button type="button" class="ped-tirar" data-acao="apagar">Apagar esta peça nova</button></section>' : '');
     ligarArrastar();
+  }
+
+  // ——— Categorias e "fora do site" (mesmos dados da página Separar as peças) ———
+  // A curadoria guarda o estado no navegador (curadoria-v1) e no computador (selecao.json); aqui mexe nos dois.
+  var CHAVE_CUR = 'curadoria-v1', CUR = null;
+  function carregarCuradoria() {
+    try { CUR = JSON.parse(localStorage.getItem(CHAVE_CUR)); } catch (e) { CUR = null; }
+    if (CUR && CUR.categorias) return Promise.resolve();
+    return fetch('../curadoria/selecao.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) { if (d && d.categorias) CUR = d; }).catch(function () {});
+  }
+  var esperaCur = 0;
+  function salvarCuradoria() {
+    localStorage.setItem(CHAVE_CUR, JSON.stringify(CUR));
+    aviso('Salvando…');
+    clearTimeout(esperaCur);
+    esperaCur = setTimeout(function () {
+      fetch('../curadoria/salvar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(CUR) })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); aviso('Salvo. O site já mostra a mudança.'); })
+        .catch(function () { aviso('Não consegui salvar. O servidor do painel está ligado?'); });
+    }, 400);
+  }
+  function secaoCategorias(id) {
+    if (!CUR) return '';
+    var fora = (CUR.fora || []).indexOf(id) >= 0;
+    return '<section class="ped-sec"><h2>Categorias</h2>' +
+      '<p class="ped-dica">Marque onde esta peça aparece no site. Pode marcar mais de uma.</p>' +
+      '<div class="ped-cats' + (fora ? ' ped-apagado' : '') + '">' + CUR.categorias.map(function (c) {
+        return '<fieldset><legend>' + esc(c.nome) + '</legend>' + (c.subs || []).map(function (s) {
+          var em = (s.pecas || []).indexOf(id) >= 0;
+          return '<label class="ped-chip"><input type="checkbox" data-cat="' + esc(c.id) + '" data-sub="' + esc(s.id) + '"' + (em ? ' checked' : '') + (fora ? ' disabled' : '') + '> ' + esc(s.nome) + '</label>';
+        }).join('') + '</fieldset>';
+      }).join('') + '</div>' +
+      '<label class="ped-fora"><input type="checkbox" data-fora' + (fora ? ' checked' : '') + '> Deixar esta peça fora do site</label>' +
+      '<p class="ped-dica">Fora do site, ela some das páginas, mas continua guardada aqui no painel.</p></section>';
   }
 
   // Arrastar imagens com o mouse ou o dedo (o arrastar nativo não funciona no navegador do app).
@@ -268,6 +303,22 @@
       }, function (er) { aviso('Erro ao enviar: ' + er.message); });
       return;
     }
+    if (t.dataset.sub && CUR) {
+      CUR.categorias.forEach(function (c) {
+        if (c.id !== t.dataset.cat) return;
+        c.subs.forEach(function (sb) {
+          if (sb.id !== t.dataset.sub) return;
+          sb.pecas = (sb.pecas || []).filter(function (x) { return x !== atual; });
+          if (t.checked) sb.pecas.push(atual);
+        });
+      });
+      salvarCuradoria(); return;
+    }
+    if (t.hasAttribute('data-fora') && CUR) {
+      CUR.fora = (CUR.fora || []).filter(function (x) { return x !== atual; });
+      if (t.checked) CUR.fora.push(atual);
+      salvarCuradoria(); render(); return;
+    }
     if (t.dataset.vtitulo != null) {
       var j = +t.dataset.vtitulo, val = t.value;
       var p = pegar(atual), vs = videosDe(p).slice(); vs[j] = Object.assign({}, vs[j], { titulo: val }); gravarVideos(p, vs); guardar(p); return;
@@ -314,7 +365,7 @@
   fetch('../pecas.json').then(function (r) { return r.json(); }).then(function (j) {
     AJ = { pecas: j.pecas || {}, novas: j.novas || [] };
   }).catch(function () { aviso('Servidor do painel desligado: dá para ver, mas não para salvar.'); })
-    .then(rotear);
+    .then(carregarCuradoria).then(rotear);
 
-  window.painelPecas = { estado: function () { return copia(AJ); }, pegar: pegar };
+  window.painelPecas = { estado: function () { return copia(AJ); }, pegar: pegar, curadoria: function () { return copia(CUR); } };
 })();
