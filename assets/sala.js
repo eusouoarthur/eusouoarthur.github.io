@@ -98,7 +98,7 @@
   grid.querySelectorAll('.peca').forEach(function (b) {
     var p = itens[+b.dataset.i], im = imagensDe(p);
     b.addEventListener('pointerenter', function (e) {
-      if (e.pointerType !== 'mouse' || modoCelular.matches || sala === 'social') return;
+      if (e.pointerType !== 'mouse' || modoCelular.matches) return;
       A.janelaMostrar(b, { titulo: p.titulo, meta: [p.periodo, p.onde].filter(Boolean).join(' · '), papel: papelOk(p) ? p.papel : '', img: im[0] || imgDaCapa(p), imgs: im, video: reduz.matches ? '' : videoDe(p), materia: p.materia || '' });
     });
     b.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.vivo'))) A.janelaEsconder(); });
@@ -251,8 +251,8 @@
     var fig = figAberta && document.body.contains(figAberta) ? figAberta : null;
     comTransicao(function () { dlg.close(); }, fig ? mediaAberta() : null, function () { return fig; });
   }
-  // Social Media: etiqueta com data e papel. No computador, um fio de 1 px na cor da sala se desenha da peça até ela;
-  // no celular, aparece embaixo da imagem tocada (o segundo toque abre a peça).
+  // Social Media: no computador usa a mesma janela de prévia das outras salas (pedido do Arthur, 26/11/2026);
+  // no celular, a etiqueta com data e papel aparece embaixo da imagem tocada (o segundo toque abre a peça).
   var etq = null, fio = null, etqDe = null;
   if (sala === 'social') {
     fio = document.createElement('div'); fio.className = 'fio'; fio.setAttribute('aria-hidden', 'true');
@@ -293,8 +293,6 @@
   }
   if (etq) {
     grid.querySelectorAll('.peca').forEach(function (b) {
-      b.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' && !modoCelular.matches) mostrarEtiqueta(b, false); });
-      b.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !modoCelular.matches) esconderEtiqueta(); });
     });
     document.addEventListener('click', function (e) { if (modoCelular.matches && !e.target.closest('#pecas .peca')) esconderEtiqueta(); });
   }

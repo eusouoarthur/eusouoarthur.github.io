@@ -1,5 +1,6 @@
-// GERADO por ferramentas/curadoria_para_site.py a partir de _paperclip/curadoria/selecao.json. Não editar à mão.
-// Categorias do "e eu cuido ___", com subcategorias (só as que têm peça). "fora": peças que não aparecem no site.
+// GERADO por ferramentas/curadoria_para_site.py a partir do painel (curadoria e editar peças). Não editar à mão.
+// Categorias do "eu cuido ___" com subcategorias (só as que têm peça); "fora": peças que não aparecem no site;
+// "ajustes": mudanças feitas no painel em cada peça e peças novas.
 window.CATEGORIAS = {
  "categorias": [
   {
@@ -346,5 +347,19 @@ window.CATEGORIAS = {
   "lombrinhas-drone",
   "drone-lago",
   "cau"
- ]
+ ],
+ "ajustes": {
+  "pecas": {},
+  "novas": []
+ }
+};
+window.aplicarAjustes = function () {
+  var A = (window.CATEGORIAS || {}).ajustes, P = window.PECAS;
+  if (!A || !P || P.__ajustado) return;
+  P.forEach(function (p) {
+    var a = (A.pecas || {})[p.id];
+    if (a) Object.keys(a).forEach(function (k) { p[k] = a[k]; });
+  });
+  (A.novas || []).forEach(function (n) { if (!P.some(function (p) { return p.id === n.id; })) P.push(n); });
+  P.__ajustado = true;
 };

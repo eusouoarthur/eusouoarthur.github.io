@@ -451,7 +451,11 @@ h1, h2, h3 { font-family: var(--titulo); }
 
 /* Fase 13b (25/11/2026): menu da palavra. Passar o mouse na palavra vermelha abre as categorias embaixo da frase;
    o resto da tela escurece um pouco e borra (o desfoque só existe com o menu aberto). No celular, toque abre uma gaveta. */
-.hero { position: relative; }
+.hero { position: relative; overflow-x: visible; }
+/* A área de hover vai de ponta a ponta da tela, na altura do bloco da frase */
+.hero::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(50% - 50vw); width: 100vw; }
+.tambor-win { overflow: hidden; }
+html, body { overflow-x: clip; }
 .hero.menu-aberto { z-index: 31; }
 .tambor { cursor: pointer; outline-offset: 6px; }
 .tambor-rolo li.atual { text-decoration: underline; text-decoration-thickness: .055em; text-underline-offset: .1em; text-decoration-color: rgba(229, 85, 63, .4); transition: text-decoration-color .2s; }

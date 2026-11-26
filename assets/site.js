@@ -8,6 +8,7 @@
   // Curadoria do Arthur (data/categorias.js): as categorias viram os temas do "e eu cuido ___"
   // e as peças marcadas "fora" somem do site inteiro.
   var C = window.CATEGORIAS;
+  if (window.aplicarAjustes) window.aplicarAjustes();
   if (C) {
     var fora = C.fora || [];
     window.PECAS = (window.PECAS || []).filter(function (p) { return fora.indexOf(p.id) < 0; });

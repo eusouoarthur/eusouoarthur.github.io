@@ -333,7 +333,7 @@
     }
     lista.addEventListener('click', function (e) {
       var b = e.target.closest('button[data-tema]');
-      if (b) { escolher(b.dataset.tema); fecharMenu(); }
+      if (b) { escolher(b.dataset.tema); fecharMenu(); suprimido = true; }
     });
 
     // Menu da palavra (fase 13b): passar o mouse na palavra vermelha (ou tocar, no celular) abre as categorias
@@ -370,8 +370,16 @@
     }
     function fecharDepois() { clearTimeout(esperaFechar); esperaFechar = setTimeout(fecharMenu, 220); }
     var mouse = function (e) { return e.pointerType === 'mouse'; };
-    tamborEl.addEventListener('pointerenter', function (e) { if (mouse(e)) abrirMenu(); });
-    tamborEl.addEventListener('pointerleave', function (e) { if (mouse(e)) fecharDepois(); });
+    // Área de hover: o bloco inteiro da frase, de ponta a ponta da tela (pedido do Arthur, 26/11/2026).
+    // Depois de escolher, o menu só reabre quando o mouse sai da área e volta (a página muda de altura embaixo dele).
+    var suprimido = false;
+    hero.addEventListener('pointerenter', function (e) { if (mouse(e) && !suprimido) abrirMenu(); });
+    document.addEventListener('pointermove', function (e) {
+      if (!suprimido || !mouse(e)) return;
+      var r = hero.getBoundingClientRect();
+      if (e.clientY < r.top || e.clientY > r.bottom) suprimido = false;
+    });
+    hero.addEventListener('pointerleave', function (e) { if (mouse(e)) fecharDepois(); });
     lista.addEventListener('pointerenter', function (e) { if (mouse(e)) clearTimeout(esperaFechar); });
     lista.addEventListener('pointerleave', function (e) { if (mouse(e)) fecharDepois(); });
     // Com mouse o clique só abre (o passar do mouse já abriu); com toque ou teclado, abre e fecha.

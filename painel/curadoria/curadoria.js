@@ -47,13 +47,13 @@
 
   function obterMiniatura(peca) {
     if (peca.imgs && peca.imgs.length > 0) {
-      return '../' + peca.imgs[0];
+      return '../../' + peca.imgs[0];
     }
     if (peca.poster) {
-      return '../' + peca.poster;
+      return '../../' + peca.poster;
     }
     if (peca.videos && peca.videos.length > 0 && peca.videos[0].poster) {
-      return '../' + peca.videos[0].poster;
+      return '../../' + peca.videos[0].poster;
     }
     return null;
   }
@@ -382,6 +382,7 @@
       ]);
     corpo.appendChild(foraLabel);
     corpo.appendChild(criarElemento('button', { type: 'button', class: 'btn cur-copiar', onclick: () => copiar(pecaId) }, ['Copiar estas categorias para outras peças']));
+    corpo.appendChild(criarElemento('a', { class: 'btn cur-editar-peca', href: '../pecas/#' + encodeURIComponent(pecaId) }, ['Editar imagens, capa e arquivos desta peça']));
 
     editor.hidden = false;
     document.body.classList.add('travado');
