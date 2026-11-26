@@ -253,7 +253,7 @@
     var pos = N - 1;    // posição do rolo que está à mostra (N - 1 = "de tudo.")
     var sel = null;     // id do tema escolhido; null = tudo
     var subSel = null;  // id da subcategoria escolhida; null = a categoria inteira
-    var subcats = hero.querySelector('.subcats');
+    var subcats = document.querySelector('.subcats'); // embaixo da linha, no topo de Trabalhos (26/11/2026)
     var larg = [];      // largura de cada palavra no tamanho cheio, em "em"
 
     // Mede cada palavra no tamanho cheio. Roda de novo quando a fonte carrega e quando a tela muda.

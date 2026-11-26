@@ -443,10 +443,10 @@ h1, h2, h3 { font-family: var(--titulo); }
 
 /* Fase 12 (25/11/2026): categorias da curadoria;
    subcategorias aparecem embaixo da lista quando uma categoria é escolhida. */
-.hero .subcats { margin-top: 12px; font-size: clamp(14px, 1.3vw, 16px); color: var(--fg2); max-width: 70ch; line-height: 1.9; }
-.hero .subcats button.sub-item { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em; min-height: 24px; }
-.hero .subcats button.sub-item:hover, .hero .subcats button.sub-item[aria-pressed="true"] { color: var(--fg); }
-.hero .subcats button.sub-item[aria-pressed="true"] { text-decoration-thickness: 2px; text-decoration-color: var(--destaque); }
+.subcats { margin-top: 12px; font-size: clamp(14px, 1.3vw, 16px); color: var(--fg2); max-width: 70ch; line-height: 1.9; }
+.subcats button.sub-item { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em; min-height: 24px; }
+.subcats button.sub-item:hover, .subcats button.sub-item[aria-pressed="true"] { color: var(--fg); }
+.subcats button.sub-item[aria-pressed="true"] { text-decoration-thickness: 2px; text-decoration-color: var(--destaque); }
 
 
 /* Fase 13b (25/11/2026): menu da palavra. Passar o mouse na palavra vermelha abre as categorias embaixo da frase;
@@ -503,22 +503,22 @@ body.veu-saindo .veu { opacity: 0; transition: opacity .45s ease; }
 
 /* Fase 13g (26/11/2026): o submenu fica fora da área do spotlight e vira uma fileira de etiquetas.
    A camada da área de hover (.hero::before) fica atrás do conteúdo, para o submenu receber o clique. */
-.hero > .cuido, .hero > .subcats { position: relative; z-index: 1; }
-.hero .subcats { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 8px; max-width: none; line-height: 1; }
-.hero .subcats:not([hidden]) { animation: subcats-entra .35s var(--mov-curva); }
-.hero .subcats button.sub-item { font-family: var(--titulo); font-size: 15px; font-weight: 600; letter-spacing: 0; color: var(--fg2); text-decoration: none; padding: 9px 14px; border: 1px solid var(--line); background: var(--bg2); transition: color .15s, border-color .15s, background .15s; }
-.hero .subcats button.sub-item:hover { color: var(--fg); border-color: var(--line-forte); text-decoration: none; }
-.hero .subcats button.sub-item[aria-pressed="true"] { color: var(--bg); background: var(--destaque); border-color: var(--destaque); text-decoration: none; }
+.hero > .cuido { position: relative; z-index: 1; }
+.subcats { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 8px; max-width: none; line-height: 1; }
+.subcats:not([hidden]) { animation: subcats-entra .35s var(--mov-curva); }
+.subcats button.sub-item { font-family: var(--titulo); font-size: 15px; font-weight: 600; letter-spacing: 0; color: var(--fg2); text-decoration: none; padding: 9px 14px; border: 1px solid var(--line); background: var(--bg2); transition: color .15s, border-color .15s, background .15s; }
+.subcats button.sub-item:hover { color: var(--fg); border-color: var(--line-forte); text-decoration: none; }
+.subcats button.sub-item[aria-pressed="true"] { color: var(--bg); background: var(--destaque); border-color: var(--destaque); text-decoration: none; }
 @keyframes subcats-entra { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { .hero .subcats:not([hidden]) { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .subcats:not([hidden]) { animation: none; } }
 /* "Oi! Eu sou o Arthur Ramos" cabe numa linha no computador; nas outras páginas a frase é cabeçalho, menor que o título da página. */
 :root { --cuido-tam: clamp(36px, 5.3vw, 76px); }
 .hero-topo .cuido { font-size: clamp(28px, 3.3vw, 46px); }
 .hero-topo { padding-top: clamp(32px, 6vh, 64px); }
 /* Com o menu da palavra aberto, ele fica na frente e o submenu some (os dois ocupam o mesmo lugar). */
 .hero .lista { z-index: 2; }
-.hero .subcats { transition: opacity .2s ease; }
-.hero.menu-aberto .subcats { opacity: 0; pointer-events: none; }
+.subcats { transition: opacity .2s ease; }
+body.com-veu .subcats { opacity: 0; pointer-events: none; }
 
 /* Fase 13h (26/11/2026): frase em 2 linhas no computador: "Oi! Eu sou o Arthur Ramos / e eu cuido da comunicação."
    A palavra que gira fica na mesma linha de "e eu cuido"; a caixa dela acompanha a largura da palavra. */
@@ -529,5 +529,8 @@ body.veu-saindo .veu { opacity: 0; transition: opacity .45s ease; }
 }
 .cuido .tambor { display: inline-block; vertical-align: top; align-self: auto; transition: width .7s cubic-bezier(.45, 0, .2, 1), font-size var(--mov) var(--mov-curva); }
 .cuido .tambor-fixo { display: inline; }
-.hero .subcats { transition: opacity .35s ease, transform .35s var(--mov-curva); }
-.hero.menu-aberto .subcats { transform: translateY(6px); }
+.subcats { transition: opacity .35s ease, transform .35s var(--mov-curva); }
+body.com-veu .subcats { transform: translateY(6px); }
+
+/* Subcategorias embaixo da linha da frase, no topo de Trabalhos (26/11/2026). */
+.parede-secao .subcats { margin: 0 0 clamp(28px, 4vh, 40px); }
