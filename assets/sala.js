@@ -60,6 +60,27 @@
       '<h3>' + esc(p.titulo) + '</h3><span class="meta">' + esc(meta) + '</span>' + (papelOk(p) ? '<span class="papel">' + esc(p.papel) + '</span>' : '') + '</' + tag + '>';
   }).join('');
   if (!itens.length) grid.innerHTML = '<p class="vazio">Ainda não tem nada aqui.</p>';
+  // Mosaico (26/11/2026, pedido do Arthur): cada capa na proporção original, sem corte, com alturas diferentes.
+  // Grade de 12 colunas; a peça ocupa colunas pelo formato (deitada 6, quadrada e em pé 3) e as linhas pela altura real;
+  // as seguintes preenchem os buracos (grid-auto-flow: dense).
+  if (itens.length && (sala === 'video' || sala === 'design' || sala === 'jornalismo')) {
+    grid.classList.add('mosaico');
+    [].slice.call(grid.querySelectorAll('.peca')).forEach(function (b) {
+      var r = parseFloat(b.style.getPropertyValue('--r')) || 1.6;
+      b.dataset.f = r < 0.8 ? 'v' : r < 1.2 ? 'q' : 'h';
+    });
+    var LINHA = 4;
+    var medirMosaico = function () {
+      [].slice.call(grid.querySelectorAll('.peca')).forEach(function (b) { b.style.gridRowEnd = 'auto'; });
+      [].slice.call(grid.querySelectorAll('.peca')).forEach(function (b) {
+        b.style.gridRowEnd = 'span ' + Math.ceil(b.getBoundingClientRect().height / LINHA);
+      });
+    };
+    medirMosaico();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(medirMosaico);
+    var esperaMosaico;
+    window.addEventListener('resize', function () { clearTimeout(esperaMosaico); esperaMosaico = setTimeout(medirMosaico, 120); });
+  }
 
   // Prévia. No computador: mover o mouse na horizontal folheia as imagens da peça; vídeo toca um trecho mudo em loop.
   // No celular: a peça mais perto do centro da tela entra em prévia ao rolar; toque abre.
@@ -99,7 +120,7 @@
     var p = itens[+b.dataset.i], im = imagensDe(p);
     b.addEventListener('pointerenter', function (e) {
       if (e.pointerType !== 'mouse' || modoCelular.matches) return;
-      A.janelaMostrar(b, { titulo: p.titulo, meta: [p.periodo, p.onde].filter(Boolean).join(' · '), papel: papelOk(p) ? p.papel : '', img: im[0] || imgDaCapa(p), imgs: im, video: reduz.matches ? '' : videoDe(p), materia: p.materia || '' });
+      A.janelaMostrar(b, { titulo: p.titulo, meta: [p.periodo, p.onde].filter(Boolean).join(' · '), papel: papelOk(p) ? p.papel : '', img: im[0] || imgDaCapa(p), imgs: im, posters: (p.videos || []).map(function (v) { return v.poster; }).filter(Boolean), video: reduz.matches ? '' : videoDe(p), materia: p.materia || '' });
     });
     b.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.vivo'))) A.janelaEsconder(); });
   });

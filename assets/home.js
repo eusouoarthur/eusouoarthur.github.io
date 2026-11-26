@@ -141,11 +141,38 @@
     if (!p.materia) return false;
     return true;
   }
+  // Etiqueta do tipo de trabalho, no canto superior esquerdo da capa (só na home, 26/11/2026).
+  // Diz o tipo de mídia (vídeo, vídeo vertical, galeria de vídeos, matéria, galeria); a cor vem da categoria da curadoria.
+  // Categoria da peça (a primeira da curadoria em que ela aparece): dá a cor da etiqueta.
+  function categoriaDe(id) {
+    var achou = '';
+    ((window.CATEGORIAS && window.CATEGORIAS.categorias) || []).forEach(function (c) { if (!achou && c.subs.some(function (s) { return s.pecas.indexOf(id) >= 0; })) achou = c.id; });
+    return achou;
+  }
+  function subsDe(id) {
+    var out = [];
+    ((window.CATEGORIAS && window.CATEGORIAS.categorias) || []).forEach(function (c) { c.subs.forEach(function (s) { if (s.pecas.indexOf(id) >= 0) out.push(s.nome); }); });
+    return out;
+  }
+  function etiquetaDe(p, img) {
+    var subs = subsDe(p.id), nVid = (p.videos || []).length + (p.video ? 1 : 0);
+    var corp = subs.indexOf('Institucional e comercial') >= 0;
+    var d = img && window.IMAGENS && window.IMAGENS[img], emPe = d && d[0] / d[1] < 0.8;
+    if (nVid > 1) return 'galeria de vídeos';
+    if (nVid === 1) {
+      var v = corp ? 'vídeo corporativo' : emPe ? 'vídeo vertical' : 'vídeo';
+      return p.materia ? v + ' e matéria' : v;
+    }
+    if (p.materia) return 'matéria';
+    // Imagens: várias = "galeria"; uma só = sem etiqueta (a capa já mostra o que é).
+    return (p.imgs || []).length > 1 ? 'galeria' : '';
+  }
   function criarPeca(p, destaque) {
     var img = capaDe(p);
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
+    var etq = etiquetaDe(p, img);
     var fig = img
-      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + '</figure>'
+      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + (etq ? '<span class="pp-tag" data-cat="' + esc(categoriaDe(p.id)) + '">' + esc(etq) + '</span>' : '') + '</figure>'
       : '<figure class="pp-semimg"><span>' + esc([p.onde, p.periodo].filter(Boolean).join(' · ')) + '</span></figure>';
     var isLink = ehMateriaLink(p);
     var m = p.materia && window.MATERIAS ? window.MATERIAS[p.materia] : null;
@@ -158,13 +185,24 @@
     var a = d.firstChild;
     a.addEventListener('pointerenter', function (e) {
       if (e.pointerType !== 'mouse') return;
-      A.janelaMostrar(a, { titulo: p.titulo, meta: meta, papel: (p.papel && p.papel.indexOf('a confirmar') < 0) ? p.papel : '', img: img, imgs: p.imgs || [], video: p.video || (p.videos && p.videos[0] && p.videos[0].src) || '', materia: p.materia || '' });
+      A.janelaMostrar(a, { titulo: p.titulo, meta: meta, papel: (p.papel && p.papel.indexOf('a confirmar') < 0) ? p.papel : '', img: img, imgs: p.imgs || [], posters: (p.videos || []).map(function (v) { return v.poster; }).filter(Boolean), video: p.video || (p.videos && p.videos[0] && p.videos[0].src) || '', materia: p.materia || '' });
     });
     a.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.vivo'))) A.janelaEsconder(); });
     var im = d.firstChild.querySelector('img');
     if (im && img) im.dataset.capa = img + !!destaque;
     return d.firstChild;
   }
+  // Altura de cada peça no mosaico da parede, em linhas de 4 px (mesma regra das salas).
+  function medirParede() {
+    var el = document.getElementById('parede');
+    if (!el) return;
+    var nos = [].slice.call(el.querySelectorAll('.pp'));
+    nos.forEach(function (n) { n.style.gridRowEnd = 'auto'; });
+    nos.forEach(function (n) { n.style.gridRowEnd = 'span ' + Math.ceil(n.getBoundingClientRect().height / 4); });
+  }
+  var esperaParede;
+  window.addEventListener('resize', function () { clearTimeout(esperaParede); esperaParede = setTimeout(medirParede, 120); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(medirParede);
   var trocaAtual = 0;
   function renderParede(tema, animar, subId) {
     var el = document.getElementById('parede'), maisEl = document.getElementById('parede-mais');
@@ -191,6 +229,12 @@
           n.querySelector('img').dataset.capa = capa + (i === 0);
         }
         n.className = 'pp';
+        // Mosaico (26/11/2026): capa na proporção original, sem corte; em pé aparece em pé. A largura vem do formato.
+        var dimC = capa && window.IMAGENS && window.IMAGENS[capa], rC = dimC ? dimC[0] / dimC[1] : 16 / 9;
+        n.style.setProperty('--r', rC.toFixed(4));
+        n.dataset.f = rC < 0.8 ? 'v' : rC < 1.2 ? 'q' : 'h';
+        // Uma troca interrompida deixa o esmaecer preso (fill: forwards) e a peça reaproveitada fica invisível.
+        if (n.getAnimations) n.getAnimations().forEach(function (a) { a.cancel(); });
         if (!ehMateriaLink(p)) {
           n.setAttribute('href', A.ROOT + s.pasta + '/#' + encodeURIComponent(p.id));
         }
@@ -198,6 +242,7 @@
         return n;
       });
       el.replaceChildren.apply(el, nos);
+      medirParede();
       if (maisEl) maisEl.innerHTML = mais;
       return nos;
     }

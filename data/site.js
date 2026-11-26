@@ -17,7 +17,7 @@ window.SITE = {
   // PROVISÓRIO (não confirmado pelo Arthur) [sugestão do modelo]: "salas" liga cada tema às salas cujas peças aparecem na parede da home.
   // Parede da home: "max" é o número máximo de peças mostradas de cada vez.
   // "ids": peças fixas da parede, na ordem (ex.: ["pinheiros", "lago"]). Vazio = regra automática provisória.
-  parede: { max: 9, ids: ["baladas", "aline", "carnaval-menino-de-ceilandia", "lago", "carnaval-id", "m-cool"] },
+  parede: { max: 9, ids: ["baladas", "m-cool", "carnaval-menino-de-ceilandia", "lago", "carnaval-id", "aline"] },
   // As sete salas decididas pelo Arthur. "pasta" é o endereço; "desc" é a linha de abertura de cada sala.
   salas: [
     { id: "design",     pasta: "design",     nome: "Design Gráfico", desc: "Identidade visual, cartilhas, revistas e capas de disco." },

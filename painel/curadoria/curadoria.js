@@ -28,8 +28,12 @@
   function salvarEstado() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(estadoAtual));
     const aviso = document.getElementById('cur-salvo');
-    if (aviso) aviso.textContent = 'Mudanças ainda não salvas no computador.';
+    if (aviso) aviso.textContent = 'Salvando…';
+    // Desde 26/11 salva sozinho no computador (a página "Editar peças" mexe no mesmo arquivo).
+    clearTimeout(esperaAuto);
+    esperaAuto = setTimeout(salvarNoComputador, 600);
   }
+  let esperaAuto = 0;
 
   // Salvar no computador: o servidor local (_paperclip/servidor.py) grava _paperclip/curadoria/selecao.json.
   function salvarNoComputador() {
@@ -602,8 +606,8 @@
 
   function init() {
     estadoAtual = carregarEstado();
-    // Sem nada no navegador (outro endereço ou outro navegador): pega o que foi salvo no computador.
-    if (!localStorage.getItem(STORAGE_KEY)) {
+    // O que está salvo no computador vale mais que a cópia do navegador (pode ter mudado em "Editar peças").
+    {
       fetch('selecao.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; })
         .then(function (d) { if (d && d.categorias) { estadoAtual = d; localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); render(); } })
         .catch(function () {});
