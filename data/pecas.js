@@ -44,7 +44,7 @@
       imgs: imgs("design", ["corujones-01", "corujones-02", "corujones-03", "corujones-04", "corujones-3000x3000"]) },
     { id: "omarazul", salas: ["design"], titulo: "Omarazul: capas", periodo: "", onde: "Artista de Brasília", papel: "Capas de disco", shape: "sq",
       resumo: "Capas de disco do artista de Brasília Omarazul; fiz a arte das capas.",
-      imgs: imgs("design", ["omarazul-01", "omarazul-02", "omarazul-rango-tango-v3"]) },
+      imgs: imgs("design", ["omarazul-01", "omarazul-02"]) },
     { id: "maxicrimi", salas: ["design"], titulo: "Maxi Crimi: capa", periodo: "", onde: "Artista", papel: "Capa de disco", shape: "sq",
       resumo: "Capa de disco do artista Maxi Crimi; fiz a arte da capa.",
       imgs: imgs("design", ["maxicrimi"]) },
