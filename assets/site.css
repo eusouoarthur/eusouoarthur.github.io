@@ -379,7 +379,8 @@ h1, h2, h3 { font-family: var(--titulo); }
 /* Sobre e contato na home: tamanho de leitura */
 #home .prosa { max-width: none; font-size: clamp(20px, 1.8vw, 24px); line-height: 1.45; }
 #home .prosa p { max-width: 40ch; }
-#home .prosa .home-sobre-frase { max-width: none; white-space: nowrap; }
+#home .prosa .home-sobre-frase { max-width: none; }
+@media (min-width: 900px) { #home .prosa .home-sobre-frase { white-space: nowrap; } }
 #home .prosa p + p { margin-top: 1.2em; }
 #home .prosa p:last-child { max-width: none; font-size: 17px; display: flex; gap: 8px 28px; flex-wrap: wrap; }
 #home .prosa .home-sobre-link { font-family: var(--titulo); font-size: clamp(36px, 4.4vw, 60px); font-weight: 700; letter-spacing: -.025em; line-height: 1; color: var(--destaque); }
@@ -537,6 +538,13 @@ body.com-veu .subcats { opacity: 0; pointer-events: none; }
 @media (min-width: 600px) {
   .cuido .quebra { display: inline; }
   .cuido .quebra::before { content: "\A"; white-space: pre; }
+}
+@media (max-width: 599px) {
+  .cuido { font-size: clamp(26px, 7.5vw, 34px); }
+  .cuido .cuido-verbo { max-width: 100%; }
+  .cuido .cuido-intro { display: block; }
+  .cuido .cuido-nome, .cuido .cuido-nome + .quebra { white-space: nowrap; }
+  .cuido .quebra { display: inline; }
 }
 .cuido .tambor { display: inline-block; vertical-align: top; align-self: auto; transition: width .7s cubic-bezier(.45, 0, .2, 1), font-size var(--mov) var(--mov-curva); }
 .cuido .tambor-fixo { display: inline-block; text-decoration: none; }

@@ -120,7 +120,7 @@
     }).join('') + '<span class="lista-fim">' +
       '<a class="tema-item" style="--k:' + cats.length + '" href="' + ROOT + 'sobre/"' + (ativa === 'sobre' ? ' aria-current="page"' : '') + '>sobre mim</a>' +
       '<a class="tema-item" style="--k:' + (cats.length + 1) + '" href="' + HOME + '#site">home</a></span>';
-    return '<section class="hero hero-topo"><div class="cuido"><span class="cuido-verbo">Oi! Eu sou o Arthur Ramos <span class="quebra">e eu cuido</span></span> ' +
+    return '<section class="hero hero-topo"><div class="cuido"><span class="cuido-verbo"><span class="cuido-intro">Oi! Eu sou o</span> <span class="cuido-nome">Arthur Ramos,</span> <span class="quebra">e cuido</span></span> ' +
       // O mesmo rolo da home: as frases das categorias e "da comunicação." giram como um tambor.
       '<span class="tambor tambor-fixo" role="button" tabindex="0" aria-label="Escolher o que eu cuido (agora: ' + esc(palavra) + ')" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-cuido">' +
       '<span class="tambor-win" aria-hidden="true"><ul class="tambor-rolo">' +
