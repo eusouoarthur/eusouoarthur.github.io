@@ -477,7 +477,9 @@ body.veu-saindo .veu { opacity: 0; transition: opacity .45s ease; }
 .hero .lista .tudo-wrap { display: contents; }
 .hero .lista .tudo-wrap[hidden] { display: none !important; }
 /* 26/11 (pedido do Arthur): "sobre mim" e "home" descem, separados das categorias. */
-.hero .lista .lista-quebra { flex-basis: 100%; height: clamp(20px, 4vh, 44px); }
+/* Ficam lá embaixo, perto do pé da tela (o lugar que ele marcou). No celular o menu vira gaveta: só um respiro. */
+.hero .lista .lista-quebra { flex-basis: 100%; height: max(44px, calc(100svh - 360px)); }
+@media (hover: none), (max-width: 599px) { .hero .lista .lista-quebra { height: 16px; } }
 
 /* Celular e telas de toque: gaveta que sobe de baixo */
 @media (hover: none), (max-width: 599px) {
