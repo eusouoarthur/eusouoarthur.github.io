@@ -171,10 +171,11 @@
   // Um vídeo = play; vários vídeos = dois quadros sobrepostos com play; várias imagens = dois quadros com montanha e sol.
   // Foto única e matéria ficam sem ícone. O nome do tipo fica no aria-label.
   var ESCURO = '#0d1b2a';
+  // Galeria: três quadros próximos, os de trás deslocados para cima e para a esquerda; o da frente leva o sinal.
+  var PILHA = '<rect x="1" y="1" width="13" height="10" opacity=".4"/><rect x="3.5" y="3.5" width="13" height="10" opacity=".7"/><rect x="6" y="6" width="13" height="10"/>';
   var ICONES = {
-    play: '<path d="M6 3.5v13l11-6.5z"/>',
-    galeriaVideo: '<rect x="7" y="2" width="11" height="11" opacity=".55"/><rect x="2" y="7" width="11" height="11"/><path d="M6 9.8v5.4l4.6-2.7z" fill="' + ESCURO + '"/>',
-    galeria: '<rect x="7" y="2" width="11" height="11" opacity=".55"/><rect x="2" y="7" width="11" height="11"/><path d="M3.5 16.5l3.2-4 2 2.3 1.3-1.4 2.5 3.1z" fill="' + ESCURO + '"/><circle cx="10" cy="10.2" r="1.2" fill="' + ESCURO + '"/>'
+    galeriaVideo: PILHA + '<path d="M11 8.4v5.2l4.4-2.6z" fill="' + ESCURO + '"/>',
+    galeria: PILHA + '<path d="M7.4 14.7l3-3.6 1.9 2 1.2-1.2 2.4 2.8z" fill="' + ESCURO + '"/><circle cx="15.6" cy="9" r="1.1" fill="' + ESCURO + '"/>'
   };
   function iconeChave(etq) {
     if (etq === 'galeria de vídeos') return 'galeriaVideo';
@@ -183,7 +184,11 @@
     return '';
   }
   function iconeDe(etq) {
-    return '<svg viewBox="0 0 20 20" width="20" height="20" fill="currentColor" aria-hidden="true">' + ICONES[iconeChave(etq)] + '</svg>';
+    return '<svg viewBox="0 0 20 17" width="22" height="19" fill="currentColor" aria-hidden="true">' + ICONES[iconeChave(etq)] + '</svg>';
+  }
+  // Um vídeo só: play grande no centro da capa, num círculo meio transparente (como botão de dar play).
+  function playCentro(etq) {
+    return '<span class="pp-play" role="img" aria-label="' + esc(etq) + '"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="rgba(0,0,0,.28)" stroke="#fff" stroke-width="2.5"/><path d="M26 20v24l19-12z" fill="#fff"/></svg></span>';
   }
   function criarPeca(p, destaque) {
     var img = capaDe(p);
@@ -191,7 +196,7 @@
     var etq = etiquetaDe(p, img);
     if (etq && !iconeChave(etq)) etq = '';
     var fig = img
-      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + (etq ? '<span class="pp-tag" data-cat="' + esc(categoriaDe(p.id)) + '" role="img" aria-label="' + esc(etq) + '" title="' + esc(etq) + '">' + iconeDe(etq) + '</span>' : '') + '</figure>'
+      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + (!etq ? '' : iconeChave(etq) === 'play' ? playCentro(etq) : '<span class="pp-tag" data-cat="' + esc(categoriaDe(p.id)) + '" role="img" aria-label="' + esc(etq) + '" title="' + esc(etq) + '">' + iconeDe(etq) + '</span>') + '</figure>'
       : '<figure class="pp-semimg"><span>' + esc([p.onde, p.periodo].filter(Boolean).join(' · ')) + '</span></figure>';
     var isLink = ehMateriaLink(p);
     var m = p.materia && window.MATERIAS ? window.MATERIAS[p.materia] : null;

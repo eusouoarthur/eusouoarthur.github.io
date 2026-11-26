@@ -578,3 +578,8 @@ body.com-veu .subcats { transform: translateY(6px); }
 /* Ícones sem caixinha e sem cor (26/11/2026): branco sobre a sombra diagonal. */
 .pp-tag, .pp-tag[data-cat] { background: none; width: auto; height: auto; top: 10px; left: 10px; color: #fff; }
 .pp-tag svg { width: 20px; height: 20px; }
+/* Um vídeo só: play grande no centro (26/11/2026). */
+.pp-play { position: absolute; z-index: 2; top: 50%; left: 50%; width: clamp(44px, 18%, 68px); aspect-ratio: 1; transform: translate(-50%, -50%); opacity: .8; pointer-events: none; transition: opacity .2s, transform .25s var(--mov-curva); }
+.pp-play svg { display: block; width: 100%; height: 100%; }
+.pp:hover .pp-play { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+.pp-tag svg { width: 22px; height: 19px; }
