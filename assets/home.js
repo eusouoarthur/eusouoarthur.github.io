@@ -301,7 +301,7 @@
     lista.innerHTML = temas.map(function (t) {
       if (!pecasDoTema(t).length) return '<span class="tema-item">' + esc(t.curto) + '</span>';
       return '<button class="tema-item" type="button" data-tema="' + esc(t.id) + '" aria-pressed="false">' + esc(t.curto) + '</button>';
-    }).join('') + '<span class="tudo-wrap" hidden><button class="tema-item" type="button" data-tema="">tudo</button></span>';
+    }).join('') + '<span class="tudo-wrap" hidden><button class="tema-item" type="button" data-tema="">home</button></span>';
     lista.id = 'menu-cuido';
     lista.setAttribute('role', 'menu');
     [].forEach.call(lista.querySelectorAll('.tema-item'), function (b, i) { b.style.setProperty('--k', i); });
@@ -385,6 +385,12 @@
       var b = e.target.closest('button[data-tema]');
       if (b && aberto && mouse(e)) girarPara(posDe(b.dataset.tema || null));
     });
+    // Saiu de cima das opções sem escolher: o rolo volta para a categoria que estava.
+    lista.addEventListener('pointerout', function (e) {
+      if (!mouse(e) || !e.target.closest('button[data-tema]')) return;
+      var para = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('button[data-tema]');
+      if (!para && pos !== posDe(sel)) girarPara(posDe(sel));
+    });
     lista.addEventListener('focusin', function (e) {
       var b = e.target.closest('button[data-tema]');
       if (b && aberto) girarPara(posDe(b.dataset.tema || null));
@@ -407,21 +413,10 @@
     });
     renderParede(null, false);
 
-    var visto = false;
-    try { visto = !!sessionStorage.getItem('tamborVisto'); } catch (e) {}
-    if (reduz || visto) { rolo.style.setProperty('--rot', fim + 'deg'); rolo.classList.add('suave'); return; }
-    hero.classList.add('animando');
-    var total = 360 + fim, dur = 3200, t0 = performance.now() + 150;
-    function passo(now) {
-      var t = (now - t0) / dur;
-      if (t < 0) t = 0;
-      if (t > 1) t = 1;
-      var e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      rolo.style.setProperty('--rot', (total * e) + 'deg');
-      if (t < 1) requestAnimationFrame(passo);
-      else setTimeout(function () { rot = total; rolo.classList.add('suave'); hero.classList.remove('animando'); try { sessionStorage.setItem('tamborVisto', '1'); } catch (e) {} }, 300);
-    }
-    requestAnimationFrame(passo);
+    // Sem giro na abertura (pedido do Arthur, 26/11/2026): a frase já chega parada em "da comunicação.".
+    // O rolo só gira quando se passa pelas categorias do menu.
+    rolo.style.setProperty('--rot', fim + 'deg');
+    rolo.classList.add('suave');
   }
 
   // Rotas: #historia abre o percurso; o resto abre a home direto.
