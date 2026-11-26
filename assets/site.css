@@ -77,17 +77,9 @@ p { margin: 0; }
 .tema:hover { color: var(--fg); border-color: var(--fg); }
 .rodape { padding: 28px 0 44px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--fg2); font-size: 14px; }
 
-/* Telas: abertura e percurso */
+/* Tela do percurso */
 .tela { position: fixed; inset: 0; background-color: var(--bg); background-image: var(--grao); display: flex; flex-direction: column; opacity: 1; transition: opacity .45s ease; z-index: 10; overflow: auto; }
 .tela.saindo { opacity: 0; pointer-events: none; }
-.abertura { padding: 14vh var(--pad) 10vh; max-width: 1000px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; }
-.fala { font-size: clamp(28px, 5.2vw, 56px); line-height: 1.15; font-weight: 400; max-width: 18ch; }
-.fala .palavra { opacity: 0; transition: opacity calc(var(--mov) / 3) ease; }
-.fala .palavra.visivel { opacity: 1; }
-.fala + .fala { margin-top: .6em; }
-.opcoes { margin-top: auto; display: flex; flex-wrap: wrap; gap: 12px; padding-top: 40px; opacity: 0; transition: opacity .6s ease .1s; }
-.opcoes.visivel { opacity: 1; }
-.opcoes .btn { font-size: 17px; padding: .9em 1.4em; }
 
 .percurso { display: flex; flex-direction: column; min-height: 100%; max-width: 1200px; margin: 0 auto; width: 100%; padding: 18px var(--pad) 24px; }
 .p-topo { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
@@ -261,26 +253,10 @@ p.previa { font-size: 18px; margin: 12px 0 20px; line-height: 1.4; }
 .s-prologo .s-texto p { max-width: 30ch; }
 .s-prologo .s-texto p + p { margin-top: .8em; }
 
-/* Home: parede de peças (base B "Suplemento", provisória) */
-.parede-secao { border-top: 0; padding-top: 0; }
-/* Parede em linhas justificadas pela proporção de cada peça (--r): cada linha fecha a largura, sem buracos. */
-.parede { --h: 170px; display: flex; flex-wrap: wrap; gap: var(--parede-vao); align-items: flex-start; }
-.pp { flex: var(--r, 1.333) 1 calc(var(--r, 1.333) * var(--h)); display: flex; flex-direction: column; gap: 6px; min-width: 0; text-decoration: none; }
-.pp figure { margin: 0; aspect-ratio: var(--r, 4 / 3); background: var(--bg2); border-top: var(--cor-fio) solid var(--cor); overflow: hidden; }
-.pp img { width: 100%; height: 100%; object-fit: contain; }
-.pp-semimg { aspect-ratio: 4 / 3; display: flex; align-items: flex-end; padding: 14px; font-size: 18px; line-height: 1.25; }
-.pp-t { font-size: 15px; font-weight: 500; line-height: 1.3; }
-.pp-m { font-size: 13px; color: var(--fg2); }
-.pp:hover .pp-t { text-decoration: underline; }
-.parede-mais { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 28px; font-size: 15px; color: var(--fg2); }
-.parede-mais:empty { display: none; }
-@media (min-width: 600px) { .parede { --h: 190px; } }
-@media (min-width: 1100px) { .parede { --h: 250px; } }
-
 /* Home: menu pela palavra ("Cuido ___") */
 .hero { overflow-x: clip; }
 .tambor { align-self: stretch; transition: font-size var(--mov) var(--mov-curva); }
-.tambor-rolo.suave { transition: transform 1400ms cubic-bezier(.45, 0, .2, 1); }
+.tambor-rolo.suave { transition: transform 700ms cubic-bezier(.45, 0, .2, 1); }
 .hero .lista button.tema-item { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em; min-height: 24px; }
 .hero .lista button.tema-item:hover, .hero .lista button.tema-item[aria-pressed="true"] { color: var(--fg); }
 .hero .lista button.tema-item[aria-pressed="true"] { text-decoration-thickness: 2px; text-decoration-color: var(--destaque); }
@@ -348,54 +324,89 @@ p.previa { font-size: 18px; margin: 12px 0 20px; line-height: 1.4; }
 @keyframes janela-pg-entra { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .janela .janela-pg { animation: none; opacity: 1; } }
 
-/* Fase 7 (23/11/2026): acabamento. Títulos em Archivo condensada e pesada (eixo de largura da fonte variável);
-   home com rótulos, manifesto e contato grandes; salas com cabeçalho de cartaz e grade justificada. */
-:root { --cuido-tam: clamp(64px, 15vw, 210px); --display: 70%; }
-.marca { font-weight: 700; font-stretch: 80%; font-size: 21px; letter-spacing: -.01em; }
-.cuido { font-stretch: var(--display); font-weight: 750; letter-spacing: -.035em; line-height: .95; }
-.hero .sub { color: var(--fg); }
+/* Fase 13 (25/11/2026): revisão visual pedida pelo Arthur. Substitui o acabamento da fase 7.
+   - Títulos em Bricolage Grotesque (largura normal); texto corrido em Archivo, sem condensar.
+   - Uma cor de destaque só (vermelho), usada pouco. Sem cor por sala e sem quadradinhos no menu.
+   - Abertura da home numa frase só, tudo do mesmo tamanho.
+   - Títulos de seção de verdade (Trabalhos, Sobre, Contato).
+   - Parede e salas em grade uniforme: nenhuma peça gigante, nenhuma fininha.
+   - Rodapé simples, sem o nome gigante. */
+:root {
+  --titulo: 'Bricolage Grotesque', var(--font);
+  --design: var(--line-forte); --jornalismo: var(--line-forte); --social: var(--line-forte); --video: var(--line-forte);
+  --fotos: var(--line-forte); --textos: var(--line-forte); --automacoes: var(--line-forte);
+  --mov: 400ms;
+  --cuido-tam: clamp(38px, 6.6vw, 96px);
+  --vao: clamp(20px, 2vw, 28px);
+}
+h1, h2, h3 { font-family: var(--titulo); }
+.peca h3, .etiqueta h2, .materia h3, .materia-texto h3 { font-family: var(--font); }
 
-.secao-tit { align-items: center; margin-bottom: 28px; }
-.secao-tit h2 { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; color: var(--fg); }
-.secao-tit h2::before { content: ""; width: 28px; height: 3px; background: var(--destaque); flex: none; }
-.parede-secao { border-top: 1px solid var(--line); padding-top: 40px; }
+/* Topo */
+.topo { padding: 22px 0; }
+.marca { font-family: var(--titulo); font-weight: 700; font-size: clamp(24px, 2.4vw, 32px); letter-spacing: -.02em; line-height: 1; }
+.nav { gap: 4px 22px; font-size: 16px; }
+.nav a::before { content: none; }
+.nav a[aria-current] { color: var(--fg); text-decoration: underline; text-decoration-color: var(--destaque); text-decoration-thickness: 2px; text-underline-offset: .35em; }
 
-#home .prosa { max-width: none; }
-#home .prosa p:not(:last-child) { font-size: clamp(24px, 3.1vw, 42px); line-height: 1.16; font-weight: 500; font-stretch: 85%; letter-spacing: -.015em; max-width: 30ch; }
-#home .prosa p:last-child { margin-top: 1.4em; font-size: 17px; }
+/* Abertura da home: uma frase, um tamanho */
+.hero { padding: clamp(48px, 9vh, 104px) 0 clamp(40px, 7vh, 72px); }
+.cuido { font-family: var(--titulo); font-weight: 700; letter-spacing: -.03em; line-height: 1.02; display: block; }
+@media (min-width: 600px) { .cuido .quebra { display: block; } }
+.cuido .tambor { display: block; color: var(--destaque); }
+.hero .lista { margin-top: 32px; font-size: clamp(16px, 1.5vw, 19px); }
 
-.indice-mais { margin: 0; }
-.indice-mais a { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; text-decoration: none; font-size: clamp(36px, 7vw, 96px); font-weight: 750; font-stretch: var(--display); letter-spacing: -.03em; line-height: 1; transition: color .2s; }
-.indice-mais a::after { content: "→"; font-weight: 400; transition: transform .3s var(--mov-curva); }
-.indice-mais a:hover { color: var(--destaque); }
-.indice-mais a:hover::after { transform: translateX(12px); }
+/* Seções */
+.secao { padding: clamp(48px, 7vh, 80px) 0; }
+.secao-tit { margin-bottom: clamp(24px, 3vh, 36px); }
+.secao-tit h2 { font-family: var(--titulo); font-size: clamp(36px, 4.4vw, 60px); font-weight: 700; letter-spacing: -.025em; line-height: 1; color: var(--fg); }
 
-.contato { flex-direction: column; gap: 10px; }
-.contato a { font-size: clamp(24px, 3.6vw, 44px); font-weight: 600; font-stretch: 85%; letter-spacing: -.015em; line-height: 1.15; text-decoration-thickness: 2px; text-underline-offset: .18em; overflow-wrap: anywhere; transition: color .2s; }
-.contato a:hover { color: var(--ocre); }
+/* Parede da home: grade de 3 colunas (2 no celular), capas do mesmo formato */
+.parede { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px var(--vao); }
+@media (max-width: 899px) { .parede { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 14px; } }
+@media (max-width: 599px) { .pp-t, .peca h3 { font-size: 15px; } .pp-m, .peca .meta { font-size: 12px; } }
+.pp { display: flex; flex-direction: column; gap: 6px; min-width: 0; text-decoration: none; }
+.pp figure { margin: 0 0 6px; aspect-ratio: 4 / 3; background: var(--bg2); overflow: hidden; position: relative; }
+.pp img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--mov-curva); }
+.pp:hover img, .pp:focus-visible img { transform: scale(1.03); }
+.pp-semimg { display: flex; align-items: flex-end; padding: 16px; font-size: 20px; font-weight: 600; line-height: 1.25; }
+.pp-t { font-size: 17px; font-weight: 600; line-height: 1.3; }
+.pp-m { font-size: 14px; color: var(--fg2); }
+.pp:hover .pp-t { color: var(--destaque); }
+.parede-mais { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 32px; font-size: 16px; color: var(--fg2); }
+.parede-mais:empty { display: none; }
 
-.rodape { flex-wrap: wrap; }
-.rodape::before { content: "Arthur Ramos"; flex: 0 0 100%; order: -1; margin-bottom: 20px; font-size: clamp(56px, 15vw, 210px); font-weight: 800; font-stretch: 62%; letter-spacing: -.04em; line-height: .85; color: var(--bg3); white-space: nowrap; overflow: hidden; }
+/* Sobre e contato na home: tamanho de leitura */
+#home .prosa { max-width: none; font-size: clamp(20px, 1.8vw, 24px); line-height: 1.45; }
+#home .prosa p { max-width: 40ch; }
+#home .prosa p + p { margin-top: 1.2em; }
+#home .prosa p:last-child { max-width: none; font-size: 17px; display: flex; gap: 8px 28px; flex-wrap: wrap; }
+.contato { flex-direction: column; gap: 8px; }
+.contato a { font-size: clamp(20px, 2vw, 26px); font-weight: 500; text-underline-offset: .2em; overflow-wrap: anywhere; transition: color .2s; }
+.contato a:hover { color: var(--destaque); }
 
-/* Peças: legendas mais firmes e um fio da cor da sala que corre por baixo da capa no hover */
-.pp-t, .peca h3 { font-weight: 600; }
-.pp figure, .peca figure { position: relative; }
-.pp figure::after, .peca figure::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: var(--cor, var(--destaque)); transform: scaleX(0); transform-origin: left center; transition: transform .35s var(--mov-curva); pointer-events: none; }
-.pp:hover figure::after, .peca:hover figure::after, .pp:focus-visible figure::after, .peca:focus-visible figure::after { transform: scaleX(1); }
-.pp-semimg, .capa-texto { font-stretch: 80%; font-weight: 600; font-size: 21px; }
+/* Rodapé simples */
+.rodape { padding: 28px 0 40px; }
 
-/* Salas: cabeçalho de cartaz com barra grossa na cor da sala */
-.sala-cab { padding: 56px 0 32px; margin-bottom: 40px; border-bottom: 6px solid var(--cor); }
-.sala-cab h1 { font-size: clamp(56px, 11vw, 150px); font-weight: 750; font-stretch: var(--display); letter-spacing: -.035em; line-height: .9; }
-.sala-cab p:not(.mono) { margin-top: 20px; font-size: clamp(18px, 1.9vw, 23px); }
-
-/* Jornalismo e Vídeo: mesma grade justificada da sala Design (linhas fechadas pela proporção --r, sem buraco) */
-.pecas[data-sala="jornalismo"], .pecas[data-sala="video"] { --h: 150px; display: flex; flex-wrap: wrap; gap: 28px 12px; }
-.pecas[data-sala="jornalismo"] .peca, .pecas[data-sala="video"] .peca { flex: calc(var(--r) * 1000) 1 calc(var(--r) * var(--h)); width: auto; min-width: 0; }
-.pecas[data-sala="jornalismo"] .peca figure, .pecas[data-sala="video"] .peca figure { aspect-ratio: var(--r); }
-.pecas[data-sala="jornalismo"]::after, .pecas[data-sala="video"]::after { content: ""; flex: 100000 1 0; }
-@media (min-width: 600px) { .pecas[data-sala="jornalismo"], .pecas[data-sala="video"] { --h: 220px; gap: 32px 16px; } }
-@media (min-width: 1100px) { .pecas[data-sala="jornalismo"], .pecas[data-sala="video"] { --h: 260px; } }
+/* Salas: cabeçalho sem cor; grade uniforme */
+.sala-cab { padding: clamp(40px, 7vh, 72px) 0 clamp(28px, 4vh, 40px); margin-bottom: 36px; border-bottom: 1px solid var(--line); }
+.sala-cab h1 { font-size: clamp(48px, 7vw, 96px); font-weight: 700; letter-spacing: -.035em; line-height: .95; color: var(--fg); }
+.sala-cab p:not(.mono) { margin-top: 18px; font-size: clamp(18px, 1.7vw, 21px); }
+.pecas, .pecas[data-sala="design"], .pecas[data-sala="jornalismo"], .pecas[data-sala="video"] { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px var(--vao); }
+.pecas[data-sala="design"]::after { content: none; }
+.pecas .peca, .pecas[data-sala="design"] .peca { width: 100%; flex: none; }
+.pecas .peca figure, .pecas .peca[data-shape] figure, .pecas[data-sala="design"] .peca figure { aspect-ratio: 4 / 3; }
+.pecas[data-sala="video"] .peca img, .pecas[data-sala="jornalismo"] .peca img { object-fit: cover; }
+.pecas[data-sala="design"] .peca figure { padding: 14px; }
+.pecas[data-sala="design"] .peca img { object-fit: contain; }
+.peca h3 { font-size: 17px; font-weight: 600; }
+.peca:hover h3 { color: var(--destaque); }
+@media (max-width: 899px) { .pecas, .pecas[data-sala="design"], .pecas[data-sala="jornalismo"], .pecas[data-sala="video"] { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 14px; } }
+.pecas[data-sala="fotos"] { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.pecas[data-sala="fotos"] .peca figure { aspect-ratio: 4 / 3; }
+.pecas[data-sala="social"] { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; }
+.pecas[data-sala="social"] .peca figure { aspect-ratio: 1; }
+@media (max-width: 599px) { .pecas[data-sala="fotos"] { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; } }
 
 /* Fase 9: prévia de matérias com trecho do texto */
 .janela-txt { font-size: 14px; line-height: 1.45; color: var(--fg2); margin-top: 4px; }
@@ -430,10 +441,10 @@ p.previa { font-size: 18px; margin: 12px 0 20px; line-height: 1.4; }
   .materia-capa { margin-left: -16px; margin-right: -16px; }
 }
 
-/* Fase 12 (25/11/2026): categorias da curadoria. "Oi, meu nome é Arthur." em cima do título;
+/* Fase 12 (25/11/2026): categorias da curadoria;
    subcategorias aparecem embaixo da lista quando uma categoria é escolhida. */
-.hero .ola { font-size: clamp(22px, 3.2vw, 40px); font-weight: 600; font-stretch: var(--display); letter-spacing: -.01em; color: var(--fg2); margin-bottom: .35em; }
 .hero .subcats { margin-top: 12px; font-size: clamp(14px, 1.3vw, 16px); color: var(--fg2); max-width: 70ch; line-height: 1.9; }
 .hero .subcats button.sub-item { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em; min-height: 24px; }
 .hero .subcats button.sub-item:hover, .hero .subcats button.sub-item[aria-pressed="true"] { color: var(--fg); }
 .hero .subcats button.sub-item[aria-pressed="true"] { text-decoration-thickness: 2px; text-decoration-color: var(--destaque); }
+

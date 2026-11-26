@@ -1,17 +1,13 @@
-// Página inicial: abertura, percurso (a história) e a home com o tambor do "Cuido".
+// Página inicial: a home com o tambor do "eu cuido" e o percurso (a história, em #historia).
 (function () {
   var A = window.AR, S = A.S, esc = A.esc, caminho = A.caminho;
-  var abertura = document.getElementById('abertura');
   var percurso = document.getElementById('percurso');
   var home = document.getElementById('home');
   var reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var visitou = false;
-  try { visitou = !!localStorage.getItem('visitou'); } catch (e) {}
-  function marcarVisita() { try { localStorage.setItem('visitou', '1'); } catch (e) {} }
 
   // Troca de telas com fade.
   function mostrar(tela) {
-    [abertura, percurso].forEach(function (t) {
+    [percurso].forEach(function (t) {
       if (t.id === tela) {
         if (t.hidden) { t.classList.add('saindo'); t.hidden = false; requestAnimationFrame(function () { requestAnimationFrame(function () { t.classList.remove('saindo'); }); }); }
       } else if (!t.hidden) {
@@ -26,58 +22,6 @@
     } else {
       document.body.classList.add('travado');
     }
-  }
-
-  // Abertura: o interlocutor fala em cima, as opções ficam embaixo.
-  var aberturaOk = false;
-  function iniciarAbertura() {
-    mostrar('abertura');
-    if (aberturaOk) return;
-    aberturaOk = true;
-    var f1 = abertura.querySelector('.f1'), f2 = abertura.querySelector('.f2'), op = abertura.querySelector('.opcoes');
-    // A fala aparece palavra por palavra; pausa maior na vírgula e no ponto. Clique ou tecla pula.
-    var palavras = [];
-    [f1, f2].forEach(function (p) {
-      var txt = p.textContent.trim().split(/\s+/);
-      p.textContent = '';
-      txt.forEach(function (w, k) {
-        var sp = document.createElement('span');
-        sp.className = 'palavra'; sp.textContent = w;
-        p.appendChild(sp);
-        if (k < txt.length - 1) p.appendChild(document.createTextNode(' '));
-        palavras.push(sp);
-      });
-    });
-    var PALAVRA = 180, VIRGULA = 400, PONTO = 800, timers = [];
-    function tudo() {
-      timers.forEach(clearTimeout); timers = [];
-      palavras.forEach(function (w) { w.classList.add('visivel'); });
-      op.classList.add('visivel');
-      document.removeEventListener('keydown', pular);
-    }
-    function pular(e) { if (!/^(Arrow|Enter$|Tab$)/.test(e.key)) tudo(); }
-    if (reduz) setTimeout(tudo, 400);
-    else {
-      var t = 300;
-      palavras.forEach(function (w) {
-        (function (t0) { timers.push(setTimeout(function () { w.classList.add('visivel'); }, t0)); })(t);
-        var fim = w.textContent.slice(-1);
-        t += PALAVRA + (/[.?!]/.test(fim) ? PONTO : /[,;:]/.test(fim) ? VIRGULA : 0);
-      });
-      timers.push(setTimeout(function () { op.classList.add('visivel'); }, t));
-    }
-    abertura.addEventListener('click', function (e) { if (!e.target.closest('button')) tudo(); });
-    document.addEventListener('keydown', pular);
-    abertura.querySelector('.sim').addEventListener('click', function () { marcarVisita(); location.hash = 'historia'; });
-    abertura.querySelector('.nao').addEventListener('click', function () { marcarVisita(); location.hash = 'site'; });
-    // Teclado: as setas escolhem entre as duas opções; Enter confirma (é o próprio botão).
-    var botoes = [abertura.querySelector('.sim'), abertura.querySelector('.nao')];
-    document.addEventListener('keydown', function (e) {
-      if (abertura.hidden) return;
-      var i = botoes.indexOf(document.activeElement);
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); botoes[(i + 1) % 2].focus(); }
-      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); botoes[i < 0 ? 1 : (i + 1) % 2].focus(); }
-    });
   }
 
   // Percurso: slides com peças reais, em ordem cronológica.
@@ -124,7 +68,7 @@
   function ligarPercurso() {
     var prox = percurso.querySelector('.prox'), ant = percurso.querySelector('.ant');
     prox.addEventListener('click', function () {
-      if (window.PERCURSO[idx].fim) { marcarVisita(); location.hash = 'site'; }
+      if (window.PERCURSO[idx].fim) { location.hash = 'site'; }
       else { idx++; renderSlide(); }
     });
     ant.addEventListener('click', function () { if (idx > 0) { idx--; renderSlide(); } });
@@ -201,7 +145,7 @@
     var img = capaDe(p);
     var meta = [p.periodo, p.onde].filter(Boolean).join(' · ');
     var fig = img
-      ? '<figure>' + A.pic(img, destaque ? '(min-width: 1100px) 1040px, 100vw' : '(min-width: 600px) 50vw, 50vw', destaque) + '</figure>'
+      ? '<figure>' + A.pic(img, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', destaque) + '</figure>'
       : '<figure class="pp-semimg"><span>' + esc([p.onde, p.periodo].filter(Boolean).join(' · ')) + '</span></figure>';
     var isLink = ehMateriaLink(p);
     var m = p.materia && window.MATERIAS ? window.MATERIAS[p.materia] : null;
@@ -221,41 +165,6 @@
     if (im && img) im.dataset.capa = img + !!destaque;
     return d.firstChild;
   }
-  // Distribui as peças em linhas que fecham a largura (pela proporção --r de cada uma).
-  // A última linha, se ficar curta demais, divide espaço com a anterior: nenhuma linha sobra pela metade.
-  function justificarParede(el) {
-    var nos = [].slice.call(el.querySelectorAll('.pp'));
-    var W = el.clientWidth;
-    if (!W || !nos.length) return;
-    var cs = getComputedStyle(el), g = parseFloat(cs.columnGap) || 0, h = parseFloat(cs.getPropertyValue('--h')) || 200;
-    var rs = nos.map(function (n) { return parseFloat(n.style.getPropertyValue('--r')) || 1.333; });
-    // Escolhe onde quebrar as linhas para que todas fechem a largura com altura perto da ideal
-    // (a primeira, da peça de destaque, mais alta). Poucas peças: busca completa é barata.
-    function custo(i, j) {
-      var sr = 0; for (var k = i; k < j; k++) sr += rs[k];
-      var alt = (W - g * (j - i - 1)) / sr, ideal = i === 0 ? h * 1.9 : h, d = (alt - ideal) / ideal;
-      return { alt: alt, c: d * d };
-    }
-    var melhor = [{ c: 0, de: -1 }];
-    for (var j = 1; j <= rs.length; j++) {
-      melhor[j] = { c: Infinity, de: 0 };
-      for (var i = 0; i < j; i++) {
-        var c = melhor[i].c + custo(i, j).c;
-        if (c < melhor[j].c) melhor[j] = { c: c, de: i };
-      }
-    }
-    var fim = rs.length;
-    while (fim > 0) {
-      var ini = melhor[fim].de, alt = custo(ini, fim).alt;
-      for (var k = ini; k < fim; k++) nos[k].style.flex = '0 0 ' + Math.floor(rs[k] * alt) + 'px';
-      fim = ini;
-    }
-  }
-  var esperaParede;
-  window.addEventListener('resize', function () {
-    clearTimeout(esperaParede);
-    esperaParede = setTimeout(function () { var el = document.getElementById('parede'); if (el) justificarParede(el); }, 120);
-  });
   var trocaAtual = 0;
   function renderParede(tema, animar, subId) {
     var el = document.getElementById('parede'), maisEl = document.getElementById('parede-mais');
@@ -278,12 +187,10 @@
         var n = porId[p.id] || criarPeca(p, i === 0), s = salaNaParede(p, tema);
         var pc = n.querySelector('figure picture'), capa = capaDe(p);
         if (pc && capa && pc.querySelector('img').dataset.capa !== capa + (i === 0)) {
-          pc.outerHTML = A.pic(capa, i === 0 ? '(min-width: 1100px) 1040px, 100vw' : '50vw', i === 0);
+          pc.outerHTML = A.pic(capa, '(min-width: 1100px) 360px, (min-width: 900px) 33vw, 50vw', i === 0);
           n.querySelector('img').dataset.capa = capa + (i === 0);
         }
-        n.className = 'pp' + (i === 0 ? ' pp-destaque' : '');
-        var dim = capa && window.IMAGENS && window.IMAGENS[capa];
-        n.style.setProperty('--r', dim ? (dim[0] / dim[1]).toFixed(3) : '1.333');
+        n.className = 'pp';
         if (!ehMateriaLink(p)) {
           n.setAttribute('href', A.ROOT + s.pasta + '/#' + encodeURIComponent(p.id));
         }
@@ -291,7 +198,6 @@
         return n;
       });
       el.replaceChildren.apply(el, nos);
-      justificarParede(el);
       if (maisEl) maisEl.innerHTML = mais;
       return nos;
     }
@@ -351,8 +257,8 @@
     var larg = [];      // largura de cada palavra no tamanho cheio, em "em"
 
     // Mede cada palavra no tamanho cheio. Roda de novo quando a fonte carrega e quando a tela muda.
-    // A palavra que não cabe primeiro condensa (eixo de largura da Archivo, até 62%); só depois a letra diminui.
-    var LARGURA_MIN = 62;
+    // A fonte dos títulos não condensa (LARGURA_MIN = 100): se a palavra não couber, a letra diminui só o necessário.
+    var LARGURA_MIN = 100;
     function medir() {
       var ft = parseFloat(getComputedStyle(tamborEl).fontSize) || 16;
       var fs = parseFloat(getComputedStyle(cuido).fontSize) || 16;
@@ -439,7 +345,7 @@
     try { visto = !!sessionStorage.getItem('tamborVisto'); } catch (e) {}
     if (reduz || visto) { rolo.style.setProperty('--rot', fim + 'deg'); rolo.classList.add('suave'); return; }
     hero.classList.add('animando');
-    var total = 360 + fim, dur = 7000, t0 = performance.now() + 500;
+    var total = 360 + fim, dur = 3200, t0 = performance.now() + 150;
     function passo(now) {
       var t = (now - t0) / dur;
       if (t < 0) t = 0;
@@ -452,12 +358,11 @@
     requestAnimationFrame(passo);
   }
 
-  // Rotas: #historia, #site ou nada.
+  // Rotas: #historia abre o percurso; o resto abre a home direto.
   function rotear() {
     var h = location.hash.replace('#', '');
     if (h === 'historia') iniciarPercurso();
-    else if (h === 'site' || h === 'conteudo' || visitou) mostrar('home');
-    else iniciarAbertura();
+    else mostrar('home');
   }
   window.addEventListener('hashchange', rotear);
   rotear();

@@ -1,5 +1,8 @@
 /* Fonte do site: Archivo (Omnibus-Type), variável — peso 100 a 900, largura 62% a 125%.
    Licença SIL Open Font License 1.1 (fonts/OFL.txt). Arquivos do repositório github.com/google/fonts (ofl/archivo),
-   convertidos para woff2 só com os caracteres latinos. Uma fonte só no site inteiro. */
+   convertidos para woff2 só com os caracteres latinos. Texto corrido. */
+/* Títulos: Bricolage Grotesque (Mathieu Triay), variável — peso 300 a 800, largura e tamanho óptico fixos.
+   Licença SIL OFL 1.1 (fonts/OFL-bricolage.txt). Do repositório github.com/google/fonts (ofl/bricolagegrotesque), só latinos. */
+@font-face { font-family: 'Bricolage Grotesque'; font-style: normal; font-weight: 300 800; font-display: swap; src: url('fonts/bricolage-var.woff2') format('woff2'); }
 @font-face { font-family: 'Archivo'; font-style: normal; font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; src: url('fonts/archivo-var.woff2') format('woff2'); }
 @font-face { font-family: 'Archivo'; font-style: italic; font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; src: url('fonts/archivo-italic-var.woff2') format('woff2'); }
