@@ -191,6 +191,14 @@
           n.querySelector('img').dataset.capa = capa + (i === 0);
         }
         n.className = 'pp';
+        // Capa em pé ou quadrada: aparece inteira, com a própria imagem desfocada atrás (26/11/2026).
+        var dimC = capa && window.IMAGENS && window.IMAGENS[capa], rC = dimC ? dimC[0] / dimC[1] : 1.6;
+        var figC = n.querySelector('figure'), fundoC = figC && figC.querySelector('.pp-fundo');
+        if (rC < 1.2 && figC && !fundoC) {
+          var im0 = figC.querySelector('img');
+          if (im0) { var f = document.createElement('div'); f.className = 'pp-fundo'; f.setAttribute('aria-hidden', 'true'); f.style.backgroundImage = 'url("' + (im0.currentSrc || im0.src) + '")'; figC.insertBefore(f, figC.firstChild); }
+        }
+        n.classList.toggle('pp-inteira', rC < 1.2);
         // Uma troca interrompida deixa o esmaecer preso (fill: forwards) e a peça reaproveitada fica invisível.
         if (n.getAnimations) n.getAnimations().forEach(function (a) { a.cancel(); });
         if (!ehMateriaLink(p)) {

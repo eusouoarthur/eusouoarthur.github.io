@@ -60,6 +60,26 @@
       '<h3>' + esc(p.titulo) + '</h3><span class="meta">' + esc(meta) + '</span>' + (papelOk(p) ? '<span class="papel">' + esc(p.papel) + '</span>' : '') + '</' + tag + '>';
   }).join('');
   if (!itens.length) grid.innerHTML = '<p class="vazio">Ainda não tem nada aqui.</p>';
+  // Capa no formato dela (26/11/2026): as peças se agrupam em faixas pelo formato real da capa, todas com área parecida.
+  // Deitadas 3 por linha (16:9), quadradas 4 por linha, em pé 5 por linha (9:16). As peças continuam dentro de #pecas.
+  if (itens.length && (sala === 'video' || sala === 'design' || sala === 'jornalismo')) {
+    var faixas = { h: [], q: [], v: [] };
+    [].slice.call(grid.querySelectorAll('.peca')).forEach(function (b) {
+      var r = parseFloat(b.style.getPropertyValue('--r')) || 1.6;
+      faixas[r < 0.8 ? 'v' : r < 1.2 ? 'q' : 'h'].push(b);
+    });
+    ['h', 'q', 'v'].forEach(function (f) {
+      if (!faixas[f].length) return;
+      var d = document.createElement('div'); d.className = 'faixa'; d.dataset.f = f;
+      // Colunas que fecham melhor a última linha (sem peça sozinha), dentro do que fica num tamanho bom.
+      var n = faixas[f].length, opcoes = { h: [3, 2, 4], q: [4, 3, 5], v: [5, 6, 4] }[f], cols = opcoes[0], melhor = -1;
+      opcoes.forEach(function (c) { var nota = n % c === 0 ? 1 : (n % c) / c; if (n < c) nota = 0; if (nota > melhor + 0.001) { melhor = nota; cols = c; } });
+      d.style.setProperty('--cols', Math.min(cols, Math.max(n, opcoes[0])));
+      faixas[f].forEach(function (b) { d.appendChild(b); });
+      grid.appendChild(d);
+    });
+    grid.classList.add('com-faixas');
+  }
 
   // Prévia. No computador: mover o mouse na horizontal folheia as imagens da peça; vídeo toca um trecho mudo em loop.
   // No celular: a peça mais perto do centro da tela entra em prévia ao rolar; toque abre.
