@@ -284,6 +284,8 @@
       var cabe = hero.clientWidth / fs - 0.1;
       var k = Math.min(1, cabe / (larg[pos] || 1));
       tamborEl.style.fontSize = k.toFixed(3) + 'em';
+      // A palavra fica na mesma linha de "e eu cuido": a caixa do tambor acompanha a largura da palavra à mostra.
+      tamborEl.style.width = (larg[pos] || 0).toFixed(3) + 'em';
       lis.forEach(function (li, i) { li.classList.toggle('atual', i === pos); });
     }
     function girarPara(i) {

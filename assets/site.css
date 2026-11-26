@@ -519,3 +519,15 @@ body.veu-saindo .veu { opacity: 0; transition: opacity .45s ease; }
 .hero .lista { z-index: 2; }
 .hero .subcats { transition: opacity .2s ease; }
 .hero.menu-aberto .subcats { opacity: 0; pointer-events: none; }
+
+/* Fase 13h (26/11/2026): frase em 2 linhas no computador: "Oi! Eu sou o Arthur Ramos / e eu cuido da comunicação."
+   A palavra que gira fica na mesma linha de "e eu cuido"; a caixa dela acompanha a largura da palavra. */
+:root { --cuido-tam: clamp(34px, 4.8vw, 70px); }
+@media (min-width: 600px) {
+  .cuido .quebra { display: inline; }
+  .cuido .quebra::before { content: "\A"; white-space: pre; }
+}
+.cuido .tambor { display: inline-block; vertical-align: top; align-self: auto; transition: width .7s cubic-bezier(.45, 0, .2, 1), font-size var(--mov) var(--mov-curva); }
+.cuido .tambor-fixo { display: inline; }
+.hero .subcats { transition: opacity .35s ease, transform .35s var(--mov-curva); }
+.hero.menu-aberto .subcats { transform: translateY(6px); }
