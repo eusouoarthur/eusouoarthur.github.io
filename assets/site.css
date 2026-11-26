@@ -535,23 +535,6 @@ body.com-veu .subcats { transform: translateY(6px); }
 /* Subcategorias embaixo da linha da frase, no topo de Trabalhos (26/11/2026). */
 .parede-secao .subcats { margin: 0 0 clamp(28px, 4vh, 40px); }
 
-/* Capa no formato dela (26/11/2026). Salas Vídeo, Design e Jornalismo: faixas por formato, com área parecida.
-   Deitadas 16:9, 3 por linha; quadradas, 4 por linha; em pé 9:16, 5 por linha. Capa inteira, sem corte de formato. */
-.pecas.com-faixas { display: block; }
-.faixa { display: grid; gap: 40px var(--vao); }
-.faixa + .faixa { margin-top: 56px; }
-.faixa[data-f="h"] { grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); }
-.faixa[data-f="q"] { grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); }
-.faixa[data-f="v"] { grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr)); gap: 36px 18px; }
-.faixa .peca figure, .faixa .peca[data-shape] figure { aspect-ratio: 16 / 9; padding: 0; }
-.faixa[data-f="q"] .peca figure { aspect-ratio: 1; }
-.faixa[data-f="v"] .peca figure { aspect-ratio: 9 / 16; }
-.faixa .peca img { object-fit: cover; }
-.faixa[data-f="v"] .peca h3 { font-size: 15px; }
-.faixa[data-f="v"] .peca .meta, .faixa[data-f="v"] .peca .papel { font-size: 12px; }
-@media (max-width: 899px) { .faixa[data-f="h"] { grid-template-columns: repeat(2, minmax(0, 1fr)); } .faixa[data-f="q"], .faixa[data-f="v"] { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 599px) { .faixa[data-f="h"] { grid-template-columns: 1fr; } .faixa[data-f="q"], .faixa[data-f="v"] { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 12px; } }
-.pecas[data-sala="design"] .faixa .peca img { object-fit: contain; }
 /* Home: capa em pé ou quadrada aparece inteira, com a própria imagem desfocada preenchendo o resto do quadro. */
 .pp.pp-inteira figure img { object-fit: contain; position: relative; }
 .pp .pp-fundo { position: absolute; inset: 0; background-size: cover; background-position: center; filter: blur(22px) brightness(.55) saturate(1.2); transform: scale(1.25); pointer-events: none; }
@@ -559,8 +542,17 @@ body.com-veu .subcats { transform: translateY(6px); }
 /* Proporção original de cada capa, sem cortar nada (pedido do Arthur, 26/11/2026).
    Salas: cada quadro tem a proporção real da imagem (--r) e a imagem entra inteira.
    Home: quadros 16:9; capa de outro formato aparece inteira, com a própria imagem desfocada atrás. */
-.faixa { align-items: start; }
-.faixa .peca figure, .faixa .peca[data-shape] figure, .faixa[data-f="q"] .peca figure, .faixa[data-f="v"] .peca figure { aspect-ratio: var(--r); padding: 0; background: none; }
-.faixa .peca img, .pecas[data-sala="design"] .faixa .peca img { object-fit: contain; }
 #parede .pp figure { aspect-ratio: 16 / 9; }
 #parede .pp img { object-fit: contain; }
+
+/* Mosaico das salas Vídeo, Design e Jornalismo (26/11/2026): proporção original, sem corte, alturas diferentes.
+   A altura em linhas (grid-row-end) é medida por sala.js. */
+.pecas.mosaico { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-rows: 4px; gap: 0 var(--vao); grid-auto-flow: row dense; align-items: start; }
+.mosaico .peca { grid-column: span 6; padding-bottom: 40px; flex: none; width: auto; }
+.mosaico .peca[data-f="q"] { grid-column: span 3; }
+.mosaico .peca[data-f="v"] { grid-column: span 3; }
+.mosaico .peca figure, .mosaico .peca[data-shape] figure { aspect-ratio: var(--r); padding: 0; background: none; }
+.mosaico .peca img { object-fit: contain; }
+.mosaico .peca[data-f="v"] h3 { font-size: 15px; }
+@media (max-width: 899px) { .pecas.mosaico { grid-template-columns: repeat(8, minmax(0, 1fr)); } .mosaico .peca { grid-column: span 4; } .mosaico .peca[data-f="q"], .mosaico .peca[data-f="v"] { grid-column: span 2; } }
+@media (max-width: 599px) { .pecas.mosaico { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 12px; } .mosaico .peca { grid-column: span 4; padding-bottom: 28px; } .mosaico .peca[data-f="q"], .mosaico .peca[data-f="v"] { grid-column: span 2; } }
