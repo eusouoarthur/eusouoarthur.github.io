@@ -492,7 +492,7 @@ body.veu-saindo .veu { opacity: 0; transition: opacity .45s ease; }
 .topo { display: block; padding: 0; border: 0; }
 .hero { padding-top: clamp(56px, 11vh, 120px); }
 .sala-cab { padding-top: clamp(48px, 9vh, 96px); }
-@media (prefers-reduced-motion: reduce) { /* Cabeçalho das outras páginas: a frase da home, com a palavra da página (não fica presa ao rolar). */
+/* Cabeçalho das outras páginas: a frase da home, com a palavra da página (não fica presa ao rolar). */
 .hero-topo { padding-bottom: clamp(24px, 4vh, 40px); }
 .tambor-fixo { display: block; font: inherit; letter-spacing: inherit; line-height: inherit; color: var(--destaque); text-align: left; padding: 0; text-decoration: underline; text-decoration-thickness: .055em; text-underline-offset: .1em; text-decoration-color: rgba(229, 85, 63, .4); }
 .tambor-fixo:hover, .menu-aberto .tambor-fixo { text-decoration-color: var(--destaque); }
@@ -500,3 +500,22 @@ body.veu-saindo .veu { opacity: 0; transition: opacity .45s ease; }
 .hero .lista a.tema-item:hover, .hero .lista a.tema-item:focus-visible { background: var(--destaque); border-color: var(--destaque); color: var(--bg); }
 .hero-topo + .sala-cab, .topo + .sala-cab { padding-top: clamp(16px, 3vh, 32px); }
 @media (hover: none), (max-width: 599px) { .hero .lista a.tema-item:hover { background: none; color: var(--destaque); } }
+
+/* Fase 13g (26/11/2026): o submenu fica fora da área do spotlight e vira uma fileira de etiquetas.
+   A camada da área de hover (.hero::before) fica atrás do conteúdo, para o submenu receber o clique. */
+.hero > .cuido, .hero > .subcats { position: relative; z-index: 1; }
+.hero .subcats { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 8px; max-width: none; line-height: 1; }
+.hero .subcats:not([hidden]) { animation: subcats-entra .35s var(--mov-curva); }
+.hero .subcats button.sub-item { font-family: var(--titulo); font-size: 15px; font-weight: 600; letter-spacing: 0; color: var(--fg2); text-decoration: none; padding: 9px 14px; border: 1px solid var(--line); background: var(--bg2); transition: color .15s, border-color .15s, background .15s; }
+.hero .subcats button.sub-item:hover { color: var(--fg); border-color: var(--line-forte); text-decoration: none; }
+.hero .subcats button.sub-item[aria-pressed="true"] { color: var(--bg); background: var(--destaque); border-color: var(--destaque); text-decoration: none; }
+@keyframes subcats-entra { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .hero .subcats:not([hidden]) { animation: none; } }
+/* "Oi! Eu sou o Arthur Ramos" cabe numa linha no computador; nas outras páginas a frase é cabeçalho, menor que o título da página. */
+:root { --cuido-tam: clamp(36px, 5.3vw, 76px); }
+.hero-topo .cuido { font-size: clamp(28px, 3.3vw, 46px); }
+.hero-topo { padding-top: clamp(32px, 6vh, 64px); }
+/* Com o menu da palavra aberto, ele fica na frente e o submenu some (os dois ocupam o mesmo lugar). */
+.hero .lista { z-index: 2; }
+.hero .subcats { transition: opacity .2s ease; }
+.hero.menu-aberto .subcats { opacity: 0; pointer-events: none; }

@@ -329,7 +329,7 @@
       if (subs.length < 2) { subcats.hidden = true; subcats.innerHTML = ''; return; }
       subcats.innerHTML = [{ id: '', nome: 'todas' }].concat(subs).map(function (s) {
         return '<button class="sub-item" type="button" data-sub="' + esc(s.id) + '" aria-pressed="' + ((s.id || null) === subSel) + '">' + esc(s.nome.toLowerCase()) + '</button>';
-      }).join(' · ');
+      }).join('');
       subcats.hidden = false;
     }
     lista.addEventListener('click', function (e) {
@@ -380,7 +380,12 @@
     // Área de hover: o bloco inteiro da frase, de ponta a ponta da tela (pedido do Arthur, 26/11/2026).
     // Depois de escolher, o menu só reabre quando o mouse sai da área e volta (a página muda de altura embaixo dele).
     var suprimido = false;
-    hero.addEventListener('pointerenter', function (e) { if (mouse(e) && !suprimido) abrirMenu(); });
+    // O submenu (subcategorias) fica fora da área do spotlight: em cima dele o menu não abre (e fecha se estava aberto).
+    hero.addEventListener('pointermove', function (e) {
+      if (!mouse(e)) return;
+      if (e.target.closest('.subcats')) { if (aberto) fecharDepois(); }
+      else if (!suprimido) abrirMenu();
+    });
     document.addEventListener('pointermove', function (e) {
       if (!suprimido || !mouse(e)) return;
       var r = hero.getBoundingClientRect();

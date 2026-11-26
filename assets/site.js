@@ -120,7 +120,7 @@
     }).join('') +
       '<a class="tema-item" style="--k:' + cats.length + '" href="' + ROOT + 'sobre/"' + (ativa === 'sobre' ? ' aria-current="page"' : '') + '>sobre mim</a>' +
       '<a class="tema-item" style="--k:' + (cats.length + 1) + '" href="' + HOME + '#site">home</a>';
-    return '<section class="hero hero-topo"><p class="cuido"><span class="cuido-verbo">Oi! Eu sou o Arthur <span class="quebra">e eu cuido</span></span> ' +
+    return '<section class="hero hero-topo"><p class="cuido"><span class="cuido-verbo">Oi! Eu sou o Arthur Ramos <span class="quebra">e eu cuido</span></span> ' +
       '<button class="tambor tambor-fixo" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-cuido">' + esc(palavra) + '</button></p>' +
       '<nav class="lista" id="menu-cuido" aria-label="O que eu cuido">' + itens + '</nav></section>';
   }
