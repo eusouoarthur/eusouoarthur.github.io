@@ -117,7 +117,7 @@
     var palavra = atual ? atual.frase : 'da comunicação.';
     var itens = cats.map(function (c, i) {
       return '<a class="tema-item" style="--k:' + i + '" href="' + HOME + '?cat=' + encodeURIComponent(c.id) + '#site" data-frase="' + esc(c.frase) + '"' + (atual && c.id === atual.id ? ' aria-current="page"' : '') + '>' + esc(c.nome.toLowerCase()) + '</a>';
-    }).join('') +
+    }).join('') + '<span class="lista-quebra" aria-hidden="true"></span>' +
       '<a class="tema-item" style="--k:' + cats.length + '" href="' + ROOT + 'sobre/"' + (ativa === 'sobre' ? ' aria-current="page"' : '') + '>sobre mim</a>' +
       '<a class="tema-item" style="--k:' + (cats.length + 1) + '" href="' + HOME + '#site">home</a>';
     return '<section class="hero hero-topo"><div class="cuido"><span class="cuido-verbo">Oi! Eu sou o Arthur Ramos <span class="quebra">e eu cuido</span></span> ' +

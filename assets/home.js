@@ -327,7 +327,7 @@
     lista.innerHTML = temas.map(function (t) {
       if (!pecasDoTema(t).length) return '<span class="tema-item">' + esc(t.curto) + '</span>';
       return '<button class="tema-item" type="button" data-tema="' + esc(t.id) + '" aria-pressed="false">' + esc(t.curto) + '</button>';
-    }).join('') + '<a class="tema-item" href="' + A.ROOT + 'sobre/">sobre mim</a>' +
+    }).join('') + '<span class="lista-quebra" aria-hidden="true"></span><a class="tema-item" href="' + A.ROOT + 'sobre/">sobre mim</a>' +
       '<span class="tudo-wrap" hidden><button class="tema-item" type="button" data-tema="">home</button></span>';
     lista.id = 'menu-cuido';
     lista.setAttribute('role', 'menu');

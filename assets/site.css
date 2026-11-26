@@ -476,6 +476,8 @@ body.veu-saindo .veu { opacity: 0; transition: opacity .45s ease; }
 .hero .lista button.tema-item[aria-pressed="true"]:hover { color: var(--bg); }
 .hero .lista .tudo-wrap { display: contents; }
 .hero .lista .tudo-wrap[hidden] { display: none !important; }
+/* 26/11 (pedido do Arthur): "sobre mim" e "home" descem, separados das categorias. */
+.hero .lista .lista-quebra { flex-basis: 100%; height: clamp(20px, 4vh, 44px); }
 
 /* Celular e telas de toque: gaveta que sobe de baixo */
 @media (hover: none), (max-width: 599px) {
