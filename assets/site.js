@@ -200,9 +200,11 @@
     if (semMouse.matches) return;
     clearTimeout(janelaTimer);
     janelaTimer = setTimeout(function () {
-      if (d.video) { vivoMostrar(alvo, d.video); return; }
+      // Peça com mais de um item (fotos + capas dos vídeos) mostra o mosaico; com um vídeo só, ele toca no lugar.
+      var itensTodos = (d.imgs && d.imgs.length ? d.imgs : (d.img ? [d.img] : [])).concat(d.posters || []);
+      if (d.video && itensTodos.length < 2) { vivoMostrar(alvo, d.video); return; }
       if (!janelaEl) { janelaEl = document.createElement('div'); janelaEl.className = 'janela'; janelaEl.setAttribute('aria-hidden', 'true'); document.body.appendChild(janelaEl); }
-      var todas = (d.imgs && d.imgs.length ? d.imgs : (d.img ? [d.img] : []));
+      var todas = itensTodos;
       var imgs = todas.slice(0, 6), resto = todas.length - imgs.length;
       var paginas = imgs.map(function (src, i) {
         var mais = (i === imgs.length - 1 && resto > 0) ? '<span class="janela-mais">+' + resto + '</span>' : '';
@@ -225,7 +227,7 @@
       janelaEl.innerHTML = '<div class="janela-m">' + paginas + '</div><div class="janela-f"><span class="janela-t">' + esc(d.titulo || '') + '</span>' +
         (d.meta ? '<span class="janela-meta">' + esc(d.meta) + '</span>' : '') + (d.papel ? '<span class="janela-p">' + esc(d.papel) + '</span>' : '') +
         txtMateria +
-        (!ehMateria && todas.length > 1 ? '<span class="janela-n">' + todas.length + ' páginas</span>' : '') + '</div>';
+        (!ehMateria && todas.length > 1 ? '<span class="janela-n">' + todas.length + ((d.posters && d.posters.length) ? ((d.imgs && d.imgs.length) ? ' peças' : ' vídeos') : ' páginas') + '</span>' : '') + '</div>';
       janelaEl.querySelectorAll('img').forEach(function (im) { im.loading = 'eager'; });
       janelaEl.style.setProperty('--cor', getComputedStyle(alvo).getPropertyValue('--cor') || 'var(--fg2)');
       var r = alvo.getBoundingClientRect(), W = janelaEl.offsetWidth || 380, M = 16;

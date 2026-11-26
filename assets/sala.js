@@ -99,7 +99,7 @@
     var p = itens[+b.dataset.i], im = imagensDe(p);
     b.addEventListener('pointerenter', function (e) {
       if (e.pointerType !== 'mouse' || modoCelular.matches) return;
-      A.janelaMostrar(b, { titulo: p.titulo, meta: [p.periodo, p.onde].filter(Boolean).join(' · '), papel: papelOk(p) ? p.papel : '', img: im[0] || imgDaCapa(p), imgs: im, video: reduz.matches ? '' : videoDe(p), materia: p.materia || '' });
+      A.janelaMostrar(b, { titulo: p.titulo, meta: [p.periodo, p.onde].filter(Boolean).join(' · '), papel: papelOk(p) ? p.papel : '', img: im[0] || imgDaCapa(p), imgs: im, posters: (p.videos || []).map(function (v) { return v.poster; }).filter(Boolean), video: reduz.matches ? '' : videoDe(p), materia: p.materia || '' });
     });
     b.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('.vivo'))) A.janelaEsconder(); });
   });
