@@ -68,6 +68,9 @@
     [].slice.call(grid.querySelectorAll('.peca')).forEach(function (b) {
       var r = parseFloat(b.style.getPropertyValue('--r')) || 1.6;
       b.dataset.f = r < 0.8 ? 'v' : r < 1.2 ? 'q' : 'h';
+      // Logo de fundo transparente (p.logo): do tamanho das quadradas e sem a sombra do canto (27/11/2026).
+      var pp = itens[+b.dataset.i];
+      if (pp && pp.logo) { b.dataset.f = 'q'; b.dataset.logo = '1'; }
     });
     var LINHA = 4;
     var medirMosaico = function () {
@@ -231,6 +234,9 @@
     dlg.querySelector('.dlg-tit').textContent = S.nome + ' · ' + (S.salas.filter(function (s) { return s.id === sala; })[0] || {}).nome;
     dlg.setAttribute('aria-labelledby', 'dlg-h');
     dlg.showModal();
+    // Aberta com o mouse, o foco vai para a janela e não para o "Fechar" (senão o botão ganha um segundo contorno; pedido do Arthur, 27/11/2026).
+    if (!dlg.hasAttribute('tabindex')) dlg.setAttribute('tabindex', '-1');
+    dlg.focus({ preventScroll: true });
     dlg.scrollTop = 0;
     dlg.querySelectorAll('.miniaturas button').forEach(function (b) {
       b.addEventListener('click', function () {

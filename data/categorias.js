@@ -142,6 +142,14 @@ window.CATEGORIAS = {
      ]
     },
     {
+     "id": "logo",
+     "nome": "Logo",
+     "pecas": [
+      "cromo-logo",
+      "utilex"
+     ]
+    },
+    {
      "id": "editorial",
      "nome": "Editorial",
      "pecas": [

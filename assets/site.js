@@ -114,7 +114,7 @@
   function cabecalhoFrase(ativa) {
     var cats = (window.CATEGORIAS && window.CATEGORIAS.categorias) || [];
     var atual = cats.filter(function (c) { return c.id === SALA_CAT[ativa]; })[0];
-    var palavra = atual ? atual.frase : 'da comunicação.';
+    var palavra = atual ? atual.frase : 'da comunicação';
     var itens = cats.map(function (c, i) {
       return '<a class="tema-item" style="--k:' + i + '" href="' + HOME + '?cat=' + encodeURIComponent(c.id) + '#site" data-frase="' + esc(c.frase) + '"' + (atual && c.id === atual.id ? ' aria-current="page"' : '') + '>' + esc(c.nome.toLowerCase()) + '</a>';
     }).join('') + '<span class="lista-fim">' +
@@ -124,8 +124,9 @@
       // O mesmo rolo da home: as frases das categorias e "da comunicação." giram como um tambor.
       '<span class="tambor tambor-fixo" role="button" tabindex="0" aria-label="Escolher o que eu cuido (agora: ' + esc(palavra) + ')" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-cuido">' +
       '<span class="tambor-win" aria-hidden="true"><ul class="tambor-rolo">' +
-      cats.map(function (c) { return c.frase; }).concat(['da comunicação.']).map(function (t, i) { return '<li style="--i:' + i + '"' + (t === palavra ? ' class="atual"' : '') + ' data-frase="' + esc(t) + '">' + esc(t) + '</li>'; }).join('') +
-      '</ul></span></span></div><a class="spotlight-sobre" href="' + HOME + '#site-sobre">Saiba mais <span>sobre mim</span></a>' +
+      cats.map(function (c) { return c.frase; }).concat(['da comunicação']).map(function (t, i) { return '<li style="--i:' + i + '"' + (t === palavra ? ' class="atual"' : '') + ' data-frase="' + esc(t) + '">' + esc(t) + '</li>'; }).join('') +
+      '</ul></span></span></div>' +
+      // "Saiba mais sobre mim" saiu (pedido do Arthur, 27/11/2026): "sobre mim" já está no menu.
       '<nav class="lista" id="menu-cuido" aria-label="O que eu cuido">' + itens + '</nav></section>';
   }
   function ligarCabecalhoFrase(el) {
@@ -142,14 +143,15 @@
       var d = ((i * ang - rot) % 360 + 540) % 360 - 180;
       rot += d; pos = i;
       rolo.style.setProperty('--rot', rot + 'deg');
-      palavra.style.width = lis[i].offsetWidth + 'px';
+      // Folga de .14em: a janela tem .04em de margem de cada lado e a última letra pode passar um pouco da caixa.
+      palavra.style.width = 'calc(' + lis[i].offsetWidth + 'px + .14em)';
       lis.forEach(function (li, k) { li.classList.toggle('atual', k === i); });
     }
     function idxDaFrase(f) { for (var k = 0; k < N; k++) if (lis[k].dataset.frase === f) return k; return original; }
     // Começa parado na palavra da página; a transição só liga depois (sem giro ao carregar).
     rot = pos * ang; rolo.style.setProperty('--rot', rot + 'deg');
     girarPara(pos);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { palavra.style.width = lis[pos].offsetWidth + 'px'; });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { palavra.style.width = 'calc(' + lis[pos].offsetWidth + 'px + .14em)'; });
     requestAnimationFrame(function () { requestAnimationFrame(function () { rolo.classList.add('suave'); }); });
     var veu = document.createElement('div'); veu.className = 'veu'; document.body.appendChild(veu);
     var aberto = false, espera = null, esperaVeu = null;
