@@ -649,3 +649,14 @@ dialog.dlg[open] { display: flex; flex-direction: column; }
    das quadradas, nunca tem a sombra do canto e ganha uma margem invisível em volta, para não encostar em nada. */
 .mosaico .peca[data-logo] figure, .parede .pp[data-logo] figure { padding: 9%; box-sizing: border-box; }
 .peca[data-logo] figure img, .pp[data-logo] figure img { width: 100%; height: 100%; object-fit: contain; }
+/* Vídeo em pé na janela (27/11/2026, pedido do Arthur): a caixa abraça o conteúdo. Vídeo com a mesma margem
+   nos quatro lados (12px), texto logo ao lado, alinhado ao topo do vídeo; nada de faixa vazia à esquerda. */
+@media (min-width: 860px) {
+  dialog.dlg:has(.dlg-media.vert) { width: fit-content; max-width: calc(100vw - 24px); }
+  .dlg-corpo:has(.dlg-media.vert) { grid-template-columns: auto minmax(260px, 340px); }
+  .dlg-media.vert { padding: 12px; }
+  .dlg-media.vert video { width: auto; height: min(calc(100vh - 124px), 760px); max-width: none; }
+  .dlg-corpo:has(.dlg-media.vert) .dlg-info { padding: 12px 28px 24px 12px; }
+}
+/* Sem a barra de cima, o texto da janela não precisa mais descer 50px ao rolar. */
+@media (min-width: 860px) { .dlg-info { top: 0; } }
