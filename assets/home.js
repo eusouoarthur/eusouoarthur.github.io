@@ -211,6 +211,8 @@
         var dimC = capa && window.IMAGENS && window.IMAGENS[capa], rC = dimC ? dimC[0] / dimC[1] : 16 / 9;
         n.style.setProperty('--r', rC.toFixed(4));
         n.dataset.f = rC < 0.8 ? 'v' : rC < 1.2 ? 'q' : 'h';
+        // Logo de fundo transparente (p.logo): do tamanho das quadradas e sem a sombra do canto (27/11/2026).
+        if (p.logo) { n.dataset.f = 'q'; n.dataset.logo = '1'; } else delete n.dataset.logo;
         // Uma troca interrompida deixa o esmaecer preso (fill: forwards) e a peça reaproveitada fica invisível.
         if (n.getAnimations) n.getAnimations().forEach(function (a) { a.cancel(); });
         if (!ehMateriaLink(p)) {
@@ -264,7 +266,7 @@
     var ordem = A.ordemAtual();
     var temas = ordem.map(function (i) { return S.temas[i]; });
     // O rolo passa pelos temas de trás para a frente: o primeiro da lista é o último que se lê antes de "tudo".
-    var seq = temas.slice().reverse().map(function (t) { return t.frase; }).concat(['da comunicação.']);
+    var seq = temas.slice().reverse().map(function (t) { return t.frase; }).concat(['da comunicação']);
     var N = seq.length, ang = 360 / N;
     rolo.innerHTML = seq.map(function (t, i) { return '<li style="--i:' + i + '"' + (i === N - 1 ? ' class="fim"' : '') + '>' + esc(t) + '</li>'; }).join('');
     rolo.style.setProperty('--ang', ang + 'deg');
@@ -305,10 +307,13 @@
     function ajustar() {
       var fs = parseFloat(getComputedStyle(cuido).fontSize) || 16;
       var cabe = hero.clientWidth / fs - 0.1;
-      var k = Math.min(1, cabe / (larg[pos] || 1));
+      // FOLGA: a janela tem .04em de margem de cada lado e a última letra pode passar um pouco da caixa (senão corta).
+      var FOLGA = 0.14, lw = (larg[pos] || 0) + FOLGA;
+      // .44em = a setinha que fica depois da palavra (site.css, .cuido .tambor::after): tem que caber também.
+      var k = Math.min(1, cabe / (lw + 0.44));
       tamborEl.style.fontSize = k.toFixed(3) + 'em';
       // A palavra fica na mesma linha de "e eu cuido": a caixa do tambor acompanha a largura da palavra à mostra.
-      tamborEl.style.width = (larg[pos] || 0).toFixed(3) + 'em';
+      tamborEl.style.width = lw.toFixed(3) + 'em';
       lis.forEach(function (li, i) { li.classList.toggle('atual', i === pos); });
     }
     function girarPara(i) {

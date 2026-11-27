@@ -616,3 +616,36 @@ body.com-veu .subcats { transform: translateY(6px); }
 .automacao-texto p + p { margin-top: 1em; }
 .automacao-texto p:first-child { font-family: var(--titulo); font-size: clamp(26px, 2.6vw, 34px); font-weight: 600; line-height: 1.2; letter-spacing: -.01em; }
 .automacao-texto a { color: var(--destaque); }
+
+/* Setinha do menu (27/11/2026, escolha do Arthur): quadrada e reta (desenhada com formas, sem traço, para não arredondar), do peso da letra, embaixo do fim da palavra,
+   apontando para ela de baixo para cima. Mostra que a palavra é clicável. Vale na home e nas páginas internas. */
+.cuido .tambor::after {
+  content: ""; position: absolute; left: 100%; top: .93em; width: .42em; height: .42em; margin-left: .06em; /* haste encurtada em 27/11 */
+  background: currentColor; pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M0 0H6.5V1.9H3.243L8.172 6.828L6.828 8.172L1.9 3.243V6.5H0Z' fill='%23000' shape-rendering='geometricPrecision'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M0 0H6.5V1.9H3.243L8.172 6.828L6.828 8.172L1.9 3.243V6.5H0Z' fill='%23000' shape-rendering='geometricPrecision'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+/* Com o menu aberto a setinha some: o menu já está à mostra (pedido do Arthur, 27/11/2026). */
+.cuido .tambor::after { transition: opacity .2s ease; }
+.menu-aberto .cuido .tambor::after { opacity: 0; }
+/* Janela da peça (27/11/2026, pedido do Arthur): fundo da cor do site, sem a tinta tirada da imagem;
+   sem o rótulo "Arthur Ramos · Sala" no canto; o "Fechar" fica sozinho à direita. */
+dialog.dlg, .dlg-topo { background-color: var(--bg); }
+.dlg-topo { justify-content: flex-end; }
+.dlg-tit { display: none; }
+dialog.dlg:focus { outline: none; }
+/* Janela da peça sem a barra de cima (27/11/2026, pedido do Arthur): o "Fechar" vira uma caixinha com X
+   flutuando do lado de fora, acima da caixa, alinhada à direita dela. A caixa é a .dlg-corpo. */
+dialog.dlg { overflow: visible; background: none; border: 0; max-height: calc(100vh - 48px); }
+dialog.dlg[open] { display: flex; flex-direction: column; }
+/* O X faz parte do bloco: a margem da tela vale do topo do X e do fim da caixa (24px em cima e embaixo). */
+.dlg-topo { position: static; display: flex; justify-content: flex-end; padding: 0 0 10px; border: 0; background: none; flex: none; }
+.dlg-corpo { background-color: var(--bg); border: 1px solid var(--line); border-radius: var(--r); min-height: 0; flex: 1 1 auto; overflow: auto; }
+.dlg .fechar { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 1px solid var(--line-forte); border-radius: var(--r); background: var(--bg); color: var(--fg2); cursor: pointer; transition: color .15s, border-color .15s; }
+.dlg .fechar:hover { color: var(--fg); border-color: var(--fg); }
+/* Logo de fundo transparente (Cromo, 27/11/2026): sem a sombra diagonal atrás do ícone do canto. */
+.peca[data-logo] figure:has(.pp-tag)::before, .parede .pp[data-logo] figure:has(.pp-tag)::before { content: none; }
+/* Regra das logos (27/11/2026, pedido do Arthur): toda peça com logo: true (data/pecas.js) fica do tamanho
+   das quadradas, nunca tem a sombra do canto e ganha uma margem invisível em volta, para não encostar em nada. */
+.mosaico .peca[data-logo] figure, .parede .pp[data-logo] figure { padding: 9%; box-sizing: border-box; }
+.peca[data-logo] figure img, .pp[data-logo] figure img { width: 100%; height: 100%; object-fit: contain; }
